@@ -1,0 +1,55 @@
+# One independently owned project per invocation. All paths are private operator input.
+services:
+  gateway:
+    image: ${LLM_GATEWAY_IMAGE:?Set the exact reviewed image identity}
+    pull_policy: never
+    restart: unless-stopped
+    read_only: true
+    user: "10001:10001"
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    command: [serve, --project-config, /config/project.yaml, --state-dir, /state,
+              --host, "0.0.0.0", --port, "8080", --egress-proxy, "http://egress:3128"]
+    stop_grace_period: 30s
+    volumes:
+      - ${PROJECT_CONFIG_DIR:?Set private config directory}:/config:ro
+      - ${PROJECT_SECRET_DIR:?Set private provider secret directory}:/secrets:ro
+      - ${PROJECT_TOKEN_DIR:?Set private token directory}:/tokens:ro
+      - ${PROJECT_STATE_DIR:?Set private persistent state directory}:/state
+    ports:
+      - "127.0.0.1:${GATEWAY_BIND_PORT:-8080}:8080"
+    networks:
+      client:
+        aliases: ["${GATEWAY_HOSTNAME:-llm-gateway}"]
+    dns_search: ["."]
+    depends_on: [egress]
+    pids_limit: 256
+    mem_limit: 1g
+    cpus: 2
+    healthcheck:
+      test: [CMD, python, -I, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 30s
+    logging:
+      driver: json-file
+      options: {max-size: 10m, max-file: '3'}
+  egress:
+    image: ${LLM_GATEWAY_IMAGE:?Set the exact reviewed image identity}
+    pull_policy: never
+    restart: unless-stopped
+    entrypoint: [python, -I, -m, llm_gateway.service.egress_proxy]
+    command: [--host, "0.0.0.0", --port, "3128"]
+    read_only: true
+    user: "10001:10001"
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    networks: [client, outbound]
+    dns_search: ["."]
+    pids_limit: 80
+    mem_limit: 128m
+    cpus: 1
+networks:
+  client: {internal: true}
+  outbound: {}

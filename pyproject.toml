@@ -1,0 +1,63 @@
+[build-system]
+requires = [
+  "hatchling==1.33.0", "editables==0.6", "packaging==26.3", "pathspec==1.1.1",
+  "pluggy==1.7.0", "tomlkit==0.15.2", "trove-classifiers==2026.9.21.13",
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "llm-gateway"
+version = "0.1.0a2"
+description = "Project-owned model routing with isolated provider access and durable cost admission"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{name = "Stefan Rossmeier"}]
+requires-python = ">=3.11,<3.13"
+dependencies = ["httpx>=0.28.1,<1", "pydantic>=2.12.3,<3"]
+
+[project.optional-dependencies]
+service = [
+  "litellm==1.109.0",
+  "filelock>=4.2.1,<5",
+  "fastapi>=0.136.3,<1",
+  "uvicorn>=0.35,<1",
+  "pyyaml>=6.0.3,<7",
+  "jsonschema>=4.25,<5",
+]
+
+[project.scripts]
+llm-gateway = "llm_gateway.service.cli:main"
+
+[dependency-groups]
+dev = ["hatchling>=1.27,<2", "editables>=0.5,<1", "pytest>=8,<10", "pytest-asyncio>=1,<2", "pytest-cov>=6,<8", "ruff>=0.14,<1"]
+test-free = ["pytest>=8,<10", "pytest-asyncio>=1,<2"]
+test-paid = ["pytest>=8,<10", "pytest-asyncio>=1,<2"]
+
+[tool.hatch.build]
+dev-mode-dirs = ["src"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/llm_gateway"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "--strict-markers -m 'not live_free and not live_paid'"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+markers = [
+  "offline: deterministic inference-free tests",
+  "live_free: explicitly enabled zero-priced OpenRouter inference",
+  "live_paid: paid tests require approval and run last",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.coverage.paths]
+source = ["src/llm_gateway", "*/site-packages/llm_gateway"]

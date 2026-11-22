@@ -1,0 +1,31 @@
+{
+  "adapter_calls_over_mock_http": 8,
+  "loaded_libstdcpp": [
+    "/usr/lib/aarch64-linux-gnu/libstdc++.so.6.0.33"
+  ],
+  "native_objects_referencing_libstdcpp": [
+    {
+      "object": "frozenlist/_frozenlist.cpython-312-aarch64-linux-gnu.so",
+      "imported_cpp_symbols": []
+    },
+    {
+      "object": "tokenizers/tokenizers.abi3.so",
+      "imported_cpp_symbols": [
+        "_ZNSt8ios_base4InitC1Ev",
+        "_ZNSt8ios_base4InitD1Ev",
+        "_ZNSt9bad_allocD2Ev",
+        "_ZSt20__throw_length_errorPKc",
+        "_ZTISt9bad_alloc",
+        "_ZTVN10__cxxabiv120__si_class_type_infoE",
+        "_ZdaPv",
+        "_ZdlPv",
+        "_Znam",
+        "_Znwm"
+      ]
+    }
+  ],
+  "resolved_container_image": "sha256:d1963152d3bee43e815e1d01587fc27bd9cf351b0a67ddfca6bc9398a557b9e8",
+  "inference_performed": false,
+  "source_fixture_sha256": "83f0a2c97bce69281572f70851b2e1af80b3f7a0e6402fe11d2f6f6ad2626ba5",
+  "applicability_approved": false
+}

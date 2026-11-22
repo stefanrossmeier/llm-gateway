@@ -1,0 +1,89 @@
+name: Offline verification
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: offline-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  client:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        python: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          version: '0.12.13'
+          enable-cache: false
+      - name: Verify reviewed dependency lock
+        run: python scripts/check_lock_approval.py
+      - run: uv sync --frozen --no-editable
+      - name: Prove lean imports without provider or service SDKs
+        run: |
+          .venv/bin/python -I -c "import importlib.util; from llm_gateway.client import GatewayClient, AsyncGatewayClient; assert all(importlib.util.find_spec(x) is None for x in ['litellm','openai','fastapi','yaml'])"
+          .venv/bin/pytest tests/offline/test_contracts.py tests/offline/test_client_boundaries.py -q
+      - run: uv build --wheel --no-build-isolation
+  service:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          version: '0.12.13'
+          enable-cache: false
+      - run: python scripts/check_lock_approval.py
+      - run: uv sync --frozen --extra service --no-editable
+      - name: Lint and inference-denied offline suite
+        run: |
+          .venv/bin/ruff check src tests scripts
+          .venv/bin/ruff format --check src tests scripts
+          .venv/bin/pytest -q --cov=llm_gateway --cov-branch --cov-report=json:coverage.json
+          .venv/bin/python scripts/check_coverage.py coverage.json
+      - name: Non-root container without external network
+        run: |
+          docker build -t llm-gateway:ci .
+          python scripts/check_container.py --image llm-gateway:ci
+      - name: Key-free native profile over mocked SDK HTTP
+        run: python scripts/probe_native_profile.py --image llm-gateway:ci --output native-profile.json
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: offline-coverage
+          path: |
+            coverage.json
+            native-profile.json
+          retention-days: 14
+  publication:
+    name: Source and history disclosure checks
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Bounded publication checks
+        run: python3 scripts/check_publication.py
+      - name: Independent redacted secret scan without network or credentials
+        run: >-
+          docker run --rm --network none --read-only --cap-drop ALL
+          --security-opt no-new-privileges
+          --env GIT_CONFIG_COUNT=1 --env GIT_CONFIG_KEY_0=safe.directory
+          --env GIT_CONFIG_VALUE_0=/repo
+          --mount type=bind,src=${{ github.workspace }},dst=/repo,readonly
+          ghcr.io/gitleaks/gitleaks@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f
+          git /repo --log-opts=--all --redact --no-banner

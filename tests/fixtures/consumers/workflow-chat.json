@@ -1,0 +1,30 @@
+{
+  "consumer": "workflow-chat",
+  "synthetic": true,
+  "operation": "chat",
+  "route": "/chat",
+  "request": {
+    "workflow_id": "example-workflow",
+    "model_profile": "example-profile",
+    "stage_id": "route",
+    "session_id": "example-session",
+    "turn": 1,
+    "timeout_seconds": 5,
+    "messages": [
+      {
+        "role": "user",
+        "content": "Synthetic contract input."
+      }
+    ]
+  },
+  "payload": "synthetic-stage-one",
+  "second_payload": "synthetic-stage-two",
+  "expected_context": {
+    "workflow_id": "example-workflow",
+    "session_id": "example-session",
+    "stage_id": "route",
+    "turn": 1,
+    "profile": "example-profile"
+  },
+  "contract_revision": "v1"
+}

@@ -1,0 +1,46 @@
+"""Public wire contracts, importable without the optional service dependencies."""
+
+from .models import (
+    AttemptReceipt,
+    CallerLimits,
+    ChatInput,
+    DecisionsInput,
+    EmbeddingsInput,
+    FunctionCall,
+    FunctionChoice,
+    FunctionTool,
+    InferenceRequest,
+    InferenceResult,
+    Message,
+    ModelIdentity,
+    RequestContext,
+    ResponsesInput,
+    SafeError,
+    TokenUsage,
+    XSearchInput,
+)
+from .money import Usd, add_usd, parse_usd, usd_string
+
+__all__ = [
+    "AttemptReceipt",
+    "CallerLimits",
+    "ChatInput",
+    "DecisionsInput",
+    "EmbeddingsInput",
+    "FunctionCall",
+    "FunctionChoice",
+    "FunctionTool",
+    "InferenceRequest",
+    "InferenceResult",
+    "Message",
+    "ModelIdentity",
+    "RequestContext",
+    "ResponsesInput",
+    "SafeError",
+    "TokenUsage",
+    "Usd",
+    "XSearchInput",
+    "add_usd",
+    "parse_usd",
+    "usd_string",
+]

@@ -1,0 +1,93 @@
+{
+  "$defs": {
+    "AliasInspection": {
+      "additionalProperties": false,
+      "properties": {
+        "alias": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Alias",
+          "type": "string"
+        },
+        "operation": {
+          "enum": [
+            "chat",
+            "responses",
+            "decisions",
+            "x_search",
+            "embeddings"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "provider_ref": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Provider Ref",
+          "type": "string"
+        },
+        "provider_kind": {
+          "enum": [
+            "openai",
+            "openrouter"
+          ],
+          "title": "Provider Kind",
+          "type": "string"
+        },
+        "upstream_model": {
+          "title": "Upstream Model",
+          "type": "string"
+        },
+        "capabilities": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Capabilities",
+          "type": "array"
+        },
+        "limits": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Limits",
+          "type": "object"
+        }
+      },
+      "required": [
+        "alias",
+        "operation",
+        "provider_ref",
+        "provider_kind",
+        "upstream_model",
+        "capabilities",
+        "limits"
+      ],
+      "title": "AliasInspection",
+      "type": "object"
+    },
+    "JsonValue": {}
+  },
+  "additionalProperties": false,
+  "properties": {
+    "config_digest": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Config Digest",
+      "type": "string"
+    },
+    "aliases": {
+      "items": {
+        "$ref": "#/$defs/AliasInspection"
+      },
+      "title": "Aliases",
+      "type": "array"
+    }
+  },
+  "required": [
+    "config_digest",
+    "aliases"
+  ],
+  "title": "AliasReport",
+  "type": "object"
+}

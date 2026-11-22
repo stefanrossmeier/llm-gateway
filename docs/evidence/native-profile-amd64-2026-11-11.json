@@ -1,0 +1,33 @@
+{
+  "adapter_calls_over_mock_http": 8,
+  "loaded_libstdcpp": [
+    "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33"
+  ],
+  "native_objects_referencing_libstdcpp": [
+    {
+      "object": "frozenlist/_frozenlist.cpython-312-x86_64-linux-gnu.so",
+      "imported_cpp_symbols": []
+    },
+    {
+      "object": "tokenizers/tokenizers.abi3.so",
+      "imported_cpp_symbols": [
+        "_ZNSt8ios_base4InitC1Ev",
+        "_ZNSt8ios_base4InitD1Ev",
+        "_ZNSt9bad_allocD2Ev",
+        "_ZSt20__throw_length_errorPKc",
+        "_ZTISt9bad_alloc",
+        "_ZTVN10__cxxabiv120__si_class_type_infoE",
+        "_ZdaPv",
+        "_ZdlPv",
+        "_Znam",
+        "_Znwm"
+      ]
+    }
+  ],
+  "resolved_container_image": "sha256:e3c3a66fb308b2e40e288a30cda1bd91e405ecd607aaed041d55b9ee965de639",
+  "inference_performed": false,
+  "source_fixture_sha256": "83f0a2c97bce69281572f70851b2e1af80b3f7a0e6402fe11d2f6f6ad2626ba5",
+  "applicability_approved": false,
+  "ci_run": "https://github.com/stefanrossmeier/llm-gateway/actions/runs/43027993568",
+  "reviewed_commit": "b3bfb92f57c57e246c30cdadd3cb545bd5b6b2b7"
+}

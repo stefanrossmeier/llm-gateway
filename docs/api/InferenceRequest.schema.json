@@ -1,0 +1,948 @@
+{
+  "$defs": {
+    "CallerLimits": {
+      "additionalProperties": false,
+      "properties": {
+        "timeout_seconds": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 3600,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Timeout Seconds"
+        },
+        "max_output_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Output Tokens"
+        },
+        "max_attempts": {
+          "anyOf": [
+            {
+              "maximum": 10,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Attempts"
+        },
+        "max_usd": {
+          "anyOf": [
+            {
+              "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Usd"
+        }
+      },
+      "title": "CallerLimits",
+      "type": "object"
+    },
+    "ChatInput": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "chat",
+          "default": "chat",
+          "title": "Kind",
+          "type": "string"
+        },
+        "messages": {
+          "items": {
+            "$ref": "#/$defs/Message"
+          },
+          "maxItems": 1000,
+          "minItems": 1,
+          "title": "Messages",
+          "type": "array"
+        },
+        "response_format": {
+          "default": "text",
+          "enum": [
+            "text",
+            "json_object",
+            "json_schema"
+          ],
+          "title": "Response Format",
+          "type": "string"
+        },
+        "response_schema": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/JsonValue"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Response Schema"
+        },
+        "schema_name": {
+          "default": "gateway_response",
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "tools": {
+          "items": {
+            "$ref": "#/$defs/FunctionTool"
+          },
+          "maxItems": 128,
+          "title": "Tools",
+          "type": "array"
+        },
+        "tool_choice": {
+          "anyOf": [
+            {
+              "enum": [
+                "none",
+                "auto",
+                "required"
+              ],
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/FunctionChoice"
+            }
+          ],
+          "default": "auto",
+          "title": "Tool Choice"
+        },
+        "parallel_tool_calls": {
+          "default": false,
+          "title": "Parallel Tool Calls",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "messages"
+      ],
+      "title": "ChatInput",
+      "type": "object"
+    },
+    "DecisionsInput": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "decisions",
+          "default": "decisions",
+          "title": "Kind",
+          "type": "string"
+        },
+        "state": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "State",
+          "type": "object"
+        },
+        "questions": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Questions",
+          "type": "object"
+        }
+      },
+      "required": [
+        "state",
+        "questions"
+      ],
+      "title": "DecisionsInput",
+      "type": "object"
+    },
+    "EmbeddingsInput": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "embeddings",
+          "default": "embeddings",
+          "title": "Kind",
+          "type": "string"
+        },
+        "input": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 256,
+          "minItems": 1,
+          "title": "Input",
+          "type": "array"
+        },
+        "dimensions": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 65536,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dimensions"
+        },
+        "encoding_format": {
+          "default": "float",
+          "enum": [
+            "float",
+            "base64"
+          ],
+          "title": "Encoding Format",
+          "type": "string"
+        }
+      },
+      "required": [
+        "input"
+      ],
+      "title": "EmbeddingsInput",
+      "type": "object"
+    },
+    "FunctionChoice": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "function",
+          "default": "function",
+          "title": "Type",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "FunctionChoice",
+      "type": "object"
+    },
+    "FunctionInvocationInput": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "function_call",
+          "default": "function_call",
+          "title": "Type",
+          "type": "string"
+        },
+        "call_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Call Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Name",
+          "type": "string"
+        },
+        "arguments": {
+          "title": "Arguments",
+          "type": "string"
+        }
+      },
+      "required": [
+        "call_id",
+        "name",
+        "arguments"
+      ],
+      "title": "FunctionInvocationInput",
+      "type": "object"
+    },
+    "FunctionResultInput": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "function_call_output",
+          "default": "function_call_output",
+          "title": "Type",
+          "type": "string"
+        },
+        "call_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Call Id",
+          "type": "string"
+        },
+        "output": {
+          "title": "Output",
+          "type": "string"
+        }
+      },
+      "required": [
+        "call_id",
+        "output"
+      ],
+      "title": "FunctionResultInput",
+      "type": "object"
+    },
+    "FunctionTool": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "function",
+          "default": "function",
+          "title": "Type",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "maxLength": 4096,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        },
+        "parameters": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Parameters",
+          "type": "object"
+        },
+        "strict": {
+          "default": true,
+          "title": "Strict",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "parameters"
+      ],
+      "title": "FunctionTool",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "Message": {
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "enum": [
+            "system",
+            "developer",
+            "user",
+            "assistant",
+            "tool"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "content": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "$ref": "#/$defs/TextPart"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Content"
+        },
+        "tool_call_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tool Call Id"
+        },
+        "tool_calls": {
+          "items": {
+            "$ref": "#/$defs/MessageToolCall"
+          },
+          "maxItems": 128,
+          "title": "Tool Calls",
+          "type": "array"
+        }
+      },
+      "required": [
+        "role",
+        "content"
+      ],
+      "title": "Message",
+      "type": "object"
+    },
+    "MessageFunction": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Name",
+          "type": "string"
+        },
+        "arguments": {
+          "title": "Arguments",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "title": "MessageFunction",
+      "type": "object"
+    },
+    "MessageToolCall": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "type": {
+          "const": "function",
+          "default": "function",
+          "title": "Type",
+          "type": "string"
+        },
+        "function": {
+          "$ref": "#/$defs/MessageFunction"
+        }
+      },
+      "required": [
+        "id",
+        "function"
+      ],
+      "title": "MessageToolCall",
+      "type": "object"
+    },
+    "RequestContext": {
+      "additionalProperties": false,
+      "properties": {
+        "run_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "session_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Session Id"
+        },
+        "workflow_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Workflow Id"
+        },
+        "stage_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stage Id"
+        },
+        "turn": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Turn"
+        },
+        "role": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Role"
+        },
+        "purpose": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Purpose"
+        },
+        "profile": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Profile"
+        },
+        "phase": {
+          "default": "task",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Phase",
+          "type": "string"
+        },
+        "test_group": {
+          "anyOf": [
+            {
+              "enum": [
+                "offline",
+                "live_free",
+                "live_paid"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Test Group"
+        },
+        "tags": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "maxProperties": 64,
+          "title": "Tags",
+          "type": "object"
+        }
+      },
+      "title": "RequestContext",
+      "type": "object"
+    },
+    "ResponsesInput": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "responses",
+          "default": "responses",
+          "title": "Kind",
+          "type": "string"
+        },
+        "instructions": {
+          "default": "",
+          "title": "Instructions",
+          "type": "string"
+        },
+        "input": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/Message"
+                  },
+                  {
+                    "$ref": "#/$defs/FunctionResultInput"
+                  },
+                  {
+                    "$ref": "#/$defs/FunctionInvocationInput"
+                  }
+                ]
+              },
+              "type": "array"
+            }
+          ],
+          "title": "Input"
+        },
+        "tools": {
+          "items": {
+            "$ref": "#/$defs/FunctionTool"
+          },
+          "maxItems": 128,
+          "title": "Tools",
+          "type": "array"
+        },
+        "tool_choice": {
+          "anyOf": [
+            {
+              "enum": [
+                "none",
+                "auto",
+                "required"
+              ],
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/FunctionChoice"
+            }
+          ],
+          "default": "auto",
+          "title": "Tool Choice"
+        },
+        "parallel_tool_calls": {
+          "default": false,
+          "title": "Parallel Tool Calls",
+          "type": "boolean"
+        },
+        "store": {
+          "const": false,
+          "default": false,
+          "title": "Store",
+          "type": "boolean"
+        },
+        "reasoning_effort": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reasoning Effort"
+        },
+        "text_verbosity": {
+          "anyOf": [
+            {
+              "enum": [
+                "low",
+                "medium",
+                "high"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text Verbosity"
+        },
+        "response_schema": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/JsonValue"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Response Schema"
+        },
+        "response_format": {
+          "default": "text",
+          "enum": [
+            "text",
+            "json_object",
+            "json_schema"
+          ],
+          "title": "Response Format",
+          "type": "string"
+        },
+        "schema_name": {
+          "default": "gateway_response",
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Schema Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "input"
+      ],
+      "title": "ResponsesInput",
+      "type": "object"
+    },
+    "TextPart": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "text",
+            "input_text",
+            "output_text"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "text"
+      ],
+      "title": "TextPart",
+      "type": "object"
+    },
+    "XSearchInput": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "x_search",
+          "default": "x_search",
+          "title": "Kind",
+          "type": "string"
+        },
+        "input": {
+          "maxLength": 5000,
+          "title": "Input",
+          "type": "string"
+        },
+        "allowed_x_handles": {
+          "items": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_]+$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Allowed X Handles",
+          "type": "array"
+        },
+        "from_date": {
+          "format": "date",
+          "title": "From Date",
+          "type": "string"
+        },
+        "to_date": {
+          "format": "date",
+          "title": "To Date",
+          "type": "string"
+        },
+        "response_schema": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Response Schema",
+          "type": "object"
+        },
+        "schema_name": {
+          "default": "gateway_response",
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Schema Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "input",
+        "allowed_x_handles",
+        "from_date",
+        "to_date",
+        "response_schema"
+      ],
+      "title": "XSearchInput",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "request_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "alias": {
+      "maxLength": 64,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_-]+$",
+      "title": "Alias",
+      "type": "string"
+    },
+    "operation": {
+      "enum": [
+        "chat",
+        "responses",
+        "decisions",
+        "x_search",
+        "embeddings"
+      ],
+      "title": "Operation",
+      "type": "string"
+    },
+    "input": {
+      "discriminator": {
+        "mapping": {
+          "chat": "#/$defs/ChatInput",
+          "decisions": "#/$defs/DecisionsInput",
+          "embeddings": "#/$defs/EmbeddingsInput",
+          "responses": "#/$defs/ResponsesInput",
+          "x_search": "#/$defs/XSearchInput"
+        },
+        "propertyName": "kind"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ChatInput"
+        },
+        {
+          "$ref": "#/$defs/ResponsesInput"
+        },
+        {
+          "$ref": "#/$defs/DecisionsInput"
+        },
+        {
+          "$ref": "#/$defs/XSearchInput"
+        },
+        {
+          "$ref": "#/$defs/EmbeddingsInput"
+        }
+      ],
+      "title": "Input"
+    },
+    "context": {
+      "$ref": "#/$defs/RequestContext"
+    },
+    "limits": {
+      "$ref": "#/$defs/CallerLimits"
+    }
+  },
+  "required": [
+    "request_id",
+    "alias",
+    "operation",
+    "input"
+  ],
+  "title": "InferenceRequest",
+  "type": "object"
+}

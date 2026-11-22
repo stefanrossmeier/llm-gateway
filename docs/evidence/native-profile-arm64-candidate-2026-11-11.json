@@ -1,0 +1,63 @@
+{
+  "adapter_calls_over_mock_http": 8,
+  "loaded_libstdcpp": [
+    "/usr/lib/aarch64-linux-gnu/libstdc++.so.6.0.33"
+  ],
+  "native_objects_referencing_libstdcpp": [
+    {
+      "object": "frozenlist/_frozenlist.cpython-312-aarch64-linux-gnu.so",
+      "sha256": "111659811c862ca6e80545ceb2de3437fe4550a7dda72333e425aa3ec0b38c15",
+      "imported_cpp_symbols": []
+    },
+    {
+      "object": "tokenizers/tokenizers.abi3.so",
+      "sha256": "eb4d4fab7a667086711cfc6b7f0fba6c0275c2059da0f07d52c917bfa854a20d",
+      "imported_cpp_symbols": [
+        "_ZNSt8ios_base4InitC1Ev",
+        "_ZNSt8ios_base4InitD1Ev",
+        "_ZNSt9bad_allocD2Ev",
+        "_ZSt20__throw_length_errorPKc",
+        "_ZTISt9bad_alloc",
+        "_ZTVN10__cxxabiv120__si_class_type_infoE",
+        "_ZdaPv",
+        "_ZdlPv",
+        "_Znam",
+        "_Znwm"
+      ]
+    }
+  ],
+  "authored_source_sha256": "ce19b0ce1643e671caa6703a1acf67a65828d499307d8e788b3efe7b9ee6c771",
+  "authored_source_files": 51,
+  "architecture": "aarch64",
+  "python_version": "3.12.16",
+  "openssl_version": "OpenSSL 3.5.7 9 Jun 2026",
+  "tls_cipher_names": [
+    "DHE-RSA-AES128-GCM-SHA256",
+    "DHE-RSA-AES128-SHA256",
+    "DHE-RSA-AES256-GCM-SHA384",
+    "DHE-RSA-AES256-SHA256",
+    "ECDHE-ECDSA-AES128-GCM-SHA256",
+    "ECDHE-ECDSA-AES128-SHA256",
+    "ECDHE-ECDSA-AES256-GCM-SHA384",
+    "ECDHE-ECDSA-AES256-SHA384",
+    "ECDHE-ECDSA-CHACHA20-POLY1305",
+    "ECDHE-RSA-AES128-GCM-SHA256",
+    "ECDHE-RSA-AES128-SHA256",
+    "ECDHE-RSA-AES256-GCM-SHA384",
+    "ECDHE-RSA-AES256-SHA384",
+    "ECDHE-RSA-CHACHA20-POLY1305",
+    "TLS_AES_128_GCM_SHA256",
+    "TLS_AES_256_GCM_SHA384",
+    "TLS_CHACHA20_POLY1305_SHA256"
+  ],
+  "effective_uid": 10001,
+  "effective_capabilities": "0000000000000000",
+  "no_new_privileges": true,
+  "read_only_root": true,
+  "resolved_container_image": "sha256:270e198bec20421b0ea8388c3b5881e8489f816578442bbc9726ea5151eeb382",
+  "platform_manifest_digest": "sha256:82c4e55836d3ef30d5c88a2e03a0bb580e13ce7f86b999bdafd59bf582ab46fc",
+  "image_runtime_identity_sha256": "3906d941bd1a73c34898909e7bf668197b0d05d7ab1786e6db6ef82c2f28f1a0",
+  "inference_performed": false,
+  "source_fixture_sha256": "25ad41ec762a2aa2f87519ba707f051eb7dc33b0bf0fee4275b508b70f0c462d",
+  "applicability_approved": false
+}

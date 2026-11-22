@@ -1,0 +1,61 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Version"
+    },
+    "supports_config_precondition": {
+      "default": false,
+      "title": "Supports Config Precondition",
+      "type": "boolean"
+    },
+    "principal_id": {
+      "anyOf": [
+        {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Principal Id"
+    },
+    "status": {
+      "const": "ready",
+      "title": "Status",
+      "type": "string"
+    },
+    "project_id": {
+      "maxLength": 64,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_-]+$",
+      "title": "Project Id",
+      "type": "string"
+    },
+    "config_digest": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Config Digest",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "project_id",
+    "config_digest"
+  ],
+  "title": "Readiness",
+  "type": "object"
+}

@@ -1,0 +1,2199 @@
+{
+  "schema_version": 1,
+  "release_applicability_approved": true,
+  "reviewed_by": "Codex: exact-artifact restricted-profile source and runtime applicability review",
+  "reviewed_at": "2026-11-11T18:40:54.462683+00:00",
+  "expires_at": "2026-11-25T18:40:54.462683+00:00",
+  "candidate_source_commit": "69ea21d2e9ab23060eda3b829d3b71598e587eae",
+  "scanner_version": "0.121.3",
+  "scanner_policy_sha256": "e43efdc967ef749a229fb21574c143a0d6e1747b23b670f8ac2e2151d87a02d6",
+  "distro": {
+    "name": "debian",
+    "version": "13.7",
+    "idLike": []
+  },
+  "profiles": {
+    "arm64": {
+      "authored_source_sha256": "ce19b0ce1643e671caa6703a1acf67a65828d499307d8e788b3efe7b9ee6c771",
+      "authored_source_files": 51,
+      "image_runtime_identity_sha256": "3906d941bd1a73c34898909e7bf668197b0d05d7ab1786e6db6ef82c2f28f1a0",
+      "architecture": "aarch64",
+      "python_version": "3.12.16",
+      "openssl_version": "OpenSSL 3.5.7 9 Jun 2026",
+      "tls_cipher_names": [
+        "DHE-RSA-AES128-GCM-SHA256",
+        "DHE-RSA-AES128-SHA256",
+        "DHE-RSA-AES256-GCM-SHA384",
+        "DHE-RSA-AES256-SHA256",
+        "ECDHE-ECDSA-AES128-GCM-SHA256",
+        "ECDHE-ECDSA-AES128-SHA256",
+        "ECDHE-ECDSA-AES256-GCM-SHA384",
+        "ECDHE-ECDSA-AES256-SHA384",
+        "ECDHE-ECDSA-CHACHA20-POLY1305",
+        "ECDHE-RSA-AES128-GCM-SHA256",
+        "ECDHE-RSA-AES128-SHA256",
+        "ECDHE-RSA-AES256-GCM-SHA384",
+        "ECDHE-RSA-AES256-SHA384",
+        "ECDHE-RSA-CHACHA20-POLY1305",
+        "TLS_AES_128_GCM_SHA256",
+        "TLS_AES_256_GCM_SHA384",
+        "TLS_CHACHA20_POLY1305_SHA256"
+      ],
+      "loaded_libstdcpp": [
+        "/usr/lib/aarch64-linux-gnu/libstdc++.so.6.0.33"
+      ],
+      "native_objects_referencing_libstdcpp": [
+        {
+          "object": "frozenlist/_frozenlist.cpython-312-aarch64-linux-gnu.so",
+          "sha256": "111659811c862ca6e80545ceb2de3437fe4550a7dda72333e425aa3ec0b38c15",
+          "imported_cpp_symbols": []
+        },
+        {
+          "object": "tokenizers/tokenizers.abi3.so",
+          "sha256": "eb4d4fab7a667086711cfc6b7f0fba6c0275c2059da0f07d52c917bfa854a20d",
+          "imported_cpp_symbols": [
+            "_ZNSt8ios_base4InitC1Ev",
+            "_ZNSt8ios_base4InitD1Ev",
+            "_ZNSt9bad_allocD2Ev",
+            "_ZSt20__throw_length_errorPKc",
+            "_ZTISt9bad_alloc",
+            "_ZTVN10__cxxabiv120__si_class_type_infoE",
+            "_ZdaPv",
+            "_ZdlPv",
+            "_Znam",
+            "_Znwm"
+          ]
+        }
+      ],
+      "source_fixture_sha256": "25ad41ec762a2aa2f87519ba707f051eb7dc33b0bf0fee4275b508b70f0c462d",
+      "adapter_calls_over_mock_http": 8,
+      "effective_uid": 10001,
+      "effective_capabilities": "0000000000000000",
+      "no_new_privileges": true,
+      "read_only_root": true,
+      "inference_performed": false,
+      "applicability_approved": false
+    },
+    "amd64": {
+      "authored_source_sha256": "ce19b0ce1643e671caa6703a1acf67a65828d499307d8e788b3efe7b9ee6c771",
+      "authored_source_files": 51,
+      "image_runtime_identity_sha256": "4882a9c8b50109015aa14777e9af5b13ff6c9175a138d77e29b34b10f76b4683",
+      "architecture": "x86_64",
+      "python_version": "3.12.16",
+      "openssl_version": "OpenSSL 3.5.7 9 Jun 2026",
+      "tls_cipher_names": [
+        "DHE-RSA-AES128-GCM-SHA256",
+        "DHE-RSA-AES128-SHA256",
+        "DHE-RSA-AES256-GCM-SHA384",
+        "DHE-RSA-AES256-SHA256",
+        "ECDHE-ECDSA-AES128-GCM-SHA256",
+        "ECDHE-ECDSA-AES128-SHA256",
+        "ECDHE-ECDSA-AES256-GCM-SHA384",
+        "ECDHE-ECDSA-AES256-SHA384",
+        "ECDHE-ECDSA-CHACHA20-POLY1305",
+        "ECDHE-RSA-AES128-GCM-SHA256",
+        "ECDHE-RSA-AES128-SHA256",
+        "ECDHE-RSA-AES256-GCM-SHA384",
+        "ECDHE-RSA-AES256-SHA384",
+        "ECDHE-RSA-CHACHA20-POLY1305",
+        "TLS_AES_128_GCM_SHA256",
+        "TLS_AES_256_GCM_SHA384",
+        "TLS_CHACHA20_POLY1305_SHA256"
+      ],
+      "loaded_libstdcpp": [
+        "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33"
+      ],
+      "native_objects_referencing_libstdcpp": [
+        {
+          "object": "frozenlist/_frozenlist.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "533163376b8ddb84f3f3a49d12ba74eda261e0b3a9f00d30f448719033f88b71",
+          "imported_cpp_symbols": []
+        },
+        {
+          "object": "tokenizers/tokenizers.abi3.so",
+          "sha256": "4b1458a379296762a034d3bc89299c0c35b4eefb0577acca922f481b262c65a1",
+          "imported_cpp_symbols": [
+            "_ZNSt8ios_base4InitC1Ev",
+            "_ZNSt8ios_base4InitD1Ev",
+            "_ZNSt9bad_allocD2Ev",
+            "_ZSt20__throw_length_errorPKc",
+            "_ZTISt9bad_alloc",
+            "_ZTVN10__cxxabiv120__si_class_type_infoE",
+            "_ZdaPv",
+            "_ZdlPv",
+            "_Znam",
+            "_Znwm"
+          ]
+        }
+      ],
+      "source_fixture_sha256": "25ad41ec762a2aa2f87519ba707f051eb7dc33b0bf0fee4275b508b70f0c462d",
+      "adapter_calls_over_mock_http": 8,
+      "effective_uid": 10001,
+      "effective_capabilities": "0000000000000000",
+      "no_new_privileges": true,
+      "read_only_root": true,
+      "inference_performed": false,
+      "applicability_approved": false
+    }
+  },
+  "reviewed_files": {
+    ".dockerignore": "d11fc9cf63bc19f1883eaa9c9387f7e8a5e267195c1cf22e977d6b8a0523f190",
+    ".github/workflows/security.yml": "42fc14138e7934a1547ec2fed8958fc1c0744875674749c3add25b3d95946038",
+    "Dockerfile": "41d3582ab95ee54a44e16e6375bd87050ea94c9a1172fb277a3201e0cb15f40c",
+    "LICENSE": "56abc925eb23fef5d290185b5692f4431210a25df02e0eed68e141d86bac11f1",
+    "README.md": "5c42548bb6f9cd83b6760daa06efc3deda1aa452482ff322c5213a47a6e51382",
+    "deploy/compose.yaml": "de0d1ef12d844a579c6cb4b54c9f8c503989b30fed1cef152793df585eba3b87",
+    "deploy/install_security_updates.sh": "87e1f34c6f5f73410342303423701d41c6f0b84ef8b9a6ebf8cd0968eccd200b",
+    "docs/evidence/CPP_SOURCE_PROFILE_2026-11-11.md": "428de1d087c4178b3c770a7aaee8a5a782c846882e829777b102ae25d2b03cae",
+    "docs/evidence/GLIBC_PROFILE_2026-11-11.md": "7c6532881d52b8abe548ebbe2c8322c0f89e7d3ea1226a05b19941f9d0ed49ba",
+    "docs/evidence/OPENSSL_2026-11-10.md": "9de4a87d966c2de75dbccc75a0df1c7aba44e093c1b33b6966f4e6a089620f02",
+    "docs/evidence/OS_UTILITIES_PROFILE_2026-11-11.md": "46b573a27c17c1e21c6b124fd20bc36929f10991fab5cc11e6b0c02d6c105c98",
+    "docs/evidence/PYTHON_PROFILE_2026-11-11.md": "a92cdfd226b2a5f86d2bc729e658d16b1c48dc3c0feb4a0610db6d32891eff0f",
+    "docs/evidence/SQLITE_PROFILE_2026-11-11.md": "7ac2c0fc779637a9331f0dbf9cae4f7b6041a334fb4d5f748d8f84c1ad53a380",
+    "docs/evidence/container-source-assessments-2026-11-11.json": "e2765042e70b862f08c82a3811dfaf1b31c3b7a9467dcecaf4e510154488ca7e",
+    "docs/evidence/native-source-review-2026-11-11.json": "cd66e215da34c26662de65c1bbc6a429d40d9a4498e085751814ac3ee20ef1f1",
+    "pyproject.toml": "7c6b75149c14a07e98cfc67106610e455237949fa817acefcfcef581ea9b37b2",
+    "scripts/check_image_advisories.py": "1fbca0dce844719874aa3c65d280e8c6f61b2a491ef6a8e62333e456555d8f8c",
+    "scripts/check_release_assets.py": "662a64116776d099f09e770d6d875627a65e52f3d849406ad2b880a8a9a84c81",
+    "scripts/probe_native_profile.py": "9c42740775907968d44704bc5f478773fbe2a33b32b583da16f626574772e46e",
+    "tests/offline/test_provider_runtime.py": "25ad41ec762a2aa2f87519ba707f051eb7dc33b0bf0fee4275b508b70f0c462d",
+    "uv.lock": "1f031611ce76ec0364043b508f1f9574eccebd5cf52b72da36bdfa0236fa4669"
+  },
+  "findings": [
+    {
+      "id": "CVE-2005-2541",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2005-2541",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "tar",
+          "version": "1.35+dfsg-3.1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2007-5686",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2007-5686",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "login.defs",
+          "version": "1:4.17.4-2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "passwd",
+          "version": "1:4.17.4-2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2010-4756",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2010-4756",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2011-3374",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2011-3374",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "apt",
+          "version": "3.0.4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libapt-pkg7.0",
+          "version": "3.0.4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2011-4116",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2011-4116",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "perl-base",
+          "version": "5.40.1-6+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2013-4392",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2013-4392",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libsystemd0",
+          "version": "257.13-1~deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libudev1",
+          "version": "257.13-1~deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2017-18018",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2017-18018",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "coreutils",
+          "version": "9.7-3",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2018-20796",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2018-20796",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2019-1010022",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2019-1010022",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2019-1010023",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2019-1010023",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2019-1010024",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2019-1010024",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2019-1010025",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2019-1010025",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2019-9192",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2019-9192",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2021-45346",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2021-45346",
+      "source_assessment": "SQLITE_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libsqlite3-0",
+          "version": "3.46.1-7+deb13u2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2022-0563",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2022-0563",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "bsdutils",
+          "version": "1:2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libblkid1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "liblastlog2-2",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libmount1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libsmartcols1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libuuid1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "login",
+          "version": "1:4.16.0-2+really2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "mount",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "util-linux",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2023-31437",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2023-31437",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libsystemd0",
+          "version": "257.13-1~deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libudev1",
+          "version": "257.13-1~deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2023-31438",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2023-31438",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libsystemd0",
+          "version": "257.13-1~deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libudev1",
+          "version": "257.13-1~deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2023-31439",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2023-31439",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libsystemd0",
+          "version": "257.13-1~deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libudev1",
+          "version": "257.13-1~deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2024-56433",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2024-56433",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "login.defs",
+          "version": "1:4.17.4-2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "passwd",
+          "version": "1:4.17.4-2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2025-12781",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2025-12781",
+      "source_assessment": "PYTHON_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "python",
+          "version": "3.12.16",
+          "type": "binary",
+          "namespace": "nvd:cpe"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2025-15366",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2025-15366",
+      "source_assessment": "PYTHON_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "python",
+          "version": "3.12.16",
+          "type": "binary",
+          "namespace": "nvd:cpe"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2025-15367",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2025-15367",
+      "source_assessment": "PYTHON_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "python",
+          "version": "3.12.16",
+          "type": "binary",
+          "namespace": "nvd:cpe"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2025-5278",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2025-5278",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "coreutils",
+          "version": "9.7-3",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2025-6141",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2025-6141",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libncursesw6",
+          "version": "6.5+20250216-2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libtinfo6",
+          "version": "6.5+20250216-2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "ncurses-base",
+          "version": "6.5+20250216-2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "ncurses-bin",
+          "version": "6.5+20250216-2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2025-69720",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2025-69720",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libncursesw6",
+          "version": "6.5+20250216-2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libtinfo6",
+          "version": "6.5+20250216-2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "ncurses-base",
+          "version": "6.5+20250216-2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "ncurses-bin",
+          "version": "6.5+20250216-2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2025-70873",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2025-70873",
+      "source_assessment": "SQLITE_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libsqlite3-0",
+          "version": "3.46.1-7+deb13u2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-102010",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-102010",
+      "source_assessment": "CPP_SOURCE_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "gcc-14-base",
+          "version": "14.2.0-19",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libgcc-s1",
+          "version": "14.2.0-19",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libstdc++6",
+          "version": "14.2.0-19",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-102473",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-102473",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "dash",
+          "version": "0.5.12-12",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-102474",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-102474",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "dash",
+          "version": "0.5.12-12",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-103995",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-103995",
+      "source_assessment": "PYTHON_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "python",
+          "version": "3.12.16",
+          "type": "binary",
+          "namespace": "nvd:cpe"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-107496",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-107496",
+      "source_assessment": "OPENSSL_2026-11-10.md",
+      "components": [
+        {
+          "name": "libssl3t64",
+          "version": "3.5.7-1~deb13u3",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "openssl",
+          "version": "3.5.7-1~deb13u3",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "openssl-provider-legacy",
+          "version": "3.5.7-1~deb13u3",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-114690",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-114690",
+      "source_assessment": "CPP_SOURCE_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "gcc-14-base",
+          "version": "14.2.0-19",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libgcc-s1",
+          "version": "14.2.0-19",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libstdc++6",
+          "version": "14.2.0-19",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-114691",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-114691",
+      "source_assessment": "CPP_SOURCE_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "gcc-14-base",
+          "version": "14.2.0-19",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libgcc-s1",
+          "version": "14.2.0-19",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libstdc++6",
+          "version": "14.2.0-19",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-115455",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-115455",
+      "source_assessment": "CPP_SOURCE_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "gcc-14-base",
+          "version": "14.2.0-19",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libgcc-s1",
+          "version": "14.2.0-19",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libstdc++6",
+          "version": "14.2.0-19",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-115456",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-115456",
+      "source_assessment": "CPP_SOURCE_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "gcc-14-base",
+          "version": "14.2.0-19",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libgcc-s1",
+          "version": "14.2.0-19",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libstdc++6",
+          "version": "14.2.0-19",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-116566",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-116566",
+      "source_assessment": "PYTHON_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "python",
+          "version": "3.12.16",
+          "type": "binary",
+          "namespace": "nvd:cpe"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-119371",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-119371",
+      "source_assessment": "SQLITE_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libsqlite3-0",
+          "version": "3.46.1-7+deb13u2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-119372",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-119372",
+      "source_assessment": "SQLITE_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libsqlite3-0",
+          "version": "3.46.1-7+deb13u2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-119373",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-119373",
+      "source_assessment": "SQLITE_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libsqlite3-0",
+          "version": "3.46.1-7+deb13u2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-119374",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-119374",
+      "source_assessment": "SQLITE_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libsqlite3-0",
+          "version": "3.46.1-7+deb13u2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-119375",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-119375",
+      "source_assessment": "SQLITE_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libsqlite3-0",
+          "version": "3.46.1-7+deb13u2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-119376",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-119376",
+      "source_assessment": "SQLITE_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libsqlite3-0",
+          "version": "3.46.1-7+deb13u2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-119377",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-119377",
+      "source_assessment": "SQLITE_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libsqlite3-0",
+          "version": "3.46.1-7+deb13u2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-119378",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-119378",
+      "source_assessment": "SQLITE_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libsqlite3-0",
+          "version": "3.46.1-7+deb13u2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-119379",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-119379",
+      "source_assessment": "SQLITE_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libsqlite3-0",
+          "version": "3.46.1-7+deb13u2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-119591",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-119591",
+      "source_assessment": "SQLITE_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libsqlite3-0",
+          "version": "3.46.1-7+deb13u2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-15059",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-15059",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libsystemd0",
+          "version": "257.13-1~deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libudev1",
+          "version": "257.13-1~deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-15534",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-15534",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "perl-base",
+          "version": "5.40.1-6+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-16742",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-16742",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libsystemd0",
+          "version": "257.13-1~deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libudev1",
+          "version": "257.13-1~deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-18374",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-18374",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-18477",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-18477",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "tar",
+          "version": "1.35+dfsg-3.1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-18508",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-18508",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "tar",
+          "version": "1.35+dfsg-3.1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-19499",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-19499",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-19542",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-19542",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-3184",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-3184",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "bsdutils",
+          "version": "1:2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libblkid1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "liblastlog2-2",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libmount1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libsmartcols1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libuuid1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "login",
+          "version": "1:4.16.0-2+really2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "mount",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "util-linux",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-3446",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-3446",
+      "source_assessment": "PYTHON_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "python",
+          "version": "3.12.16",
+          "type": "binary",
+          "namespace": "nvd:cpe"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-3479",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-3479",
+      "source_assessment": "PYTHON_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "python",
+          "version": "3.12.16",
+          "type": "binary",
+          "namespace": "nvd:cpe"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-40228",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-40228",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libsystemd0",
+          "version": "257.13-1~deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libudev1",
+          "version": "257.13-1~deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-42250",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-42250",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libbz2-1.0",
+          "version": "1.0.8-6",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-50812",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-50812",
+      "source_assessment": "SQLITE_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libsqlite3-0",
+          "version": "3.46.1-7+deb13u2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-50813",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-50813",
+      "source_assessment": "SQLITE_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libsqlite3-0",
+          "version": "3.46.1-7+deb13u2",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-53910",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-53910",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "diffutils",
+          "version": "1:3.10-4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-5435",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-5435",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-54369",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-54369",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libacl1",
+          "version": "2.3.2-2+b1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-54370",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-54370",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libacl1",
+          "version": "2.3.2-2+b1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-54371",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-54371",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libattr1",
+          "version": "1:2.5.2-3",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-54411",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-54411",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libpam-modules",
+          "version": "1.7.0-5",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libpam-modules-bin",
+          "version": "1.7.0-5",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libpam-runtime",
+          "version": "1.7.0-5",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libpam0g",
+          "version": "1.7.0-5",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-56391",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-56391",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "coreutils",
+          "version": "9.7-3",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-56392",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-56392",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "coreutils",
+          "version": "9.7-3",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-5704",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-5704",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "tar",
+          "version": "1.35+dfsg-3.1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-6019",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-6019",
+      "source_assessment": "PYTHON_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "python",
+          "version": "3.12.16",
+          "type": "binary",
+          "namespace": "nvd:cpe"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-6238",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-6238",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-6368",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-6368",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-6791",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-6791",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-76642",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-76642",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "bsdutils",
+          "version": "1:2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libblkid1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "liblastlog2-2",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libmount1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libsmartcols1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libuuid1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "login",
+          "version": "1:4.16.0-2+really2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "mount",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "util-linux",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-77117",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-77117",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-78408",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-78408",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "bsdutils",
+          "version": "1:2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libblkid1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "liblastlog2-2",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libmount1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libsmartcols1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libuuid1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "login",
+          "version": "1:4.16.0-2+really2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "mount",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "util-linux",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-78409",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-78409",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "bsdutils",
+          "version": "1:2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libblkid1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "liblastlog2-2",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libmount1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libsmartcols1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libuuid1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "login",
+          "version": "1:4.16.0-2+really2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "mount",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "util-linux",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-78410",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-78410",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "bsdutils",
+          "version": "1:2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libblkid1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "liblastlog2-2",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libmount1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libsmartcols1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libuuid1",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "login",
+          "version": "1:4.16.0-2+really2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "mount",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "util-linux",
+          "version": "2.41.5-0+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-80489",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-80489",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-82560",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-82560",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "perl-base",
+          "version": "5.40.1-6+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-84243",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-84243",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-8674",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-8674",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-86805",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-86805",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-88822",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-88822",
+      "source_assessment": "OPENSSL_2026-11-10.md",
+      "components": [
+        {
+          "name": "libssl3t64",
+          "version": "3.5.7-1~deb13u3",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "openssl",
+          "version": "3.5.7-1~deb13u3",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "openssl-provider-legacy",
+          "version": "3.5.7-1~deb13u3",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-88823",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-88823",
+      "source_assessment": "OPENSSL_2026-11-10.md",
+      "components": [
+        {
+          "name": "libssl3t64",
+          "version": "3.5.7-1~deb13u3",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "openssl",
+          "version": "3.5.7-1~deb13u3",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "openssl-provider-legacy",
+          "version": "3.5.7-1~deb13u3",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-89092",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-89092",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-9538",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-9538",
+      "source_assessment": "OS_UTILITIES_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "perl-base",
+          "version": "5.40.1-6+deb13u1",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-95619",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-95619",
+      "source_assessment": "CPP_SOURCE_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "gcc-14-base",
+          "version": "14.2.0-19",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libgcc-s1",
+          "version": "14.2.0-19",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libstdc++6",
+          "version": "14.2.0-19",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-95691",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-95691",
+      "source_assessment": "OPENSSL_2026-11-10.md",
+      "components": [
+        {
+          "name": "libssl3t64",
+          "version": "3.5.7-1~deb13u3",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "openssl",
+          "version": "3.5.7-1~deb13u3",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "openssl-provider-legacy",
+          "version": "3.5.7-1~deb13u3",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-95692",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-95692",
+      "source_assessment": "OPENSSL_2026-11-10.md",
+      "components": [
+        {
+          "name": "libssl3t64",
+          "version": "3.5.7-1~deb13u3",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "openssl",
+          "version": "3.5.7-1~deb13u3",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "openssl-provider-legacy",
+          "version": "3.5.7-1~deb13u3",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-95818",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-95818",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    },
+    {
+      "id": "CVE-2026-97399",
+      "primary_advisory": "https://security-tracker.debian.org/tracker/CVE-2026-97399",
+      "source_assessment": "GLIBC_PROFILE_2026-11-11.md",
+      "components": [
+        {
+          "name": "libc-bin",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        },
+        {
+          "name": "libc6",
+          "version": "2.41-12+deb13u4",
+          "type": "deb",
+          "namespace": "debian:distro:debian:13"
+        }
+      ],
+      "disposition": "not_affected_restricted_profile"
+    }
+  ],
+  "evidence_assets": {
+    "advisories-amd64.json": {
+      "sha256": "84ab085a10b2e2b1464c657d83c4f2b6d04f5a29f5cb87481da4be940e1aff43",
+      "size": 941816
+    },
+    "image-arm64.tar": {
+      "sha256": "3f62385c332d13180f1b55f674d5379b3db4409dfdcb4815a43b02fdd1a8cc7a",
+      "size": 119987712
+    },
+    "sbom-arm64.cdx.json": {
+      "sha256": "9772e706cff2ccec366d714d11bfb07969e383f64852f3ffc3b9c6f6db8d4a8b",
+      "size": 1215702
+    },
+    "LICENSE": {
+      "sha256": "56abc925eb23fef5d290185b5692f4431210a25df02e0eed68e141d86bac11f1",
+      "size": 1073
+    },
+    "native-profile-amd64.json": {
+      "sha256": "a10b25fc9a944b779f8ec3f259c6c46df6560fbd97bdc6b2e929c038641b6584",
+      "size": 2281
+    },
+    "uv.lock": {
+      "sha256": "1f031611ce76ec0364043b508f1f9574eccebd5cf52b72da36bdfa0236fa4669",
+      "size": 237044
+    },
+    "client-requirements.txt": {
+      "sha256": "34049ea5e3c1b9263a93928481cc831d83afbd14563d8acfe95c0e0302a3ace3",
+      "size": 6215
+    },
+    "dependencies-fresh.json": {
+      "sha256": "b8397b380dfc3f69e0065086724dcd58174953463350f71eade8bccd54bf7c16",
+      "size": 84176
+    },
+    "image-amd64.tar": {
+      "sha256": "8b1a234a0f3f7d56eac9ce7f182edfc73bd319bab552e295172ef58bf0d93f20",
+      "size": 120538624
+    },
+    "service-requirements.txt": {
+      "sha256": "b5f338de0cede8abf3067b68b16b91661ddb379d390f6d2522dbe6451e1c52f6",
+      "size": 56617
+    },
+    "native-profile-arm64.json": {
+      "sha256": "dc92054700a53d990774786a957278ce49937f500e08b5fc8d170e4401602530",
+      "size": 2284
+    },
+    "llm_gateway-0.1.0a1-py3-none-any.whl": {
+      "sha256": "2cd80e349a54c879d4988d7683571f292e5a17a8560523a98f0df381311a6bf2",
+      "size": 108506
+    },
+    "sbom-amd64.cdx.json": {
+      "sha256": "0dd3406807851bc19bef573f3b25014570d30e04ab9eb8cd7a34e2b20d5d3e29",
+      "size": 1214661
+    },
+    "advisories-arm64.json": {
+      "sha256": "a993659ac4e4f0ac3c770f803584683fe5c8c9e78c94885a0766b0e2abc46391",
+      "size": 941825
+    }
+  },
+  "limitations": [
+    "Scoped to fixed typed OpenAI/OpenRouter operations and these exact Linux ARM64/AMD64 images; not a general clean scan or patched-component claim.",
+    "Requires UID10001, zero capabilities, no-new-privileges, read-only root, private local state, fixed owned children and allowlisted isolated egress.",
+    "Trusted authored builds and original private gateway backups only; arbitrary SQLite databases/native code/archives/SDK plugins/training and owner/root/host compromise are outside this assessment.",
+    "Secondary libc memory-layout mitigation weaknesses must be reassessed if any reachable memory-corruption prerequisite is identified.",
+    "New findings, changed artifacts/source/deployment or expired review fail admission; prefer reviewed fixed artifacts when available.",
+    "Paid approval and consumer/live acceptance are separate; no paid inference is authorized by this security assessment.",
+    "AMD64 local image execution used emulation; native AMD64 CI source-equivalent checks are recorded separately and do not share timestamp-dependent image identity."
+  ]
+}

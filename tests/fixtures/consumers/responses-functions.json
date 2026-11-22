@@ -1,0 +1,59 @@
+{
+  "consumer": "responses-functions",
+  "synthetic": true,
+  "operation": "responses",
+  "route": "/v1/responses",
+  "request": {
+    "model": "summary",
+    "instructions": "Use only the explicit disclosure state.",
+    "input": "Synthetic fresh input.",
+    "store": false,
+    "parallel_tool_calls": false,
+    "tools": [
+      {
+        "type": "function",
+        "name": "read_public",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "ok": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "ok"
+          ],
+          "additionalProperties": false
+        },
+        "strict": true
+      }
+    ],
+    "tool_choice": {
+      "type": "function",
+      "name": "read_public"
+    },
+    "reasoning": {
+      "effort": "low"
+    },
+    "text": {
+      "verbosity": "low"
+    }
+  },
+  "payload": {
+    "status": "completed",
+    "output": [
+      {
+        "type": "function_call",
+        "id": "fc-public",
+        "call_id": "call-public",
+        "name": "read_public",
+        "arguments": "{\"ok\":true}",
+        "status": "completed"
+      }
+    ]
+  },
+  "expected_context": {
+    "run_id": "run-one"
+  },
+  "contract_revision": "v1"
+}

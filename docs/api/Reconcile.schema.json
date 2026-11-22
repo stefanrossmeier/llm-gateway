@@ -1,0 +1,90 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "default": 1,
+      "maximum": 1,
+      "minimum": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "evidence_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "title": "Evidence Id",
+      "type": "string"
+    },
+    "request_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "generation_id": {
+      "maxLength": 512,
+      "minLength": 1,
+      "title": "Generation Id",
+      "type": "string"
+    },
+    "measured_usd": {
+      "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+      "title": "Measured Usd",
+      "type": "string"
+    },
+    "currency": {
+      "default": "USD",
+      "pattern": "^USD$",
+      "title": "Currency",
+      "type": "string"
+    },
+    "authority": {
+      "maxLength": 1024,
+      "minLength": 1,
+      "title": "Authority",
+      "type": "string"
+    },
+    "verification": {
+      "pattern": "^operator_verified_receipt$",
+      "title": "Verification",
+      "type": "string"
+    },
+    "provider_ref": {
+      "maxLength": 64,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_-]+$",
+      "title": "Provider Ref",
+      "type": "string"
+    },
+    "config_digest": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Config Digest",
+      "type": "string"
+    },
+    "evidence_digest": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Evidence Digest",
+      "type": "string"
+    },
+    "observed_at": {
+      "format": "date-time",
+      "title": "Observed At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "evidence_id",
+    "request_id",
+    "generation_id",
+    "measured_usd",
+    "authority",
+    "verification",
+    "provider_ref",
+    "config_digest",
+    "evidence_digest",
+    "observed_at"
+  ],
+  "title": "Reconcile",
+  "type": "object"
+}

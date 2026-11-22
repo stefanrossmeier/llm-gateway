@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-12",
+  "scope": "gateway_core",
+  "implementation_commit": "69e07537af0e65c19dcab47185cd8926e51e25d4",
+  "merged_pr": {
+    "number": 1,
+    "commit": "e18aaef5f956472cc433828eccab1b0aea5294be"
+  },
+  "runtime_source_sha256": "5bd0cfd4bbdd9be12af25240aa5354ca90e889bed2c6cca0ff486fc66a1a20e2",
+  "plan_tasks": 191,
+  "completed_tasks": 173,
+  "unchecked_core_implementation_tasks": [],
+  "deferred_consumer_tasks": [
+    "T090",
+    "T091",
+    "T092",
+    "T093",
+    "T094",
+    "T095",
+    "T097",
+    "T098",
+    "T099",
+    "T100",
+    "T101",
+    "T102",
+    "T103",
+    "T104",
+    "T105",
+    "T184"
+  ],
+  "deferred_live_x_tasks": [
+    "T096",
+    "T149"
+  ],
+  "local_offline_tests_passed": 1141,
+  "live_tests_deselected": 4,
+  "coverage": {
+    "authored_modules": 51,
+    "minimum_required_branch_percent": 90,
+    "excluded_lines": 0
+  },
+  "active_core_gates": {
+    "M01": "manual_security_applicability_remediation_and_release_review",
+    "M02": "manual_owner_publication_review",
+    "P01": "deferred_unapproved_paid_acceptance"
+  },
+  "security_acceptance": "blocked_manual_advisory_review",
+  "public_publication_authorized": false,
+  "paid_inference_performed": false,
+  "consumer_migrations_performed": false,
+  "implementation_ci": {
+    "run_id": 43282144339,
+    "url": "https://github.com/stefanrossmeier/llm-gateway/actions/runs/43282144339",
+    "head": "69e07537af0e65c19dcab47185cd8926e51e25d4",
+    "conclusion": "success",
+    "jobs": [
+      "client (3.11)",
+      "client (3.12)",
+      "service"
+    ]
+  }
+}

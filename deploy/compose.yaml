@@ -1,0 +1,44 @@
+# Consumer supplies an immutable image and its own explicit config directory.
+# Use a unique Compose project name for each consumer's networks and ledger.
+services:
+  gateway:
+    image: ${LLM_GATEWAY_IMAGE:?Set an immutable reviewed image reference}
+    read_only: true
+    user: "10001:10001"
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    stop_grace_period: 15s
+    command: [serve, --project-config, /config/project.yaml, --state-dir, /state,
+              --unix-socket, /run/gateway/gateway.sock, --egress-proxy, "http://egress:3128"]
+    volumes:
+      - type: bind
+        source: ${PROJECT_CONFIG_DIR:?Set your project's config directory}
+        target: /config
+        read_only: true
+      - state:/state
+      - ipc:/run/gateway
+    networks: [private]
+    dns_search: ["."]
+    depends_on: [egress]
+    pids_limit: 256
+    mem_limit: 1g
+    cpus: 2
+  egress:
+    image: ${LLM_GATEWAY_IMAGE:?Set an immutable reviewed image reference}
+    entrypoint: [python, -I, -m, llm_gateway.service.egress_proxy]
+    command: [--host, "0.0.0.0", --port, "3128"]
+    read_only: true
+    user: "10001:10001"
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    networks: [private, outbound]
+    dns_search: ["."]
+    pids_limit: 80
+    mem_limit: 128m
+networks:
+  private:
+    internal: true
+  outbound: {}
+volumes:
+  state: {}
+  ipc: {}

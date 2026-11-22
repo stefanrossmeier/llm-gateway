@@ -1,0 +1,36 @@
+{
+  "run_id": 43282164932,
+  "reports": {
+    "arm64": {
+      "raw_matches": 208,
+      "new_advisories": [
+        "CVE-2026-100290",
+        "CVE-2026-115819"
+      ],
+      "sha256": "d7e197cb49cfe037d69e1c7f27cbf0b76f9d0788a41fb801342a5e60c5f8ae3f"
+    },
+    "amd64": {
+      "raw_matches": 208,
+      "new_advisories": [
+        "CVE-2026-100290",
+        "CVE-2026-115819"
+      ],
+      "sha256": "535883929feb957d04af8abbd7ac09882c90fbdaa0ff66f777c3a35ceeb4f649"
+    }
+  },
+  "python_audit": {
+    "packages": 77,
+    "automated_findings": 0,
+    "target_code_executed": false
+  },
+  "schema_version": 1,
+  "date": "2026-11-12",
+  "implementation_commit": "69e07537af0e65c19dcab47185cd8926e51e25d4",
+  "release": "v0.1.0a1",
+  "source_commit": "69ea21d2e9ab23060eda3b829d3b71598e587eae",
+  "github_conclusion": "failure",
+  "security_acceptance": "blocked_manual_advisory_review",
+  "enforcement_verified": true,
+  "manual_gate": "M01",
+  "assets_verified": 18
+}

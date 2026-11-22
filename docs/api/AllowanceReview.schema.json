@@ -1,0 +1,30 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "config_digest": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Config Digest",
+      "type": "string"
+    },
+    "evidence_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "title": "Evidence Id",
+      "type": "string"
+    },
+    "reason": {
+      "maxLength": 1024,
+      "minLength": 1,
+      "title": "Reason",
+      "type": "string"
+    }
+  },
+  "required": [
+    "config_digest",
+    "evidence_id",
+    "reason"
+  ],
+  "title": "AllowanceReview",
+  "type": "object"
+}

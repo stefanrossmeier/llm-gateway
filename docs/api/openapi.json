@@ -1,0 +1,4241 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "LLM Gateway",
+    "version": "0.1.0a2",
+    "description": "Gateway bearer authentication or verified private owner Unix IPC. Compatibility bodies outside explicit schemas use the restricted subset in docs/API.md. Inference/error receipts remain authoritative on non-200 statuses."
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ready": {
+      "get": {
+        "summary": "Ready",
+        "operationId": "ready_ready_get",
+        "responses": {
+          "200": {
+            "description": "Scoped result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Readiness"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "GatewayBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/aliases": {
+      "get": {
+        "summary": "Aliases",
+        "operationId": "aliases_v1_aliases_get",
+        "responses": {
+          "200": {
+            "description": "Scoped result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AliasReport"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "GatewayBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/inferences": {
+      "post": {
+        "summary": "Infer",
+        "operationId": "infer_v1_inferences_post",
+        "responses": {
+          "200": {
+            "description": "Canonical inference result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InferenceResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "GatewayBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Gateway-Expected-Config-Digest",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "description": "Require this immutable config for new admissions (409 on mismatch). Existing IDs replay their original snapshot."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InferenceRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/requests/{request_id}": {
+      "get": {
+        "summary": "Lookup",
+        "operationId": "lookup_v1_requests__request_id__get",
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Request Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Scoped result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InferenceResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "GatewayBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/requests/{request_id}/cancel": {
+      "post": {
+        "summary": "Cancel",
+        "operationId": "cancel_v1_requests__request_id__cancel_post",
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Request Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "GatewayBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/receipts/{receipt_id}": {
+      "get": {
+        "summary": "Receipt",
+        "operationId": "receipt_v1_receipts__receipt_id__get",
+        "parameters": [
+          {
+            "name": "receipt_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Receipt Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Scoped result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AttemptReceipt"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "GatewayBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/usage": {
+      "get": {
+        "summary": "Report",
+        "operationId": "report_v1_usage_get",
+        "responses": {
+          "200": {
+            "description": "Scoped result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsageReport"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "GatewayBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/admin/receipts/{receipt_id}/reconcile": {
+      "post": {
+        "summary": "Reconcile",
+        "operationId": "reconcile_v1_admin_receipts__receipt_id__reconcile_post",
+        "parameters": [
+          {
+            "name": "receipt_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Receipt Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "GatewayBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Reconcile"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/receipts/{receipt_id}/acknowledge-allowance": {
+      "post": {
+        "summary": "Acknowledge Allowance",
+        "operationId": "acknowledge_allowance_v1_admin_receipts__receipt_id__acknowledge_allowance_post",
+        "parameters": [
+          {
+            "name": "receipt_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Receipt Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "GatewayBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AllowanceReview"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/reload": {
+      "post": {
+        "summary": "Reload",
+        "operationId": "reload_v1_admin_reload_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "GatewayBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/chat": {
+      "post": {
+        "summary": "Dashboard Chat",
+        "operationId": "dashboard_chat_v1_chat_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "GatewayBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Gateway-Expected-Config-Digest",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "description": "Require this immutable config for new admissions (409 on mismatch). Existing IDs replay their original snapshot."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DashboardChat"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat": {
+      "post": {
+        "summary": "Safeplane Chat",
+        "operationId": "safeplane_chat_chat_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "GatewayBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Gateway-Expected-Config-Digest",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "description": "Require this immutable config for new admissions (409 on mismatch). Existing IDs replay their original snapshot."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SafeplaneChat"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/decisions": {
+      "post": {
+        "summary": "Decisions",
+        "operationId": "decisions_decisions_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "GatewayBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Gateway-Expected-Config-Digest",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "description": "Require this immutable config for new admissions (409 on mismatch). Existing IDs replay their original snapshot."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SafeplaneDecisions"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/x-search": {
+      "post": {
+        "summary": "X Search",
+        "operationId": "x_search_v1_x_search_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "GatewayBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Gateway-Expected-Config-Digest",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "description": "Require this immutable config for new admissions (409 on mismatch). Existing IDs replay their original snapshot."
+          }
+        ]
+      }
+    },
+    "/v1/responses": {
+      "post": {
+        "summary": "Handle",
+        "operationId": "handle_v1_responses_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "GatewayBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Gateway-Expected-Config-Digest",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "description": "Require this immutable config for new admissions (409 on mismatch). Existing IDs replay their original snapshot."
+          }
+        ]
+      }
+    },
+    "/v1/chat/completions": {
+      "post": {
+        "summary": "Handle",
+        "operationId": "handle_v1_chat_completions_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "GatewayBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Gateway-Expected-Config-Digest",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "description": "Require this immutable config for new admissions (409 on mismatch). Existing IDs replay their original snapshot."
+          }
+        ]
+      }
+    },
+    "/v1/embeddings": {
+      "post": {
+        "summary": "Handle",
+        "operationId": "handle_v1_embeddings_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "GatewayBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Gateway-Expected-Config-Digest",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "description": "Require this immutable config for new admissions (409 on mismatch). Existing IDs replay their original snapshot."
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "AllowanceReview": {
+        "additionalProperties": false,
+        "properties": {
+          "config_digest": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Config Digest",
+            "type": "string"
+          },
+          "evidence_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "title": "Evidence Id",
+            "type": "string"
+          },
+          "reason": {
+            "maxLength": 1024,
+            "minLength": 1,
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "config_digest",
+          "evidence_id",
+          "reason"
+        ],
+        "title": "AllowanceReview",
+        "type": "object"
+      },
+      "AccessConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "principals": {
+            "patternProperties": {
+              "^[A-Za-z0-9_-]+$": {
+                "$ref": "#/components/schemas/PrincipalConfig"
+              }
+            },
+            "propertyNames": {
+              "maxLength": 64,
+              "minLength": 1
+            },
+            "title": "Principals",
+            "type": "object"
+          },
+          "owner_only_ipc": {
+            "default": false,
+            "title": "Owner Only Ipc",
+            "type": "boolean"
+          }
+        },
+        "title": "AccessConfig",
+        "type": "object"
+      },
+      "AliasConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "provider_ref": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Provider Ref",
+            "type": "string"
+          },
+          "upstream_model": {
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Upstream Model",
+            "type": "string"
+          },
+          "operation": {
+            "enum": [
+              "chat",
+              "responses",
+              "decisions",
+              "x_search",
+              "embeddings"
+            ],
+            "title": "Operation",
+            "type": "string"
+          },
+          "capabilities": {
+            "items": {
+              "enum": [
+                "plain_text",
+                "json_object",
+                "json_schema",
+                "function_calls",
+                "reasoning_effort",
+                "text_verbosity",
+                "native_x_search",
+                "embedding_dimensions"
+              ],
+              "type": "string"
+            },
+            "title": "Capabilities",
+            "type": "array"
+          },
+          "limits": {
+            "$ref": "#/components/schemas/ModelLimits"
+          },
+          "generation": {
+            "$ref": "#/components/schemas/GenerationOptions"
+          },
+          "attempt_policy": {
+            "$ref": "#/components/schemas/AttemptPolicy"
+          },
+          "budget_policy_refs": {
+            "items": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "type": "string"
+            },
+            "title": "Budget Policy Refs",
+            "type": "array"
+          },
+          "pricing": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PricingConfig"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "operation_policy_ref": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Operation Policy Ref"
+          }
+        },
+        "required": [
+          "provider_ref",
+          "upstream_model",
+          "operation",
+          "capabilities",
+          "limits"
+        ],
+        "title": "AliasConfig",
+        "type": "object"
+      },
+      "AttemptPolicy": {
+        "additionalProperties": false,
+        "properties": {
+          "max_attempts": {
+            "default": 1,
+            "maximum": 10,
+            "minimum": 1,
+            "title": "Max Attempts",
+            "type": "integer"
+          },
+          "backoff_seconds": {
+            "default": 0,
+            "maximum": 60,
+            "minimum": 0,
+            "title": "Backoff Seconds",
+            "type": "number"
+          },
+          "unknown_charge_policy": {
+            "default": "stop",
+            "enum": [
+              "stop",
+              "bounded_exposure"
+            ],
+            "title": "Unknown Charge Policy",
+            "type": "string"
+          },
+          "fallback_routes": {
+            "items": {
+              "$ref": "#/components/schemas/FallbackRoute"
+            },
+            "maxItems": 9,
+            "title": "Fallback Routes",
+            "type": "array"
+          }
+        },
+        "title": "AttemptPolicy",
+        "type": "object"
+      },
+      "BudgetPolicy": {
+        "additionalProperties": false,
+        "properties": {
+          "scope": {
+            "enum": [
+              "project",
+              "credential",
+              "run",
+              "workflow",
+              "alias"
+            ],
+            "title": "Scope",
+            "type": "string"
+          },
+          "period": {
+            "enum": [
+              "call",
+              "run",
+              "day",
+              "month"
+            ],
+            "title": "Period",
+            "type": "string"
+          },
+          "cap_usd": {
+            "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+            "title": "Cap Usd",
+            "type": "string"
+          }
+        },
+        "required": [
+          "scope",
+          "period",
+          "cap_usd"
+        ],
+        "title": "BudgetPolicy",
+        "type": "object"
+      },
+      "CompatibilityConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "safeplane_profiles": {
+            "patternProperties": {
+              "^[A-Za-z0-9_.:-]+$": {
+                "patternProperties": {
+                  "^[A-Za-z0-9_.:-]+$": {
+                    "maxLength": 64,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9_-]+$",
+                    "type": "string"
+                  }
+                },
+                "propertyNames": {
+                  "maxLength": 128,
+                  "minLength": 1
+                },
+                "type": "object"
+              }
+            },
+            "propertyNames": {
+              "maxLength": 128,
+              "minLength": 1
+            },
+            "title": "Safeplane Profiles",
+            "type": "object"
+          },
+          "dashboard_profiles": {
+            "patternProperties": {
+              "^[A-Za-z0-9_.:-]+$": {
+                "items": {
+                  "maxLength": 64,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9_-]+$",
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "propertyNames": {
+              "maxLength": 128,
+              "minLength": 1
+            },
+            "title": "Dashboard Profiles",
+            "type": "object"
+          }
+        },
+        "title": "CompatibilityConfig",
+        "type": "object"
+      },
+      "CredentialReference": {
+        "additionalProperties": false,
+        "properties": {
+          "env_var": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Z][A-Z0-9_]{0,127}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Env Var"
+          },
+          "file_env_var": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Z][A-Z0-9_]{0,127}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "File Env Var"
+          },
+          "file_path": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "File Path"
+          }
+        },
+        "title": "CredentialReference",
+        "type": "object"
+      },
+      "DecisionsPolicy": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "decisions",
+            "default": "decisions",
+            "title": "Kind",
+            "type": "string"
+          },
+          "max_questions": {
+            "exclusiveMinimum": 0,
+            "maximum": 100,
+            "title": "Max Questions",
+            "type": "integer"
+          },
+          "state_accounting": {
+            "default": "per_question",
+            "enum": [
+              "per_question",
+              "shared_once"
+            ],
+            "title": "State Accounting",
+            "type": "string"
+          }
+        },
+        "required": [
+          "max_questions"
+        ],
+        "title": "DecisionsPolicy",
+        "type": "object"
+      },
+      "EmbeddingsPolicy": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "embeddings",
+            "default": "embeddings",
+            "title": "Kind",
+            "type": "string"
+          },
+          "dimensions": {
+            "exclusiveMinimum": 0,
+            "maximum": 65536,
+            "title": "Dimensions",
+            "type": "integer"
+          },
+          "max_batch_items": {
+            "exclusiveMinimum": 0,
+            "maximum": 256,
+            "title": "Max Batch Items",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "dimensions",
+          "max_batch_items"
+        ],
+        "title": "EmbeddingsPolicy",
+        "type": "object"
+      },
+      "EvidencePolicy": {
+        "additionalProperties": false,
+        "properties": {
+          "retain_results": {
+            "default": false,
+            "title": "Retain Results",
+            "type": "boolean"
+          },
+          "retain_prompts": {
+            "default": false,
+            "title": "Retain Prompts",
+            "type": "boolean"
+          },
+          "result_ttl_seconds": {
+            "default": 0,
+            "maximum": 604800,
+            "minimum": 0,
+            "title": "Result Ttl Seconds",
+            "type": "integer"
+          },
+          "cache_enabled": {
+            "default": false,
+            "title": "Cache Enabled",
+            "type": "boolean"
+          }
+        },
+        "title": "EvidencePolicy",
+        "type": "object"
+      },
+      "FakeConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "fixture_root": {
+            "title": "Fixture Root",
+            "type": "string"
+          },
+          "responses": {
+            "patternProperties": {
+              "^[A-Za-z0-9_-]+$": {
+                "patternProperties": {
+                  "^[A-Za-z0-9_.:-]+$": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                },
+                "propertyNames": {
+                  "maxLength": 128,
+                  "minLength": 1
+                },
+                "type": "object"
+              }
+            },
+            "propertyNames": {
+              "maxLength": 64,
+              "minLength": 1
+            },
+            "title": "Responses",
+            "type": "object"
+          }
+        },
+        "required": [
+          "fixture_root",
+          "responses"
+        ],
+        "title": "FakeConfig",
+        "type": "object"
+      },
+      "FallbackRoute": {
+        "additionalProperties": false,
+        "properties": {
+          "provider_ref": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Provider Ref",
+            "type": "string"
+          },
+          "upstream_model": {
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Upstream Model",
+            "type": "string"
+          },
+          "capabilities": {
+            "items": {
+              "enum": [
+                "plain_text",
+                "json_object",
+                "json_schema",
+                "function_calls",
+                "reasoning_effort",
+                "text_verbosity",
+                "native_x_search",
+                "embedding_dimensions"
+              ],
+              "type": "string"
+            },
+            "title": "Capabilities",
+            "type": "array"
+          },
+          "pricing": {
+            "$ref": "#/components/schemas/PricingConfig"
+          }
+        },
+        "required": [
+          "provider_ref",
+          "upstream_model",
+          "capabilities",
+          "pricing"
+        ],
+        "title": "FallbackRoute",
+        "type": "object"
+      },
+      "GenerationOptions": {
+        "additionalProperties": false,
+        "properties": {
+          "temperature": {
+            "anyOf": [
+              {
+                "maximum": 2,
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Temperature"
+          },
+          "response_format": {
+            "anyOf": [
+              {
+                "enum": [
+                  "text",
+                  "json_object",
+                  "json_schema"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Response Format"
+          },
+          "reasoning_effort": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Reasoning Effort"
+          },
+          "text_verbosity": {
+            "anyOf": [
+              {
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Text Verbosity"
+          },
+          "parallel_tool_calls": {
+            "default": false,
+            "title": "Parallel Tool Calls",
+            "type": "boolean"
+          },
+          "store": {
+            "const": false,
+            "default": false,
+            "title": "Store",
+            "type": "boolean"
+          }
+        },
+        "title": "GenerationOptions",
+        "type": "object"
+      },
+      "ModelLimits": {
+        "additionalProperties": false,
+        "properties": {
+          "max_input_bytes": {
+            "exclusiveMinimum": 0,
+            "maximum": 16777216,
+            "title": "Max Input Bytes",
+            "type": "integer"
+          },
+          "max_input_tokens": {
+            "exclusiveMinimum": 0,
+            "title": "Max Input Tokens",
+            "type": "integer"
+          },
+          "attempt_timeout_seconds": {
+            "exclusiveMinimum": 0,
+            "maximum": 3600,
+            "title": "Attempt Timeout Seconds",
+            "type": "number"
+          },
+          "request_timeout_seconds": {
+            "exclusiveMinimum": 0,
+            "maximum": 3600,
+            "title": "Request Timeout Seconds",
+            "type": "number"
+          },
+          "max_concurrency": {
+            "exclusiveMinimum": 0,
+            "maximum": 64,
+            "title": "Max Concurrency",
+            "type": "integer"
+          },
+          "max_output_tokens": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Max Output Tokens"
+          },
+          "max_reasoning_tokens": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Max Reasoning Tokens"
+          },
+          "max_tool_calls": {
+            "default": 0,
+            "minimum": 0,
+            "title": "Max Tool Calls",
+            "type": "integer"
+          },
+          "max_batch_items": {
+            "default": 256,
+            "exclusiveMinimum": 0,
+            "maximum": 256,
+            "title": "Max Batch Items",
+            "type": "integer"
+          },
+          "embedding_dimensions": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0,
+                "maximum": 65536,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Embedding Dimensions"
+          }
+        },
+        "required": [
+          "max_input_bytes",
+          "max_input_tokens",
+          "attempt_timeout_seconds",
+          "request_timeout_seconds",
+          "max_concurrency"
+        ],
+        "title": "ModelLimits",
+        "type": "object"
+      },
+      "PricingConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "revision": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "title": "Revision",
+            "type": "string"
+          },
+          "bound_source": {
+            "maxLength": 4096,
+            "minLength": 1,
+            "title": "Bound Source",
+            "type": "string"
+          },
+          "free_only": {
+            "default": false,
+            "title": "Free Only",
+            "type": "boolean"
+          },
+          "input_usd_per_token": {
+            "anyOf": [
+              {
+                "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Input Usd Per Token"
+          },
+          "output_usd_per_token": {
+            "anyOf": [
+              {
+                "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Output Usd Per Token"
+          },
+          "reasoning_usd_per_token": {
+            "anyOf": [
+              {
+                "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Reasoning Usd Per Token"
+          },
+          "cached_input_usd_per_token": {
+            "anyOf": [
+              {
+                "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Cached Input Usd Per Token"
+          },
+          "tool_fees_usd": {
+            "patternProperties": {
+              "^[A-Za-z0-9_-]+$": {
+                "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+                "type": "string"
+              }
+            },
+            "propertyNames": {
+              "maxLength": 64,
+              "minLength": 1
+            },
+            "title": "Tool Fees Usd",
+            "type": "object"
+          },
+          "tool_fee_calls": {
+            "anyOf": [
+              {
+                "maximum": 64,
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Tool Fee Calls"
+          },
+          "x_post_usd": {
+            "anyOf": [
+              {
+                "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "X Post Usd"
+          },
+          "x_profile_usd": {
+            "anyOf": [
+              {
+                "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "X Profile Usd"
+          },
+          "x_request_allowance_usd": {
+            "anyOf": [
+              {
+                "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "X Request Allowance Usd"
+          },
+          "accept_unbounded_x_charges": {
+            "default": false,
+            "title": "Accept Unbounded X Charges",
+            "type": "boolean"
+          },
+          "ceiling_usd": {
+            "anyOf": [
+              {
+                "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Ceiling Usd"
+          },
+          "input_bound": {
+            "anyOf": [
+              {
+                "const": "utf8_bytes_with_framing",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Input Bound"
+          },
+          "framing_tokens_per_item": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Framing Tokens Per Item"
+          }
+        },
+        "required": [
+          "revision",
+          "bound_source"
+        ],
+        "title": "PricingConfig",
+        "type": "object"
+      },
+      "PrincipalConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "token_file": {
+            "title": "Token File",
+            "type": "string"
+          },
+          "aliases": {
+            "items": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "type": "string"
+            },
+            "title": "Aliases",
+            "type": "array"
+          },
+          "operations": {
+            "items": {
+              "enum": [
+                "chat",
+                "responses",
+                "decisions",
+                "x_search",
+                "embeddings"
+              ],
+              "type": "string"
+            },
+            "title": "Operations",
+            "type": "array"
+          },
+          "permissions": {
+            "items": {
+              "enum": [
+                "infer",
+                "receipts:own",
+                "usage:project",
+                "admin:reload",
+                "admin:reconcile",
+                "admin:backup"
+              ],
+              "type": "string"
+            },
+            "title": "Permissions",
+            "type": "array"
+          },
+          "run_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Run Id"
+          },
+          "allow_client_run_ids": {
+            "default": false,
+            "title": "Allow Client Run Ids",
+            "type": "boolean"
+          },
+          "phase": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Phase"
+          }
+        },
+        "required": [
+          "token_file"
+        ],
+        "title": "PrincipalConfig",
+        "type": "object"
+      },
+      "ProviderConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "enum": [
+              "openai",
+              "openrouter"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "credential": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CredentialReference"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "enabled": {
+            "default": true,
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "application_name": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Application Name"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "title": "ProviderConfig",
+        "type": "object"
+      },
+      "XSearchPolicy": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "x_search",
+            "default": "x_search",
+            "title": "Kind",
+            "type": "string"
+          },
+          "allowed_x_handles": {
+            "items": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_]+$",
+              "type": "string"
+            },
+            "maxItems": 64,
+            "minItems": 1,
+            "title": "Allowed X Handles",
+            "type": "array"
+          },
+          "max_handles": {
+            "exclusiveMinimum": 0,
+            "maximum": 64,
+            "title": "Max Handles",
+            "type": "integer"
+          },
+          "max_utc_days": {
+            "exclusiveMinimum": 0,
+            "maximum": 31,
+            "title": "Max Utc Days",
+            "type": "integer"
+          },
+          "max_posts": {
+            "exclusiveMinimum": 0,
+            "maximum": 100,
+            "title": "Max Posts",
+            "type": "integer"
+          },
+          "max_post_characters": {
+            "exclusiveMinimum": 0,
+            "maximum": 16384,
+            "title": "Max Post Characters",
+            "type": "integer"
+          },
+          "max_posts_per_author": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0,
+                "maximum": 100,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Max Posts Per Author"
+          },
+          "provider_order": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 5,
+            "minItems": 1,
+            "title": "Provider Order",
+            "type": "array"
+          },
+          "allowed_domains": {
+            "items": {
+              "enum": [
+                "x.com",
+                "twitter.com"
+              ],
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Allowed Domains",
+            "type": "array"
+          },
+          "daily_attempts": {
+            "const": 1,
+            "default": 1,
+            "title": "Daily Attempts",
+            "type": "integer"
+          },
+          "allow_subset_cache_reuse": {
+            "default": false,
+            "title": "Allow Subset Cache Reuse",
+            "type": "boolean"
+          },
+          "enable_image_understanding": {
+            "const": false,
+            "default": false,
+            "title": "Enable Image Understanding",
+            "type": "boolean"
+          },
+          "enable_video_understanding": {
+            "const": false,
+            "default": false,
+            "title": "Enable Video Understanding",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "allowed_x_handles",
+          "max_handles",
+          "max_utc_days",
+          "max_posts",
+          "max_post_characters",
+          "provider_order",
+          "allowed_domains"
+        ],
+        "title": "XSearchPolicy",
+        "type": "object"
+      },
+      "ProjectConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "const": 1,
+            "title": "Schema Version",
+            "type": "integer"
+          },
+          "project_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "mode": {
+            "enum": [
+              "fake",
+              "live"
+            ],
+            "title": "Mode",
+            "type": "string"
+          },
+          "timezone": {
+            "default": "UTC",
+            "title": "Timezone",
+            "type": "string"
+          },
+          "providers": {
+            "maxProperties": 64,
+            "minProperties": 1,
+            "patternProperties": {
+              "^[A-Za-z0-9_-]+$": {
+                "$ref": "#/components/schemas/ProviderConfig"
+              }
+            },
+            "propertyNames": {
+              "maxLength": 64,
+              "minLength": 1
+            },
+            "title": "Providers",
+            "type": "object"
+          },
+          "aliases": {
+            "maxProperties": 256,
+            "minProperties": 1,
+            "patternProperties": {
+              "^[A-Za-z0-9_-]+$": {
+                "$ref": "#/components/schemas/AliasConfig"
+              }
+            },
+            "propertyNames": {
+              "maxLength": 64,
+              "minLength": 1
+            },
+            "title": "Aliases",
+            "type": "object"
+          },
+          "budgets": {
+            "patternProperties": {
+              "^[A-Za-z0-9_-]+$": {
+                "$ref": "#/components/schemas/BudgetPolicy"
+              }
+            },
+            "propertyNames": {
+              "maxLength": 64,
+              "minLength": 1
+            },
+            "title": "Budgets",
+            "type": "object"
+          },
+          "access": {
+            "$ref": "#/components/schemas/AccessConfig"
+          },
+          "operation_policies": {
+            "patternProperties": {
+              "^[A-Za-z0-9_-]+$": {
+                "discriminator": {
+                  "mapping": {
+                    "decisions": "#/components/schemas/DecisionsPolicy",
+                    "embeddings": "#/components/schemas/EmbeddingsPolicy",
+                    "x_search": "#/components/schemas/XSearchPolicy"
+                  },
+                  "propertyName": "kind"
+                },
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/XSearchPolicy"
+                  },
+                  {
+                    "$ref": "#/components/schemas/DecisionsPolicy"
+                  },
+                  {
+                    "$ref": "#/components/schemas/EmbeddingsPolicy"
+                  }
+                ]
+              }
+            },
+            "propertyNames": {
+              "maxLength": 64,
+              "minLength": 1
+            },
+            "title": "Operation Policies",
+            "type": "object"
+          },
+          "compatibility": {
+            "$ref": "#/components/schemas/CompatibilityConfig"
+          },
+          "overrides": {
+            "patternProperties": {
+              "^[A-Za-z0-9_-]+$": {
+                "pattern": "^[A-Z][A-Z0-9_]{0,127}$",
+                "type": "string"
+              }
+            },
+            "propertyNames": {
+              "maxLength": 64,
+              "minLength": 1
+            },
+            "title": "Overrides",
+            "type": "object"
+          },
+          "fake": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FakeConfig"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "evidence_policy": {
+            "$ref": "#/components/schemas/EvidencePolicy"
+          }
+        },
+        "required": [
+          "schema_version",
+          "project_id",
+          "mode",
+          "providers",
+          "aliases"
+        ],
+        "title": "ProjectConfig",
+        "type": "object"
+      },
+      "CallerLimits": {
+        "additionalProperties": false,
+        "properties": {
+          "timeout_seconds": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0,
+                "maximum": 3600,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Timeout Seconds"
+          },
+          "max_output_tokens": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Max Output Tokens"
+          },
+          "max_attempts": {
+            "anyOf": [
+              {
+                "maximum": 10,
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Max Attempts"
+          },
+          "max_usd": {
+            "anyOf": [
+              {
+                "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Max Usd"
+          }
+        },
+        "title": "CallerLimits",
+        "type": "object"
+      },
+      "ChatInput": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "chat",
+            "default": "chat",
+            "title": "Kind",
+            "type": "string"
+          },
+          "messages": {
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            },
+            "maxItems": 1000,
+            "minItems": 1,
+            "title": "Messages",
+            "type": "array"
+          },
+          "response_format": {
+            "default": "text",
+            "enum": [
+              "text",
+              "json_object",
+              "json_schema"
+            ],
+            "title": "Response Format",
+            "type": "string"
+          },
+          "response_schema": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/JsonValue"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Response Schema"
+          },
+          "schema_name": {
+            "default": "gateway_response",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Schema Name",
+            "type": "string"
+          },
+          "tools": {
+            "items": {
+              "$ref": "#/components/schemas/FunctionTool"
+            },
+            "maxItems": 128,
+            "title": "Tools",
+            "type": "array"
+          },
+          "tool_choice": {
+            "anyOf": [
+              {
+                "enum": [
+                  "none",
+                  "auto",
+                  "required"
+                ],
+                "type": "string"
+              },
+              {
+                "$ref": "#/components/schemas/FunctionChoice"
+              }
+            ],
+            "default": "auto",
+            "title": "Tool Choice"
+          },
+          "parallel_tool_calls": {
+            "default": false,
+            "title": "Parallel Tool Calls",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "messages"
+        ],
+        "title": "ChatInput",
+        "type": "object"
+      },
+      "DecisionsInput": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "decisions",
+            "default": "decisions",
+            "title": "Kind",
+            "type": "string"
+          },
+          "state": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/JsonValue"
+            },
+            "title": "State",
+            "type": "object"
+          },
+          "questions": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/JsonValue"
+            },
+            "title": "Questions",
+            "type": "object"
+          }
+        },
+        "required": [
+          "state",
+          "questions"
+        ],
+        "title": "DecisionsInput",
+        "type": "object"
+      },
+      "EmbeddingsInput": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "embeddings",
+            "default": "embeddings",
+            "title": "Kind",
+            "type": "string"
+          },
+          "input": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 256,
+            "minItems": 1,
+            "title": "Input",
+            "type": "array"
+          },
+          "dimensions": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0,
+                "maximum": 65536,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Dimensions"
+          },
+          "encoding_format": {
+            "default": "float",
+            "enum": [
+              "float",
+              "base64"
+            ],
+            "title": "Encoding Format",
+            "type": "string"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "title": "EmbeddingsInput",
+        "type": "object"
+      },
+      "FunctionChoice": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "function",
+            "default": "function",
+            "title": "Type",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "FunctionChoice",
+        "type": "object"
+      },
+      "FunctionInvocationInput": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "function_call",
+            "default": "function_call",
+            "title": "Type",
+            "type": "string"
+          },
+          "call_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "title": "Call Id",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Name",
+            "type": "string"
+          },
+          "arguments": {
+            "title": "Arguments",
+            "type": "string"
+          }
+        },
+        "required": [
+          "call_id",
+          "name",
+          "arguments"
+        ],
+        "title": "FunctionInvocationInput",
+        "type": "object"
+      },
+      "FunctionResultInput": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "function_call_output",
+            "default": "function_call_output",
+            "title": "Type",
+            "type": "string"
+          },
+          "call_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "title": "Call Id",
+            "type": "string"
+          },
+          "output": {
+            "title": "Output",
+            "type": "string"
+          }
+        },
+        "required": [
+          "call_id",
+          "output"
+        ],
+        "title": "FunctionResultInput",
+        "type": "object"
+      },
+      "FunctionTool": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "function",
+            "default": "function",
+            "title": "Type",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "maxLength": 4096,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "parameters": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/JsonValue"
+            },
+            "title": "Parameters",
+            "type": "object"
+          },
+          "strict": {
+            "default": true,
+            "title": "Strict",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name",
+          "parameters"
+        ],
+        "title": "FunctionTool",
+        "type": "object"
+      },
+      "JsonValue": {},
+      "Message": {
+        "additionalProperties": false,
+        "properties": {
+          "role": {
+            "enum": [
+              "system",
+              "developer",
+              "user",
+              "assistant",
+              "tool"
+            ],
+            "title": "Role",
+            "type": "string"
+          },
+          "content": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "$ref": "#/components/schemas/TextPart"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Content"
+          },
+          "tool_call_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Tool Call Id"
+          },
+          "tool_calls": {
+            "items": {
+              "$ref": "#/components/schemas/MessageToolCall"
+            },
+            "maxItems": 128,
+            "title": "Tool Calls",
+            "type": "array"
+          }
+        },
+        "required": [
+          "role",
+          "content"
+        ],
+        "title": "Message",
+        "type": "object"
+      },
+      "MessageFunction": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Name",
+            "type": "string"
+          },
+          "arguments": {
+            "title": "Arguments",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "arguments"
+        ],
+        "title": "MessageFunction",
+        "type": "object"
+      },
+      "MessageToolCall": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "title": "Id",
+            "type": "string"
+          },
+          "type": {
+            "const": "function",
+            "default": "function",
+            "title": "Type",
+            "type": "string"
+          },
+          "function": {
+            "$ref": "#/components/schemas/MessageFunction"
+          }
+        },
+        "required": [
+          "id",
+          "function"
+        ],
+        "title": "MessageToolCall",
+        "type": "object"
+      },
+      "RequestContext": {
+        "additionalProperties": false,
+        "properties": {
+          "run_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Run Id"
+          },
+          "session_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Session Id"
+          },
+          "workflow_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Workflow Id"
+          },
+          "stage_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Stage Id"
+          },
+          "turn": {
+            "anyOf": [
+              {
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Turn"
+          },
+          "role": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Role"
+          },
+          "purpose": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Purpose"
+          },
+          "profile": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Profile"
+          },
+          "phase": {
+            "default": "task",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "title": "Phase",
+            "type": "string"
+          },
+          "test_group": {
+            "anyOf": [
+              {
+                "enum": [
+                  "offline",
+                  "live_free",
+                  "live_paid"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Test Group"
+          },
+          "tags": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "maxProperties": 64,
+            "title": "Tags",
+            "type": "object"
+          }
+        },
+        "title": "RequestContext",
+        "type": "object"
+      },
+      "ResponsesInput": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "responses",
+            "default": "responses",
+            "title": "Kind",
+            "type": "string"
+          },
+          "instructions": {
+            "default": "",
+            "title": "Instructions",
+            "type": "string"
+          },
+          "input": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/Message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/FunctionResultInput"
+                    },
+                    {
+                      "$ref": "#/components/schemas/FunctionInvocationInput"
+                    }
+                  ]
+                },
+                "type": "array"
+              }
+            ],
+            "title": "Input"
+          },
+          "tools": {
+            "items": {
+              "$ref": "#/components/schemas/FunctionTool"
+            },
+            "maxItems": 128,
+            "title": "Tools",
+            "type": "array"
+          },
+          "tool_choice": {
+            "anyOf": [
+              {
+                "enum": [
+                  "none",
+                  "auto",
+                  "required"
+                ],
+                "type": "string"
+              },
+              {
+                "$ref": "#/components/schemas/FunctionChoice"
+              }
+            ],
+            "default": "auto",
+            "title": "Tool Choice"
+          },
+          "parallel_tool_calls": {
+            "default": false,
+            "title": "Parallel Tool Calls",
+            "type": "boolean"
+          },
+          "store": {
+            "const": false,
+            "default": false,
+            "title": "Store",
+            "type": "boolean"
+          },
+          "reasoning_effort": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Reasoning Effort"
+          },
+          "text_verbosity": {
+            "anyOf": [
+              {
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Text Verbosity"
+          },
+          "response_schema": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/JsonValue"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Response Schema"
+          },
+          "response_format": {
+            "default": "text",
+            "enum": [
+              "text",
+              "json_object",
+              "json_schema"
+            ],
+            "title": "Response Format",
+            "type": "string"
+          },
+          "schema_name": {
+            "default": "gateway_response",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Schema Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "title": "ResponsesInput",
+        "type": "object"
+      },
+      "TextPart": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "enum": [
+              "text",
+              "input_text",
+              "output_text"
+            ],
+            "title": "Type",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "text"
+        ],
+        "title": "TextPart",
+        "type": "object"
+      },
+      "XSearchInput": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "x_search",
+            "default": "x_search",
+            "title": "Kind",
+            "type": "string"
+          },
+          "input": {
+            "maxLength": 5000,
+            "title": "Input",
+            "type": "string"
+          },
+          "allowed_x_handles": {
+            "items": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_]+$",
+              "type": "string"
+            },
+            "maxItems": 64,
+            "minItems": 1,
+            "title": "Allowed X Handles",
+            "type": "array"
+          },
+          "from_date": {
+            "format": "date",
+            "title": "From Date",
+            "type": "string"
+          },
+          "to_date": {
+            "format": "date",
+            "title": "To Date",
+            "type": "string"
+          },
+          "response_schema": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/JsonValue"
+            },
+            "title": "Response Schema",
+            "type": "object"
+          },
+          "schema_name": {
+            "default": "gateway_response",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Schema Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "input",
+          "allowed_x_handles",
+          "from_date",
+          "to_date",
+          "response_schema"
+        ],
+        "title": "XSearchInput",
+        "type": "object"
+      },
+      "InferenceRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "const": 1,
+            "default": 1,
+            "title": "Schema Version",
+            "type": "integer"
+          },
+          "request_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "title": "Request Id",
+            "type": "string"
+          },
+          "alias": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Alias",
+            "type": "string"
+          },
+          "operation": {
+            "enum": [
+              "chat",
+              "responses",
+              "decisions",
+              "x_search",
+              "embeddings"
+            ],
+            "title": "Operation",
+            "type": "string"
+          },
+          "input": {
+            "discriminator": {
+              "mapping": {
+                "chat": "#/components/schemas/ChatInput",
+                "decisions": "#/components/schemas/DecisionsInput",
+                "embeddings": "#/components/schemas/EmbeddingsInput",
+                "responses": "#/components/schemas/ResponsesInput",
+                "x_search": "#/components/schemas/XSearchInput"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ChatInput"
+              },
+              {
+                "$ref": "#/components/schemas/ResponsesInput"
+              },
+              {
+                "$ref": "#/components/schemas/DecisionsInput"
+              },
+              {
+                "$ref": "#/components/schemas/XSearchInput"
+              },
+              {
+                "$ref": "#/components/schemas/EmbeddingsInput"
+              }
+            ],
+            "title": "Input"
+          },
+          "context": {
+            "$ref": "#/components/schemas/RequestContext"
+          },
+          "limits": {
+            "$ref": "#/components/schemas/CallerLimits"
+          }
+        },
+        "required": [
+          "request_id",
+          "alias",
+          "operation",
+          "input"
+        ],
+        "title": "InferenceRequest",
+        "type": "object"
+      },
+      "AttemptReceipt": {
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "const": 1,
+            "default": 1,
+            "title": "Schema Version",
+            "type": "integer"
+          },
+          "receipt_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "title": "Receipt Id",
+            "type": "string"
+          },
+          "project_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "principal_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "title": "Principal Id",
+            "type": "string"
+          },
+          "request_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "title": "Request Id",
+            "type": "string"
+          },
+          "attempt_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "title": "Attempt Id",
+            "type": "string"
+          },
+          "attempt": {
+            "maximum": 10,
+            "minimum": 1,
+            "title": "Attempt",
+            "type": "integer"
+          },
+          "config_digest": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Config Digest",
+            "type": "string"
+          },
+          "model": {
+            "$ref": "#/components/schemas/ModelIdentity"
+          },
+          "usage": {
+            "$ref": "#/components/schemas/TokenUsage"
+          },
+          "evidence_status": {
+            "default": "unavailable",
+            "enum": [
+              "measured",
+              "estimated",
+              "unavailable",
+              "explicit_free",
+              "cached_reuse",
+              "subscription_covered",
+              "simulated",
+              "not_dispatched"
+            ],
+            "title": "Evidence Status",
+            "type": "string"
+          },
+          "currency": {
+            "const": "USD",
+            "default": "USD",
+            "title": "Currency",
+            "type": "string"
+          },
+          "measured_usd": {
+            "anyOf": [
+              {
+                "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Measured Usd"
+          },
+          "estimated_usd": {
+            "anyOf": [
+              {
+                "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Estimated Usd"
+          },
+          "protected_debit_usd": {
+            "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+            "title": "Protected Debit Usd",
+            "type": "string"
+          },
+          "contingent_exposure_usd": {
+            "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+            "title": "Contingent Exposure Usd",
+            "type": "string"
+          },
+          "pricing_source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Pricing Source"
+          },
+          "reservation_kind": {
+            "default": "bound",
+            "enum": [
+              "bound",
+              "risk_allowance",
+              "simulated",
+              "legacy_unclassified"
+            ],
+            "title": "Reservation Kind",
+            "type": "string"
+          },
+          "usage_complete": {
+            "default": false,
+            "title": "Usage Complete",
+            "type": "boolean"
+          },
+          "reconciliation_required": {
+            "default": false,
+            "title": "Reconciliation Required",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "receipt_id",
+          "project_id",
+          "principal_id",
+          "request_id",
+          "attempt_id",
+          "attempt",
+          "config_digest",
+          "model",
+          "protected_debit_usd",
+          "contingent_exposure_usd"
+        ],
+        "title": "AttemptReceipt",
+        "type": "object"
+      },
+      "FunctionCall": {
+        "additionalProperties": false,
+        "properties": {
+          "call_id": {
+            "title": "Call Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "arguments": {
+            "title": "Arguments",
+            "type": "string"
+          },
+          "parsed_arguments": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/JsonValue"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Parsed Arguments"
+          },
+          "diagnostic": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Diagnostic"
+          }
+        },
+        "required": [
+          "call_id",
+          "name",
+          "arguments"
+        ],
+        "title": "FunctionCall",
+        "type": "object"
+      },
+      "ModelIdentity": {
+        "additionalProperties": false,
+        "properties": {
+          "alias": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Alias",
+            "type": "string"
+          },
+          "provider_ref": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Provider Ref",
+            "type": "string"
+          },
+          "configured_model": {
+            "title": "Configured Model",
+            "type": "string"
+          },
+          "upstream_model": {
+            "title": "Upstream Model",
+            "type": "string"
+          },
+          "actual_model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Actual Model"
+          },
+          "actual_provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Actual Provider"
+          },
+          "generation_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Generation Id"
+          }
+        },
+        "required": [
+          "alias",
+          "provider_ref",
+          "configured_model",
+          "upstream_model"
+        ],
+        "title": "ModelIdentity",
+        "type": "object"
+      },
+      "SafeError": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "maxLength": 1024,
+            "title": "Message",
+            "type": "string"
+          },
+          "advice": {
+            "enum": [
+              "query_receipt",
+              "reconcile",
+              "correct_request"
+            ],
+            "title": "Advice",
+            "type": "string"
+          },
+          "trace_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "title": "Trace Id",
+            "type": "string"
+          },
+          "receipt_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Receipt Id"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "advice",
+          "trace_id"
+        ],
+        "title": "SafeError",
+        "type": "object"
+      },
+      "TokenUsage": {
+        "additionalProperties": false,
+        "properties": {
+          "x_posts_fetched": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "X Posts Fetched"
+          },
+          "x_profiles_fetched": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "X Profiles Fetched"
+          },
+          "input_tokens": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Input Tokens"
+          },
+          "output_tokens": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Output Tokens"
+          },
+          "total_tokens": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Tokens"
+          },
+          "reasoning_tokens": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Reasoning Tokens"
+          },
+          "cache_tokens": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Cache Tokens"
+          }
+        },
+        "title": "TokenUsage",
+        "type": "object"
+      },
+      "InferenceResult": {
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "const": 1,
+            "default": 1,
+            "title": "Schema Version",
+            "type": "integer"
+          },
+          "request_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "title": "Request Id",
+            "type": "string"
+          },
+          "trace_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "title": "Trace Id",
+            "type": "string"
+          },
+          "project_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "config_digest": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Config Digest",
+            "type": "string"
+          },
+          "execution_status": {
+            "enum": [
+              "in_progress",
+              "completed",
+              "failed",
+              "cancelled",
+              "timed_out"
+            ],
+            "title": "Execution Status",
+            "type": "string"
+          },
+          "output_status": {
+            "enum": [
+              "pending",
+              "valid",
+              "refused",
+              "truncated",
+              "invalid_document",
+              "invalid_tool_arguments",
+              "provider_failed",
+              "unavailable"
+            ],
+            "title": "Output Status",
+            "type": "string"
+          },
+          "content": {
+            "$ref": "#/components/schemas/JsonValue",
+            "default": null
+          },
+          "function_calls": {
+            "items": {
+              "$ref": "#/components/schemas/FunctionCall"
+            },
+            "title": "Function Calls",
+            "type": "array"
+          },
+          "model": {
+            "$ref": "#/components/schemas/ModelIdentity"
+          },
+          "receipts": {
+            "items": {
+              "$ref": "#/components/schemas/AttemptReceipt"
+            },
+            "title": "Receipts",
+            "type": "array"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SafeError"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "finish_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Finish Reason"
+          },
+          "provider_metadata": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/JsonValue"
+            },
+            "title": "Provider Metadata",
+            "type": "object"
+          }
+        },
+        "required": [
+          "request_id",
+          "trace_id",
+          "project_id",
+          "config_digest",
+          "execution_status",
+          "output_status",
+          "model"
+        ],
+        "title": "InferenceResult",
+        "type": "object"
+      },
+      "BucketReport": {
+        "additionalProperties": false,
+        "properties": {
+          "bucket_id": {
+            "title": "Bucket Id",
+            "type": "string"
+          },
+          "policy_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Policy Id",
+            "type": "string"
+          },
+          "period_key": {
+            "title": "Period Key",
+            "type": "string"
+          },
+          "cap_usd": {
+            "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+            "title": "Cap Usd",
+            "type": "string"
+          },
+          "protected_debit_usd": {
+            "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+            "title": "Protected Debit Usd",
+            "type": "string"
+          },
+          "remaining_usd": {
+            "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+            "title": "Remaining Usd",
+            "type": "string"
+          }
+        },
+        "required": [
+          "bucket_id",
+          "policy_id",
+          "period_key",
+          "cap_usd",
+          "protected_debit_usd",
+          "remaining_usd"
+        ],
+        "title": "BucketReport",
+        "type": "object"
+      },
+      "UsageTotals": {
+        "additionalProperties": false,
+        "properties": {
+          "attempts": {
+            "minimum": 0,
+            "title": "Attempts",
+            "type": "integer"
+          },
+          "measured_usd": {
+            "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+            "title": "Measured Usd",
+            "type": "string"
+          },
+          "estimated_usd": {
+            "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+            "title": "Estimated Usd",
+            "type": "string"
+          },
+          "protected_debit_usd": {
+            "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+            "title": "Protected Debit Usd",
+            "type": "string"
+          },
+          "contingent_exposure_usd": {
+            "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+            "title": "Contingent Exposure Usd",
+            "type": "string"
+          },
+          "unknown_attempts": {
+            "minimum": 0,
+            "title": "Unknown Attempts",
+            "type": "integer"
+          },
+          "usage_complete": {
+            "title": "Usage Complete",
+            "type": "boolean"
+          },
+          "overrun": {
+            "title": "Overrun",
+            "type": "boolean"
+          },
+          "measured_attempts": {
+            "default": 0,
+            "minimum": 0,
+            "title": "Measured Attempts",
+            "type": "integer"
+          },
+          "estimated_attempts": {
+            "default": 0,
+            "minimum": 0,
+            "title": "Estimated Attempts",
+            "type": "integer"
+          },
+          "unsettled_attempts": {
+            "default": 0,
+            "minimum": 0,
+            "title": "Unsettled Attempts",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "attempts",
+          "measured_usd",
+          "estimated_usd",
+          "protected_debit_usd",
+          "contingent_exposure_usd",
+          "unknown_attempts",
+          "usage_complete",
+          "overrun"
+        ],
+        "title": "UsageTotals",
+        "type": "object"
+      },
+      "UsageReport": {
+        "additionalProperties": false,
+        "properties": {
+          "attempts": {
+            "minimum": 0,
+            "title": "Attempts",
+            "type": "integer"
+          },
+          "measured_usd": {
+            "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+            "title": "Measured Usd",
+            "type": "string"
+          },
+          "estimated_usd": {
+            "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+            "title": "Estimated Usd",
+            "type": "string"
+          },
+          "protected_debit_usd": {
+            "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+            "title": "Protected Debit Usd",
+            "type": "string"
+          },
+          "contingent_exposure_usd": {
+            "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+            "title": "Contingent Exposure Usd",
+            "type": "string"
+          },
+          "unknown_attempts": {
+            "minimum": 0,
+            "title": "Unknown Attempts",
+            "type": "integer"
+          },
+          "usage_complete": {
+            "title": "Usage Complete",
+            "type": "boolean"
+          },
+          "overrun": {
+            "title": "Overrun",
+            "type": "boolean"
+          },
+          "measured_attempts": {
+            "default": 0,
+            "minimum": 0,
+            "title": "Measured Attempts",
+            "type": "integer"
+          },
+          "estimated_attempts": {
+            "default": 0,
+            "minimum": 0,
+            "title": "Estimated Attempts",
+            "type": "integer"
+          },
+          "unsettled_attempts": {
+            "default": 0,
+            "minimum": 0,
+            "title": "Unsettled Attempts",
+            "type": "integer"
+          },
+          "project_id": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Project Id"
+          },
+          "currency": {
+            "const": "USD",
+            "default": "USD",
+            "title": "Currency",
+            "type": "string"
+          },
+          "timezone": {
+            "default": "UTC",
+            "title": "Timezone",
+            "type": "string"
+          },
+          "attempt_ids": {
+            "items": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "type": "string"
+            },
+            "title": "Attempt Ids",
+            "type": "array"
+          },
+          "buckets": {
+            "items": {
+              "$ref": "#/components/schemas/BucketReport"
+            },
+            "title": "Buckets",
+            "type": "array"
+          },
+          "groups": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/UsageTotals"
+            },
+            "title": "Groups",
+            "type": "object"
+          }
+        },
+        "required": [
+          "attempts",
+          "measured_usd",
+          "estimated_usd",
+          "protected_debit_usd",
+          "contingent_exposure_usd",
+          "unknown_attempts",
+          "usage_complete",
+          "overrun",
+          "attempt_ids",
+          "buckets"
+        ],
+        "title": "UsageReport",
+        "type": "object"
+      },
+      "AliasInspection": {
+        "additionalProperties": false,
+        "properties": {
+          "alias": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Alias",
+            "type": "string"
+          },
+          "operation": {
+            "enum": [
+              "chat",
+              "responses",
+              "decisions",
+              "x_search",
+              "embeddings"
+            ],
+            "title": "Operation",
+            "type": "string"
+          },
+          "provider_ref": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Provider Ref",
+            "type": "string"
+          },
+          "provider_kind": {
+            "enum": [
+              "openai",
+              "openrouter"
+            ],
+            "title": "Provider Kind",
+            "type": "string"
+          },
+          "upstream_model": {
+            "title": "Upstream Model",
+            "type": "string"
+          },
+          "capabilities": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Capabilities",
+            "type": "array"
+          },
+          "limits": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/JsonValue"
+            },
+            "title": "Limits",
+            "type": "object"
+          }
+        },
+        "required": [
+          "alias",
+          "operation",
+          "provider_ref",
+          "provider_kind",
+          "upstream_model",
+          "capabilities",
+          "limits"
+        ],
+        "title": "AliasInspection",
+        "type": "object"
+      },
+      "AliasReport": {
+        "additionalProperties": false,
+        "properties": {
+          "config_digest": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Config Digest",
+            "type": "string"
+          },
+          "aliases": {
+            "items": {
+              "$ref": "#/components/schemas/AliasInspection"
+            },
+            "title": "Aliases",
+            "type": "array"
+          }
+        },
+        "required": [
+          "config_digest",
+          "aliases"
+        ],
+        "title": "AliasReport",
+        "type": "object"
+      },
+      "Readiness": {
+        "additionalProperties": false,
+        "properties": {
+          "version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Version"
+          },
+          "supports_config_precondition": {
+            "default": false,
+            "title": "Supports Config Precondition",
+            "type": "boolean"
+          },
+          "principal_id": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Principal Id"
+          },
+          "status": {
+            "const": "ready",
+            "title": "Status",
+            "type": "string"
+          },
+          "project_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "config_digest": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Config Digest",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "project_id",
+          "config_digest"
+        ],
+        "title": "Readiness",
+        "type": "object"
+      },
+      "DashboardChat": {
+        "additionalProperties": false,
+        "properties": {
+          "request_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Request Id"
+          },
+          "alias": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Alias",
+            "type": "string"
+          },
+          "purpose": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "title": "Purpose",
+            "type": "string"
+          },
+          "profile": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "title": "Profile",
+            "type": "string"
+          },
+          "run_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Run Id"
+          },
+          "messages": {
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            },
+            "title": "Messages",
+            "type": "array"
+          },
+          "response_schema_name": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Response Schema Name",
+            "type": "string"
+          },
+          "response_schema": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/JsonValue"
+            },
+            "title": "Response Schema",
+            "type": "object"
+          }
+        },
+        "required": [
+          "alias",
+          "purpose",
+          "profile",
+          "messages",
+          "response_schema_name",
+          "response_schema"
+        ],
+        "title": "DashboardChat",
+        "type": "object"
+      },
+      "Reconcile": {
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "default": 1,
+            "maximum": 1,
+            "minimum": 1,
+            "title": "Schema Version",
+            "type": "integer"
+          },
+          "evidence_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "title": "Evidence Id",
+            "type": "string"
+          },
+          "request_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "title": "Request Id",
+            "type": "string"
+          },
+          "generation_id": {
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Generation Id",
+            "type": "string"
+          },
+          "measured_usd": {
+            "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+            "title": "Measured Usd",
+            "type": "string"
+          },
+          "currency": {
+            "default": "USD",
+            "pattern": "^USD$",
+            "title": "Currency",
+            "type": "string"
+          },
+          "authority": {
+            "maxLength": 1024,
+            "minLength": 1,
+            "title": "Authority",
+            "type": "string"
+          },
+          "verification": {
+            "pattern": "^operator_verified_receipt$",
+            "title": "Verification",
+            "type": "string"
+          },
+          "provider_ref": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Provider Ref",
+            "type": "string"
+          },
+          "config_digest": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Config Digest",
+            "type": "string"
+          },
+          "evidence_digest": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Evidence Digest",
+            "type": "string"
+          },
+          "observed_at": {
+            "format": "date-time",
+            "title": "Observed At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "evidence_id",
+          "request_id",
+          "generation_id",
+          "measured_usd",
+          "authority",
+          "verification",
+          "provider_ref",
+          "config_digest",
+          "evidence_digest",
+          "observed_at"
+        ],
+        "title": "Reconcile",
+        "type": "object"
+      },
+      "SafeplaneChat": {
+        "additionalProperties": false,
+        "properties": {
+          "request_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Request Id"
+          },
+          "workflow_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "title": "Workflow Id",
+            "type": "string"
+          },
+          "model_profile": {
+            "default": "default",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "title": "Model Profile",
+            "type": "string"
+          },
+          "stage_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Stage Id"
+          },
+          "messages": {
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            },
+            "title": "Messages",
+            "type": "array"
+          },
+          "session_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "title": "Session Id",
+            "type": "string"
+          },
+          "run_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Run Id"
+          },
+          "turn": {
+            "minimum": 1,
+            "title": "Turn",
+            "type": "integer"
+          },
+          "timeout_seconds": {
+            "default": 30,
+            "exclusiveMinimum": 0,
+            "maximum": 3600,
+            "title": "Timeout Seconds",
+            "type": "number"
+          }
+        },
+        "required": [
+          "workflow_id",
+          "messages",
+          "session_id",
+          "turn"
+        ],
+        "title": "SafeplaneChat",
+        "type": "object"
+      },
+      "SafeplaneDecisions": {
+        "additionalProperties": false,
+        "properties": {
+          "request_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Request Id"
+          },
+          "model": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Model",
+            "type": "string"
+          },
+          "state": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/JsonValue"
+            },
+            "title": "State",
+            "type": "object"
+          },
+          "questions": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/JsonValue"
+            },
+            "title": "Questions",
+            "type": "object"
+          },
+          "run_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.:-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Run Id"
+          },
+          "timeout_seconds": {
+            "default": 30,
+            "exclusiveMinimum": 0,
+            "maximum": 300,
+            "title": "Timeout Seconds",
+            "type": "number"
+          }
+        },
+        "required": [
+          "model",
+          "state",
+          "questions"
+        ],
+        "title": "SafeplaneDecisions",
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "GatewayBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

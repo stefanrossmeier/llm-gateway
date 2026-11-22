@@ -1,0 +1,173 @@
+name: Dependency and container security review
+on:
+  push:
+    branches: [main]
+    paths: ["src/**", "deploy/**", "scripts/**", "pyproject.toml", "uv.lock", "Dockerfile", "docs/evidence/**", ".github/workflows/**"]
+  release:
+    types: [published]
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Exact released assets or a new unapproved candidate
+        type: choice
+        options: [released, candidate]
+        default: released
+        required: true
+permissions:
+  contents: read
+jobs:
+  candidate:
+    name: Candidate evidence collection (release approval required)
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.target == 'candidate')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Fresh advisory and static artifact review before installing target code
+        run: python scripts/audit_lock.py --cache /tmp/reviewed-wheels --output reports/dependencies.json
+      - name: Build frozen candidate and archive without exposing Docker socket to scanners
+        run: |
+          docker build -t llm-gateway:security .
+          docker save -o /tmp/gateway-image.tar llm-gateway:security
+          mkdir -p reports
+      - name: Full image dependency and OS SBOM
+        run: >-
+          docker run --rm --user "$(id -u):$(id -g)" --tmpfs /tmp:mode=1777 --cap-drop ALL --security-opt no-new-privileges
+          --mount type=bind,src=/tmp/gateway-image.tar,dst=/image.tar,readonly
+          --mount type=bind,src=${{ github.workspace }}/reports,dst=/reports
+          ghcr.io/anchore/syft:v1.57.1@sha256:03215d0e98b661d0ecbc8575dbc14d65be1743b5de5df6410aecb7e80f95b060
+          docker-archive:/image.tar -o cyclonedx-json=/reports/image-sbom.cdx.json
+      - name: Collect raw advisories without granting release approval
+        run: |
+          docker run --rm --user "$(id -u):$(id -g)" --tmpfs /tmp:mode=1777 --cap-drop ALL --security-opt no-new-privileges \
+            --mount type=bind,src=/tmp/gateway-image.tar,dst=/image.tar,readonly \
+            --mount type=bind,src=${{ github.workspace }}/reports,dst=/reports \
+            --env GRYPE_DB_CACHE_DIR=/tmp/grype-db \
+            ghcr.io/anchore/grype:v0.121.3@sha256:13113eeceab017260370cf540e1d25442c59665fd07d1b09b66d63bb0c282887 \
+            docker-archive:/image.tar -o json --file /reports/image-advisories.json
+          python - <<'PYCODE'
+          import json, runpy
+          from datetime import UTC, datetime
+          from pathlib import Path
+          tools = runpy.run_path('scripts/check_image_advisories.py')
+          data = tools['read_json'](Path('reports/image-advisories.json'))
+          tools['validate_scan'](data, datetime.now(UTC))
+          summary = {'status': 'manual_review_required', 'release_approved': False,
+                     'raw_matching_advisories': len(data['matches'])}
+          Path('reports/candidate-review-status.json').write_text(json.dumps(summary) + '\n')
+          print(json.dumps(summary))
+          PYCODE
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: security-review-${{ github.run_id }}
+          path: reports/
+          retention-days: 30
+  released:
+    name: Exact immutable release advisory monitoring
+    if: github.event_name == 'schedule' || github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && inputs.target == 'released')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Read trusted immutable release source identity
+        id: release
+        run: |
+          python - <<'PY'
+          import os, runpy
+          from pathlib import Path
+          manifest = runpy.run_path('scripts/check_release_assets.py')['manifest']
+          data = manifest(Path('release/0.1.0a2.json'))
+          with Path(os.environ['GITHUB_OUTPUT']).open('a') as output:
+              output.write(f"commit={data['source_commit']}\n")
+          PY
+      - name: Check out exact release source as static review input
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ steps.release.outputs.commit }}
+          path: released-source
+          persist-credentials: false
+      - name: Verify released commit and authored source identity before review
+        run: |
+          python - <<'PY'
+          import runpy, subprocess
+          from pathlib import Path
+          data = runpy.run_path('scripts/check_release_assets.py')['manifest'](
+              Path('release/0.1.0a2.json'))
+          source = Path('released-source').resolve()
+          commit = subprocess.run(
+              ['git', '-C', str(source), 'rev-parse', 'HEAD'], check=True,
+              stdin=subprocess.DEVNULL, capture_output=True, text=True, timeout=30,
+          ).stdout.strip()
+          source_digest = runpy.run_path('scripts/check_image_advisories.py')['source_digest']
+          if commit != data['source_commit'] or source_digest(source) != data['authored_source_sha256']:
+              raise SystemExit('Released source identity rejected; no target code was executed')
+          PY
+      - name: Fresh exact-lock Python advisory and static wheel review
+        run: python scripts/audit_lock.py --lock released-source/uv.lock --cache /tmp/reviewed-wheels --output reports/dependencies.json
+      - name: Download exact private assets and verify trusted hashes before scanning
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/check_release_assets.py release/0.1.0a2.json "${{ runner.temp }}/gateway-release-assets" --download
+      - name: Scan both exact archives and enforce current scoped dispositions
+        env:
+          RELEASE_ASSETS: ${{ runner.temp }}/gateway-release-assets
+        run: |
+          python - <<'PY'
+          import json, os, runpy, subprocess
+          from pathlib import Path
+
+          manifest = json.loads(Path('release/0.1.0a2.json').read_text())
+          assets = Path(os.environ['RELEASE_ASSETS']).resolve()
+          reports = Path('reports').resolve()
+          reports.mkdir(exist_ok=True)
+          gate = runpy.run_path('scripts/check_image_advisories.py')['check']
+          source = Path('released-source').resolve()
+          scanner = 'ghcr.io/anchore/grype:v0.121.3@sha256:13113eeceab017260370cf540e1d25442c59665fd07d1b09b66d63bb0c282887'
+          rejected = []
+          for architecture, files in manifest['platforms'].items():
+              report = f'released-{architecture}-advisories.json'
+              try:
+                  subprocess.run([
+                      'docker', 'run', '--rm', '--read-only',
+                      '--user', f'{os.getuid()}:{os.getgid()}',
+                      '--tmpfs', '/tmp:mode=1777', '--cap-drop', 'ALL',
+                      '--security-opt', 'no-new-privileges',
+                      '--mount', f'type=bind,src={assets / files["image"]},dst=/image.tar,readonly',
+                      '--mount', f'type=bind,src={reports},dst=/reports',
+                      '--env', 'GRYPE_DB_CACHE_DIR=/tmp/grype-db', scanner,
+                      'docker-archive:/image.tar', '-o', 'json', '--file', f'/reports/{report}',
+                  ], check=True, stdin=subprocess.DEVNULL, timeout=900)
+                  gate(
+                      reports / report,
+                      assessment=Path('docs/evidence/container-candidate-assessment-2026-11-22.json'),
+                      profile=assets / files['profile'], root=source,
+                  )
+              except (subprocess.SubprocessError, SystemExit) as error:
+                  rejected.append(architecture)
+                  print(json.dumps({
+                      'architecture': architecture, 'status': 'rejected',
+                      'reason': str(error) if isinstance(error, SystemExit) else 'scanner_failed',
+                  }), flush=True)
+          if rejected:
+              raise SystemExit('Released image review rejected: ' + ', '.join(rejected))
+          PY
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: released-security-review-${{ github.run_id }}
+          path: reports/
+          retention-days: 30
+# New/expired/mismatched findings fail visibly; no auto-update, deploy or publish.

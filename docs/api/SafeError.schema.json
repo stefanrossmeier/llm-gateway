@@ -1,0 +1,56 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "code": {
+      "maxLength": 64,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_-]+$",
+      "title": "Code",
+      "type": "string"
+    },
+    "message": {
+      "maxLength": 1024,
+      "title": "Message",
+      "type": "string"
+    },
+    "advice": {
+      "enum": [
+        "query_receipt",
+        "reconcile",
+        "correct_request"
+      ],
+      "title": "Advice",
+      "type": "string"
+    },
+    "trace_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "receipt_id": {
+      "anyOf": [
+        {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Receipt Id"
+    }
+  },
+  "required": [
+    "code",
+    "message",
+    "advice",
+    "trace_id"
+  ],
+  "title": "SafeError",
+  "type": "object"
+}

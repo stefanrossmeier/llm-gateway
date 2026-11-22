@@ -1,0 +1,245 @@
+{
+  "$defs": {
+    "BucketReport": {
+      "additionalProperties": false,
+      "properties": {
+        "bucket_id": {
+          "title": "Bucket Id",
+          "type": "string"
+        },
+        "policy_id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Policy Id",
+          "type": "string"
+        },
+        "period_key": {
+          "title": "Period Key",
+          "type": "string"
+        },
+        "cap_usd": {
+          "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+          "title": "Cap Usd",
+          "type": "string"
+        },
+        "protected_debit_usd": {
+          "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+          "title": "Protected Debit Usd",
+          "type": "string"
+        },
+        "remaining_usd": {
+          "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+          "title": "Remaining Usd",
+          "type": "string"
+        }
+      },
+      "required": [
+        "bucket_id",
+        "policy_id",
+        "period_key",
+        "cap_usd",
+        "protected_debit_usd",
+        "remaining_usd"
+      ],
+      "title": "BucketReport",
+      "type": "object"
+    },
+    "UsageTotals": {
+      "additionalProperties": false,
+      "properties": {
+        "attempts": {
+          "minimum": 0,
+          "title": "Attempts",
+          "type": "integer"
+        },
+        "measured_usd": {
+          "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+          "title": "Measured Usd",
+          "type": "string"
+        },
+        "estimated_usd": {
+          "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+          "title": "Estimated Usd",
+          "type": "string"
+        },
+        "protected_debit_usd": {
+          "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+          "title": "Protected Debit Usd",
+          "type": "string"
+        },
+        "contingent_exposure_usd": {
+          "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+          "title": "Contingent Exposure Usd",
+          "type": "string"
+        },
+        "unknown_attempts": {
+          "minimum": 0,
+          "title": "Unknown Attempts",
+          "type": "integer"
+        },
+        "usage_complete": {
+          "title": "Usage Complete",
+          "type": "boolean"
+        },
+        "overrun": {
+          "title": "Overrun",
+          "type": "boolean"
+        },
+        "measured_attempts": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Measured Attempts",
+          "type": "integer"
+        },
+        "estimated_attempts": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Estimated Attempts",
+          "type": "integer"
+        },
+        "unsettled_attempts": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Unsettled Attempts",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "attempts",
+        "measured_usd",
+        "estimated_usd",
+        "protected_debit_usd",
+        "contingent_exposure_usd",
+        "unknown_attempts",
+        "usage_complete",
+        "overrun"
+      ],
+      "title": "UsageTotals",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "attempts": {
+      "minimum": 0,
+      "title": "Attempts",
+      "type": "integer"
+    },
+    "measured_usd": {
+      "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+      "title": "Measured Usd",
+      "type": "string"
+    },
+    "estimated_usd": {
+      "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+      "title": "Estimated Usd",
+      "type": "string"
+    },
+    "protected_debit_usd": {
+      "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+      "title": "Protected Debit Usd",
+      "type": "string"
+    },
+    "contingent_exposure_usd": {
+      "pattern": "^(0|[1-9][0-9]{0,9})(\\.[0-9]{1,18})?$",
+      "title": "Contingent Exposure Usd",
+      "type": "string"
+    },
+    "unknown_attempts": {
+      "minimum": 0,
+      "title": "Unknown Attempts",
+      "type": "integer"
+    },
+    "usage_complete": {
+      "title": "Usage Complete",
+      "type": "boolean"
+    },
+    "overrun": {
+      "title": "Overrun",
+      "type": "boolean"
+    },
+    "measured_attempts": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Measured Attempts",
+      "type": "integer"
+    },
+    "estimated_attempts": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Estimated Attempts",
+      "type": "integer"
+    },
+    "unsettled_attempts": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Unsettled Attempts",
+      "type": "integer"
+    },
+    "project_id": {
+      "anyOf": [
+        {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Project Id"
+    },
+    "currency": {
+      "const": "USD",
+      "default": "USD",
+      "title": "Currency",
+      "type": "string"
+    },
+    "timezone": {
+      "default": "UTC",
+      "title": "Timezone",
+      "type": "string"
+    },
+    "attempt_ids": {
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9_.:-]+$",
+        "type": "string"
+      },
+      "title": "Attempt Ids",
+      "type": "array"
+    },
+    "buckets": {
+      "items": {
+        "$ref": "#/$defs/BucketReport"
+      },
+      "title": "Buckets",
+      "type": "array"
+    },
+    "groups": {
+      "additionalProperties": {
+        "$ref": "#/$defs/UsageTotals"
+      },
+      "title": "Groups",
+      "type": "object"
+    }
+  },
+  "required": [
+    "attempts",
+    "measured_usd",
+    "estimated_usd",
+    "protected_debit_usd",
+    "contingent_exposure_usd",
+    "unknown_attempts",
+    "usage_complete",
+    "overrun",
+    "attempt_ids",
+    "buckets"
+  ],
+  "title": "UsageReport",
+  "type": "object"
+}

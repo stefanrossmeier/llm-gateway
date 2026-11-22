@@ -1,0 +1,48 @@
+{
+  "consumer": "canonical-chat",
+  "synthetic": true,
+  "operation": "chat",
+  "route": "/v1/inferences",
+  "request": {
+    "alias": "summary",
+    "operation": "chat",
+    "input": {
+      "kind": "chat",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Synthetic contract input."
+        }
+      ],
+      "response_format": "json_schema",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ok"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "context": {
+      "run_id": "run-one",
+      "role": "architect",
+      "stage_id": "review-one",
+      "phase": "warmup"
+    }
+  },
+  "payload": {
+    "ok": true
+  },
+  "expected_context": {
+    "run_id": "run-one",
+    "role": "architect",
+    "stage_id": "review-one",
+    "phase": "warmup"
+  },
+  "contract_revision": "v1"
+}

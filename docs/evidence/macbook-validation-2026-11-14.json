@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-14",
+  "tested_commit": "b7253cf557a87129a66c3f0b05196b703e26fe15",
+  "runtime_source_sha256": "5bd0cfd4bbdd9be12af25240aa5354ca90e889bed2c6cca0ff486fc66a1a20e2",
+  "host": {
+    "system": "Darwin",
+    "machine": "arm64",
+    "python": "3.12.13"
+  },
+  "offline": {
+    "passed": 1141,
+    "live_tests_deselected": 4,
+    "authored_modules": 51,
+    "minimum_required_branch_percent": 90,
+    "minimum_observed_branch_percent": 90.0,
+    "excluded_lines": 0,
+    "lint": "passed",
+    "format": "passed"
+  },
+  "container": {
+    "image_id": "sha256:6c866a158885c2692a0f4e5ce405fe0a0a7b5741fc07b5ea9dafc578812aeb46",
+    "platform": "linux/arm64",
+    "fake_inference_isolation": "passed",
+    "shutdown_exit_code": 0,
+    "native_profile_sha256": "ed95ab388f1bb4c1c029db29f43524ac37dbe74e2a2b8e3eba7e5f252dbfcc62",
+    "mocked_adapter_calls": 8,
+    "inference_performed": false,
+    "applicability_approved": false
+  },
+  "free_smoke": {
+    "passed": 1,
+    "optional_cases_not_selected": 2,
+    "attempts": 1,
+    "measured_usd": "0",
+    "protected_debit_usd": "0",
+    "usage_complete": true,
+    "overrun": false,
+    "actual_model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+    "report_sha256": "cd66fd37977d6ebf4cf24dc7742744935de4b604f6493fa6760fe0866b9e335e"
+  },
+  "paid_proposal": {
+    "preflight": "passed_without_credentials_or_inference",
+    "plan_digest": "a93a581e1c401faa4def6a1b557db68bab10a2141fa209cb5b5ea91b992fcb5a",
+    "config_digest": "97b718471709920189ba7c7263034c39ec6e40d9f1eadbdcfa2662e4d9bc5173",
+    "max_calls": 2,
+    "max_concurrency": 2,
+    "budget_usd": "0.01",
+    "sum_case_reservations_usd": "0.00774144",
+    "approval_created": false,
+    "paid_calls": 0
+  },
+  "manual_security_review": "unchanged_open",
+  "public_publication_authorized": false
+}

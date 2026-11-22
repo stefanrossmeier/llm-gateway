@@ -1,0 +1,81 @@
+{
+  "reviewed_at": "2026-11-11",
+  "source_only_no_build_or_execution": true,
+  "source_archives": [
+    {
+      "name": "tokenizers",
+      "commit": "301277072263fb3830eb66eec7e47adadf76f1dc",
+      "archive_sha256": "5df9ae99d62ec3e06d7ee132d2fb4f44344e38f9ad48c118a761ae6b73d115ad",
+      "source_files": 189,
+      "source_bytes": 1857305
+    },
+    {
+      "name": "frozenlist",
+      "commit": "48324affeecc2fff8f84f38368f720426c0354cf",
+      "archive_sha256": "0c82f310452090da632c358d1b7162ce4d0fd242942652077d1639ae4548ab46",
+      "source_files": 17,
+      "source_bytes": 62310
+    }
+  ],
+  "esaxx_crate_sha256": "d817e038c30374a4bcb22f94d0a8a0e216958d4c3dcde369b1439fec4bdda6e6",
+  "tag_verifications": {
+    "tokenizers": {
+      "tag": "v0.23.3",
+      "commit": "301277072263fb3830eb66eec7e47adadf76f1dc",
+      "github_verification": "verified"
+    },
+    "frozenlist": {
+      "tag": "v1.8.0",
+      "commit": "48324affeecc2fff8f84f38368f720426c0354cf",
+      "github_verification": "verified"
+    }
+  },
+  "source_files": [
+    {
+      "project": "tokenizers",
+      "path": "tokenizers/Cargo.toml",
+      "sha256": "a7550a462a6e4da8f6ff6aa3420f25f189c5e7ec7303485e9e7e31c20aa6f3e3"
+    },
+    {
+      "project": "tokenizers",
+      "path": "bindings/python/Cargo.lock",
+      "sha256": "afcedf7f2ebe008b068d7afd25e77f7d9d8e433c24153bc35a1eb5611083ee5b"
+    },
+    {
+      "project": "tokenizers",
+      "path": "tokenizers/src/models/unigram/trainer.rs",
+      "sha256": "cb5a1965aafbe00b8893ae494ca1cc8c74809d26a7047363e65df1f7e57c2140"
+    },
+    {
+      "project": "frozenlist",
+      "path": "frozenlist/_frozenlist.pyx",
+      "sha256": "b7e6868ee12256dfcc64f049d119eb69abd598f04ae9aaf3de2e3c66f5ee62c5"
+    },
+    {
+      "project": "esaxx-rs",
+      "path": "build.rs",
+      "sha256": "c83421c6d1a109c3cd12042bb3f9af238e57b7b0711d5899424dd81b57d33ff2"
+    },
+    {
+      "project": "esaxx-rs",
+      "path": "src/lib.rs",
+      "sha256": "b56867e0a2172f86f0c17021f8282d378cafbc8c009dc857197c63d91bf0f472"
+    },
+    {
+      "project": "esaxx-rs",
+      "path": "src/esaxx.cpp",
+      "sha256": "f4e0d8591fe22022872785cbd6395d22637deef787355af52c5e2b9e67005bba"
+    },
+    {
+      "project": "esaxx-rs",
+      "path": "src/esa.hxx",
+      "sha256": "56975467f6e84f5523d4a504508f8013004b3b8e5b92e59f2fd47a4cc878b314"
+    },
+    {
+      "project": "esaxx-rs",
+      "path": "src/sais.hxx",
+      "sha256": "7dae24de57e00ed7ec3046d42dd2bac1e7cc7d3c2e52482e36fff21fde417f2c"
+    }
+  ],
+  "full_container_release_approved": false
+}

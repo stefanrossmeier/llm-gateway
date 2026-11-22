@@ -1,0 +1,40 @@
+{
+  "consumer": "dashboard-b",
+  "synthetic": true,
+  "operation": "chat",
+  "route": "/v1/chat",
+  "request": {
+    "alias": "summary",
+    "purpose": "ranking",
+    "profile": "example-profile",
+    "run_id": "run-one",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Synthetic contract input."
+      }
+    ],
+    "response_schema_name": "synthetic-ranking",
+    "response_schema": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "ok"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "payload": {
+    "ok": false
+  },
+  "expected_context": {
+    "purpose": "ranking",
+    "profile": "example-profile",
+    "run_id": "run-one"
+  },
+  "contract_revision": "v1"
+}
