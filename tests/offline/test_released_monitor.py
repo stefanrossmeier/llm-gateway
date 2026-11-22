@@ -75,7 +75,7 @@ def workspace(tmp_path, evidence, monkeypatch):
     data.update(
         source_commit=git("rev-parse", "HEAD"), authored_source_sha256=gate["source_digest"](source)
     )
-    manifest = current / "release/0.1.0a2.json"
+    manifest = current / "release/0.1.0a3.json"
     manifest.parent.mkdir()
     manifest.write_text(json.dumps(data))
     output = tmp_path / "outputs"

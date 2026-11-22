@@ -89,7 +89,7 @@ jobs:
           import os, runpy
           from pathlib import Path
           manifest = runpy.run_path('scripts/check_release_assets.py')['manifest']
-          data = manifest(Path('release/0.1.0a2.json'))
+          data = manifest(Path('release/0.1.0a3.json'))
           with Path(os.environ['GITHUB_OUTPUT']).open('a') as output:
               output.write(f"commit={data['source_commit']}\n")
           PY
@@ -105,7 +105,7 @@ jobs:
           import runpy, subprocess
           from pathlib import Path
           data = runpy.run_path('scripts/check_release_assets.py')['manifest'](
-              Path('release/0.1.0a2.json'))
+              Path('release/0.1.0a3.json'))
           source = Path('released-source').resolve()
           commit = subprocess.run(
               ['git', '-C', str(source), 'rev-parse', 'HEAD'], check=True,
@@ -120,7 +120,7 @@ jobs:
       - name: Download exact private assets and verify trusted hashes before scanning
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python scripts/check_release_assets.py release/0.1.0a2.json "${{ runner.temp }}/gateway-release-assets" --download
+        run: python scripts/check_release_assets.py release/0.1.0a3.json "${{ runner.temp }}/gateway-release-assets" --download
       - name: Scan both exact archives and enforce current scoped dispositions
         env:
           RELEASE_ASSETS: ${{ runner.temp }}/gateway-release-assets
@@ -129,7 +129,7 @@ jobs:
           import json, os, runpy, subprocess
           from pathlib import Path
 
-          manifest = json.loads(Path('release/0.1.0a2.json').read_text())
+          manifest = json.loads(Path('release/0.1.0a3.json').read_text())
           assets = Path(os.environ['RELEASE_ASSETS']).resolve()
           reports = Path('reports').resolve()
           reports.mkdir(exist_ok=True)

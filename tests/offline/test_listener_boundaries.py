@@ -188,7 +188,9 @@ def test_tcp_listener_is_owned_and_closed_after_server_run(service, tmp_path, mo
 
 def test_cli_version_and_help_do_not_require_runtime_actions(capsys):
     assert cli.main(["--version"]) == 0
-    assert capsys.readouterr().out.strip() == "0.1.0a2"
+    from llm_gateway import __version__
+
+    assert capsys.readouterr().out.strip() == __version__
     assert cli.main([]) == 0
     assert "--project-config" not in capsys.readouterr().err
 

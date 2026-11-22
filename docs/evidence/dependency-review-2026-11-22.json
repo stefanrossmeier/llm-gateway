@@ -1,6 +1,6 @@
 {
   "reviewed_at": "2026-11-22T15:57:10.698816+00:00",
-  "lock_sha256": "620e415228f8d9538b6c23b3da57269cf1ff7fdf3e0a04574ee4b44cc3d1d33b",
+  "lock_sha256": "f0ed6274f266231946b5271265f700b993e0ae75767db5f8305ec9c527d5fd46",
   "sources": [
     "https://api.osv.dev/v1/querybatch",
     "https://pypi.org"
@@ -2311,5 +2311,6 @@
   "target_code_executed": false,
   "scope": "Locked registry graph; selected pure/macOS arm64/Linux x86_64+arm64 wheels.",
   "status": "no_automated_findings",
-  "release_root_version_update": "Only the authored package version changed; all reviewed registry records and wheel hashes are identical."
+  "release_root_version_update": "Only the authored package version changed; all reviewed registry records and wheel hashes are identical.",
+  "lock_change_review": "0.1.0a3 changes only the authored project version; dependency package versions, URLs and hashes are unchanged from the same-day static review."
 }

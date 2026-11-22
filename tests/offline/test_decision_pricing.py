@@ -141,7 +141,12 @@ def test_actual_sdk_pipeline_admits_input_only_decisions_with_estimated_receipt(
 
 @pytest.mark.parametrize(
     "legacy",
-    ["litellm-1.109.0/gateway-v1", "litellm-1.109.0/gateway-v2", "litellm-1.109.0/gateway-v3"],
+    [
+        "litellm-1.109.0/gateway-v1",
+        "litellm-1.109.0/gateway-v2",
+        "litellm-1.109.0/gateway-v3",
+        "litellm-1.109.0/gateway-v4",
+    ],
 )
 def test_prior_capability_snapshots_remain_readable_but_require_reload_for_new_calls(
     tmp_path, legacy

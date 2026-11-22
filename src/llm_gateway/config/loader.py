@@ -126,6 +126,7 @@ class ConfigSnapshot:
             "litellm-1.109.0/gateway-v1",
             "litellm-1.109.0/gateway-v2",
             "litellm-1.109.0/gateway-v3",
+            "litellm-1.109.0/gateway-v4",
         }:
             raise ConfigError("snapshot_capability_unavailable")
         return ProjectConfig.model_validate_json(
