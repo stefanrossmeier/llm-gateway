@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "LLM Gateway",
-    "version": "0.1.0a2",
+    "version": "0.1.0a3",
     "description": "Gateway bearer authentication or verified private owner Unix IPC. Compatibility bodies outside explicit schemas use the restricted subset in docs/API.md. Inference/error receipts remain authoritative on non-200 statuses."
   },
   "paths": {

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0a3
+
+- Preserve prior gateway-v4 configuration snapshots when upgrading existing state.
+- Add the previous-revision recovery regression and architecture documentation.
+- Replace the initial public artifact set with fresh exact-image evidence.
+
+0.1.0a2 cannot activate existing gateway-v4 state; use 0.1.0a3 for that upgrade.
+
 ## 0.1.0a2
 
 - Correct native-X billing to fetched post/profile rates and cumulative token usage;

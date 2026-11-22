@@ -13,6 +13,7 @@ Start with the [quickstart](../QUICKSTART.md).
 | Deploy, back up and recover | [Operations](OPERATIONS.md) |
 | Develop and test | [Testing](TESTING.md), [live plans](LIVE_TEST_PLANS.md) |
 | Prepare a release | [Releasing](RELEASING.md), [publication review](PUBLICATION_REVIEW.md) |
+| Explore the code and interfaces | [Repository map](archdoc/REPO_MAP.md), [architecture](archdoc/ARCHITECTURE.md), [API surface](archdoc/API_SURFACE.md), [operations](archdoc/OPERATIONS.md) |
 | Understand the design | [Requirements](REQUIREMENTS.md), [specification](SPECIFICATION.md), [evolution](IMPLEMENTATION_PLAN.md) |
 | Check compatibility | [Consumer contracts](CONSUMER_CONTRACTS.md) |
 

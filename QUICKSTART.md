@@ -6,7 +6,7 @@ Python 3.12 for the service.
 ```sh
 git clone https://github.com/stefanrossmeier/llm-gateway.git
 cd llm-gateway
-git checkout v0.1.0a2
+git checkout v0.1.0a3
 uv sync --frozen --extra service --no-editable
 demo=$(mktemp -d /tmp/gateway-demo.XXXXXX)
 .venv/bin/python scripts/create_fake_project.py --directory "$demo"

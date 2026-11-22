@@ -6,7 +6,7 @@ LLM Gateway is a Python service and lean client for authenticated OpenAI and
 OpenRouter access. Each project owns its aliases, models, credentials and budgets.
 The gateway owns transport, validation, durable accounting and request recovery.
 
-**Version 0.1.0a2 — alpha.** The client supports Python 3.11–3.12; the service
+**Version 0.1.0a3 — alpha.** The client supports Python 3.11–3.12; the service
 requires Python 3.12 on POSIX. This release includes chat, strict JSON, stateless
 Responses and function calls, embeddings, Decisions, and scoped native X search
 through OpenRouter. Provider/model capabilities still require validation.
