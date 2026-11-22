@@ -1,6 +1,13 @@
-# LLM Gateway
+```text
+██╗      ██╗      ███╗   ███╗     ██████╗   █████╗  ████████╗ ███████╗ ██╗    ██╗  █████╗  ██╗   ██╗
+██║      ██║      ████╗ ████║    ██╔════╝  ██╔══██╗ ╚══██╔══╝ ██╔════╝ ██║    ██║ ██╔══██╗ ╚██╗ ██╔╝
+██║      ██║      ██╔████╔██║    ██║  ███╗ ███████║    ██║    █████╗   ██║ █╗ ██║ ███████║  ╚████╔╝
+██║      ██║      ██║╚██╔╝██║    ██║   ██║ ██╔══██║    ██║    ██╔══╝   ██║███╗██║ ██╔══██║   ╚██╔╝
+███████╗ ███████╗ ██║ ╚═╝ ██║    ╚██████╔╝ ██║  ██║    ██║    ███████╗ ╚███╔███╔╝ ██║  ██║    ██║
+╚══════╝ ╚══════╝ ╚═╝     ╚═╝     ╚═════╝  ╚═╝  ╚═╝    ╚═╝    ╚══════╝  ╚══╝╚══╝  ╚═╝  ╚═╝    ╚═╝
 
-Shared inference, project-owned policy, accountable spending.
+                   Shared inference, project-owned policy, accountable spending.
+```
 
 LLM Gateway is a Python service and lean client for authenticated OpenAI and
 OpenRouter access. Each project owns its aliases, models, credentials and budgets.
