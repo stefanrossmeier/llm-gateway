@@ -9,7 +9,14 @@ environment file defining `LLM_GATEWAY_IMAGE`, `PROJECT_CONFIG_DIR`,
 `PROJECT_SECRET_DIR`, `PROJECT_TOKEN_DIR`, `PROJECT_STATE_DIR`, optional loopback
 `GATEWAY_BIND_PORT` and network alias `GATEWAY_HOSTNAME`. Run
 `scripts/deploy_project.sh /absolute/private/gateway.env unique-project`.
-Attach authorized clients to that project's internal `client` network. Provider
+Attach authorized clients to that project's internal `client` network.
+Docker can omit host port publishing for an internal-only bridge even when a
+loopback binding is requested. Verify actual bindings; do not assume that the
+optional host port is reachable. The supported client path is the gateway's
+network alias on its internal client network. A Linux host can use the inspected
+bridge address, or an operator can use an authenticated request through an
+attached client. Keep the inference container isolated; adding an unrestricted
+network to make a port work would bypass that boundary. Provider
 secrets and tokens must be readable by UID 10001; writable state must be owned
 by UID 10001 and mode 700. The inference container has no outbound network; its
 allowlisted CONNECT proxy is the sole outbound path.

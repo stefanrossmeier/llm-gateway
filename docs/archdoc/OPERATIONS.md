@@ -49,6 +49,8 @@ The parameterized [deploy/compose.tcp.yaml](https://github.com/stefanrossmeier/l
 client network with a separate allowlisted CONNECT proxy on an outbound network.
 The gateway runs as UID/GID 10001 with a read-only root, dropped capabilities,
 `no-new-privileges` and bounded resources. The proxy receives no provider credentials.
+Docker may omit host port publishing for an internal-only bridge; verify bindings
+and use the authorized internal client path. See the current [operations guide](../OPERATIONS.md).
 The Unix-socket template is [deploy/compose.yaml](https://github.com/stefanrossmeier/llm-gateway/blob/6d36e06bd378a0c7f2326bae904b4b30ac0613a8/deploy/compose.yaml). These are supported
 patterns, not an installation inventory.
 
