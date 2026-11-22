@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "repository": "stefanrossmeier/llm-gateway",
+  "tag": "v0.1.0a3",
+  "source_commit": "6d36e06bd378a0c7f2326bae904b4b30ac0613a8",
+  "authored_source_sha256": "2e17974969c5450a49f685fb66990b5eb3d76a7a1787b952268c52b2e9fac10a",
+  "platforms": {
+    "arm64": {
+      "image": "image-arm64.tar",
+      "profile": "native-profile-arm64.json",
+      "sbom": "sbom-arm64.cdx.json",
+      "original_scan": "advisories-arm64.json"
+    },
+    "amd64": {
+      "image": "image-amd64.tar",
+      "profile": "native-profile-amd64.json",
+      "sbom": "sbom-amd64.cdx.json",
+      "original_scan": "advisories-amd64.json"
+    }
+  },
+  "assets": {
+    "LICENSE.txt": {
+      "sha256": "56abc925eb23fef5d290185b5692f4431210a25df02e0eed68e141d86bac11f1",
+      "size": 1073
+    },
+    "advisories-amd64.json": {
+      "sha256": "afb2e4c94da9b29d7758ed78459155a22f9fb4db304e34549080c001e9a536af",
+      "size": 1225155
+    },
+    "advisories-arm64.json": {
+      "sha256": "d62255a959862ede44c08c57306454e2721be543b1380949929eec89d5d133b7",
+      "size": 1225072
+    },
+    "container-candidate-assessment-2026-11-22.json": {
+      "sha256": "fe13d8113f6d2a51c5697232e54935428995acf47ccdfb0465419f8c653a4ae3",
+      "size": 80654
+    },
+    "coverage-summary.json": {
+      "sha256": "b0c7e8793e917e080a7f92b3534b8c6cebbcaa2059a390a09611840657633084",
+      "size": 10327
+    },
+    "dependency-review-2026-11-22.json": {
+      "sha256": "f94f55fb71d7d210389db2136cadc639e522d784f865a7afd73bcc476bb5335f",
+      "size": 84487
+    },
+    "image-amd64.tar": {
+      "sha256": "53336f063dd55de8b8ee0b0617ecbeb897649cd23d41facbffb56503d4349b10",
+      "size": 120544768
+    },
+    "image-arm64.tar": {
+      "sha256": "9cc74f93bff91c310f57004b278d45250cfadc5792ee65de309ddfd883e5233e",
+      "size": 119986688
+    },
+    "llm_gateway-0.1.0a3-py3-none-any.whl": {
+      "sha256": "d1fbb0eb1cd760a0110a936d08df6e250f17a3b9c96de1bbb4fd0b1ff356376e",
+      "size": 110838
+    },
+    "native-profile-amd64.json": {
+      "sha256": "d49852e9072d55ccc36977910ca53d7c93132d17211fd41cfd94c31d26a8188b",
+      "size": 2315
+    },
+    "native-profile-arm64.json": {
+      "sha256": "61edf79289312e148640d0dcf10c571459e8b94934adeefc352a1e4caa424be8",
+      "size": 2318
+    },
+    "provenance.json": {
+      "sha256": "51afc8b0b60b4e0eb0f5419c3c8a8cac0e4d9be6cbe4c3b4be957a8a95618c0b",
+      "size": 1476
+    },
+    "requirements-client.txt": {
+      "sha256": "5c30116e3a43d6ca442e586eb214b546b67aadc388e5a724b213045ba20ecfd5",
+      "size": 6420
+    },
+    "requirements-service.txt": {
+      "sha256": "e3418c3667d88c4abe1b1cfccc1dbac364187a411b0a631379764a75fadea686",
+      "size": 56839
+    },
+    "sbom-amd64.cdx.json": {
+      "sha256": "b82ebb2881368469d5ea9dd88e5c811cb2c50cbaa909019240c033b59412cea9",
+      "size": 1214661
+    },
+    "sbom-arm64.cdx.json": {
+      "sha256": "87c460f7193330cc1f8a266a0d9a7430484ce94ad65414198732e25e0d17430b",
+      "size": 1215702
+    },
+    "uv.lock": {
+      "sha256": "f0ed6274f266231946b5271265f700b993e0ae75767db5f8305ec9c527d5fd46",
+      "size": 237044
+    }
+  }
+}

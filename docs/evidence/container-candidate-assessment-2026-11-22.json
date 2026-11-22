@@ -2,9 +2,9 @@
   "schema_version": 1,
   "release_applicability_approved": true,
   "reviewed_by": "Codex: scoped source, dependency and exact runtime review at repository owner request",
-  "reviewed_at": "2026-11-22T16:46:42+00:00",
-  "expires_at": "2026-12-05T16:46:42+00:00",
-  "candidate_source_commit": "6088ceced704cdaba4c536fb851a10293d8a2f70",
+  "reviewed_at": "2026-11-22T17:05:17+00:00",
+  "expires_at": "2026-12-05T17:05:17+00:00",
+  "candidate_source_commit": "6d36e06bd378a0c7f2326bae904b4b30ac0613a8",
   "scanner_version": "0.121.3",
   "scanner_policy_sha256": "e43efdc967ef749a229fb21574c143a0d6e1747b23b670f8ac2e2151d87a02d6",
   "distro": {
@@ -14,9 +14,9 @@
   },
   "profiles": {
     "arm64": {
-      "authored_source_sha256": "0a52e357a975101cdee1dc8de43e47a8ea7f1a2ed54e2153a1a1749e596fe7a7",
+      "authored_source_sha256": "2e17974969c5450a49f685fb66990b5eb3d76a7a1787b952268c52b2e9fac10a",
       "authored_source_files": 51,
-      "image_runtime_identity_sha256": "7a4be6cc1046497b5c1392cf376534c340d529831730a3ff383f8aabb1dcecd3",
+      "image_runtime_identity_sha256": "4cb9674831a8fb6cb7109a64b55367cdd9269cea029deaf27417fbe7e5ac5232",
       "architecture": "aarch64",
       "python_version": "3.12.16",
       "openssl_version": "OpenSSL 3.5.7 9 Jun 2026",
@@ -76,9 +76,9 @@
       "applicability_approved": false
     },
     "amd64": {
-      "authored_source_sha256": "0a52e357a975101cdee1dc8de43e47a8ea7f1a2ed54e2153a1a1749e596fe7a7",
+      "authored_source_sha256": "2e17974969c5450a49f685fb66990b5eb3d76a7a1787b952268c52b2e9fac10a",
       "authored_source_files": 51,
-      "image_runtime_identity_sha256": "f83c3389916f647410cbaa4ce2a37d5c9d1fa2038e301ee1b2034f7b88b1c193",
+      "image_runtime_identity_sha256": "45d4009583c48d842bce17256390769da3c7b1619edf2b548733a9e5617e76f3",
       "architecture": "x86_64",
       "python_version": "3.12.16",
       "openssl_version": "OpenSSL 3.5.7 9 Jun 2026",
@@ -140,7 +140,7 @@
   },
   "reviewed_files": {
     ".dockerignore": "d11fc9cf63bc19f1883eaa9c9387f7e8a5e267195c1cf22e977d6b8a0523f190",
-    ".github/workflows/security.yml": "e77278257f3bc492696366e530df9305167fc4a77006097ccb140b061d1d4ae3",
+    ".github/workflows/security.yml": "ee49655db1024ec9b1de159bd37917a2ccf0fc5f2997bb72f5328749c2af0501",
     "Dockerfile": "41d3582ab95ee54a44e16e6375bd87050ea94c9a1172fb277a3201e0cb15f40c",
     "LICENSE": "56abc925eb23fef5d290185b5692f4431210a25df02e0eed68e141d86bac11f1",
     "README.md": "a78d0bde196b3192030261910a4498c2c062d123aab19c700b11f64ba5eca253",
@@ -155,14 +155,14 @@
     "docs/evidence/PYTHON_PROFILE_2026-11-11.md": "417a3687b1f7100fdc7cd787bb9d83e9a968ec5d7e3e99bf4bd480696083e8f5",
     "docs/evidence/SQLITE_PROFILE_2026-11-11.md": "cc19274e7f81e73ac6e5f44d47a44e13cc9aa78a9c6b6bba274afb3f2267e835",
     "docs/evidence/container-source-assessments-2026-11-11.json": "e2765042e70b862f08c82a3811dfaf1b31c3b7a9467dcecaf4e510154488ca7e",
-    "docs/evidence/dependency-review-2026-11-22.json": "4e692a759008b9fab4aa542a5a90727b845fcbc9f28d8dbf4a366e46e3ce5aa0",
+    "docs/evidence/dependency-review-2026-11-22.json": "f94f55fb71d7d210389db2136cadc639e522d784f865a7afd73bcc476bb5335f",
     "docs/evidence/native-source-review-2026-11-11.json": "cd66e215da34c26662de65c1bbc6a429d40d9a4498e085751814ac3ee20ef1f1",
-    "pyproject.toml": "2f1a8f43adbe6a8f074db48050591338c4595c48f01b8687c1b042e03fedf454",
+    "pyproject.toml": "a53810ff6f6a2049eb6e1bde684107186e12ee85f6296009f2e34babab633da1",
     "scripts/check_image_advisories.py": "5d34fb571fd86c83b75abc9500a2b564e329b7320cc3ec7680aa5b6cdef47ac8",
     "scripts/check_release_assets.py": "662a64116776d099f09e770d6d875627a65e52f3d849406ad2b880a8a9a84c81",
     "scripts/probe_native_profile.py": "91b2d9b9c513b256b8c7e9e85f9c551a6891b582c1cc4ef25c0633d2ac7807dc",
     "tests/offline/test_provider_runtime.py": "25ad41ec762a2aa2f87519ba707f051eb7dc33b0bf0fee4275b508b70f0c462d",
-    "uv.lock": "620e415228f8d9538b6c23b3da57269cf1ff7fdf3e0a04574ee4b44cc3d1d33b"
+    "uv.lock": "f0ed6274f266231946b5271265f700b993e0ae75767db5f8305ec9c527d5fd46"
   },
   "findings": [
     {
