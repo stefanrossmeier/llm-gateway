@@ -7,7 +7,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "llm-gateway"
-version = "0.1.0a3"
+version = "0.1.0a4"
 description = "Project-owned model routing with isolated provider access and durable cost admission"
 readme = "README.md"
 license = "MIT"

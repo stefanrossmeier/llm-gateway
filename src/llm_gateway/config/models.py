@@ -1,15 +1,26 @@
 """Schema v1 for configuration supplied and owned by a consuming project."""
 
+import json
 import re
+from pathlib import Path
 from typing import Annotated, Literal
+from urllib.parse import urlsplit
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
-from pydantic import Field, StrictBool, StrictInt, ValidationInfo, field_validator, model_validator
+from pydantic import (
+    AliasChoices,
+    Field,
+    StrictBool,
+    StrictInt,
+    ValidationInfo,
+    field_validator,
+    model_validator,
+)
 
 from llm_gateway.contracts.models import Alias, Contract, Identifier, Operation, XHandle
 from llm_gateway.contracts.money import TokenCount, Usd
 
-CAPABILITY_REVISION = "litellm-1.109.0/gateway-v5"
+CAPABILITY_REVISION = "litellm-1.109.0/gateway-v6"
 OPERATION_CAPABILITIES = {
     "chat": {"plain_text", "json_object", "json_schema", "function_calls", "reasoning_effort"},
     "responses": {
@@ -107,11 +118,87 @@ class CredentialReference(Contract):
         return self
 
 
+def builtin_provider(name: str) -> dict:
+    if name not in {"openai", "openrouter"}:
+        raise ValueError("unknown bundled provider definition")
+    return json.loads((Path(__file__).with_name("providers") / f"{name}.json").read_bytes())
+
+
+class ProviderAuthentication(Contract):
+    type: Literal["bearer", "none"] = "bearer"
+
+
 class ProviderConfig(Contract):
-    kind: Literal["openai", "openrouter"]
+    # kind is retained on snapshots/wires; adapter is the configuration spelling.
+    kind: Literal["openai", "openrouter", "openai_chat"] = Field(
+        validation_alias=AliasChoices("kind", "adapter")
+    )
+    base_url: str = Field(max_length=2048)
+    authentication: ProviderAuthentication = Field(default_factory=ProviderAuthentication)
+    operations: list[Operation] = Field(default_factory=lambda: ["chat"], min_length=1)
+    free_models: list[str] = Field(default_factory=list, max_length=256)
+    free_model_suffixes: list[str] = Field(default_factory=list, max_length=16)
     credential: CredentialReference | None = None
     enabled: StrictBool = True
     application_name: str | None = Field(default=None, max_length=128)
+
+    @model_validator(mode="before")
+    @classmethod
+    def legacy_definition(cls, value):
+        if isinstance(value, dict):
+            kind = value.get("kind", value.get("adapter"))
+            if kind in {"openai", "openrouter"}:
+                defaults = builtin_provider(kind)
+                defaults.pop("adapter", None)
+                return {**defaults, **value}
+        return value
+
+    @field_validator("base_url")
+    @classmethod
+    def public_https_endpoint(cls, value):
+        if any(ord(char) <= 32 or ord(char) >= 127 for char in value):
+            raise ValueError("provider endpoint must be an explicit public HTTPS URL")
+        url = urlsplit(value)
+        host = url.hostname or ""
+        if (
+            url.scheme != "https"
+            or url.username is not None
+            or url.password is not None
+            or url.port not in {None, 443}
+            or "?" in value
+            or "#" in value
+            or not re.fullmatch(r"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,63}", host)
+            or not re.fullmatch(r"(?:/[A-Za-z0-9_-]+)*/?", url.path)
+        ):
+            raise ValueError("provider endpoint must be an explicit public HTTPS URL")
+        return f"https://{host}{url.path.rstrip('/')}"
+
+    @field_validator("free_models")
+    @classmethod
+    def explicit_free_models(cls, values):
+        return [validate_upstream(value) for value in values]
+
+    @field_validator("free_model_suffixes")
+    @classmethod
+    def explicit_free_suffixes(cls, values):
+        if any(not re.fullmatch(r":[a-z0-9-]{1,32}", value) for value in values):
+            raise ValueError("invalid free model suffix")
+        return values
+
+    @model_validator(mode="after")
+    def adapter_contract(self):
+        if self.kind == "openai_chat" and self.operations != ["chat"]:
+            raise ValueError("openai_chat adapter supports chat only")
+        if self.authentication.type == "none" and (
+            self.kind != "openai_chat" or self.credential is not None
+        ):
+            raise ValueError("anonymous authentication requires a credential-free chat adapter")
+        return self
+
+    def is_free_model(self, model: str) -> bool:
+        return model in self.free_models or any(
+            model.endswith(suffix) for suffix in self.free_model_suffixes
+        )
 
 
 class PrincipalConfig(Contract):
@@ -414,8 +501,14 @@ class ProjectConfig(Contract):
             validate_provider_model(provider.kind, profile.upstream_model)
             if not provider.enabled:
                 raise ValueError("alias references disabled provider")
-            if self.mode == "live" and provider.credential is None:
+            if (
+                self.mode == "live"
+                and provider.authentication.type == "bearer"
+                and provider.credential is None
+            ):
                 raise ValueError("enabled provider needs a credential reference")
+            if profile.operation not in provider.operations:
+                raise ValueError("provider does not support alias operation")
             if profile.upstream_model.startswith(("https:", "http:", "/")):
                 raise ValueError("upstream model cannot supply a transport URL/path")
             if provider.kind == "openai" and "/" in profile.upstream_model:
@@ -440,11 +533,7 @@ class ProjectConfig(Contract):
                 profile.pricing
                 and profile.pricing.free_only
                 and (
-                    provider.kind != "openrouter"
-                    or not (
-                        profile.upstream_model == "openrouter/free"
-                        or profile.upstream_model.endswith(":free")
-                    )
+                    not provider.is_free_model(profile.upstream_model)
                     or "native_x_search" in profile.capabilities
                     or profile.limits.max_tool_calls
                     or profile.attempt_policy.fallback_routes
@@ -458,16 +547,20 @@ class ProjectConfig(Contract):
                 validate_provider_model(target.kind, fallback.upstream_model)
                 if not target.enabled:
                     raise ValueError("fallback provider is disabled")
+                if profile.operation not in target.operations:
+                    raise ValueError("fallback provider does not support alias operation")
+                if (
+                    self.mode == "live"
+                    and target.authentication.type == "bearer"
+                    and target.credential is None
+                ):
+                    raise ValueError("enabled provider needs a credential reference")
                 if fallback.upstream_model.startswith(("https:", "http:", "/")):
                     raise ValueError("fallback model cannot supply an endpoint/path")
                 if target.kind == "openai" and "/" in fallback.upstream_model:
                     raise ValueError("fallback provider/model mismatch")
                 if fallback.pricing.free_only and (
-                    target.kind != "openrouter"
-                    or not (
-                        fallback.upstream_model == "openrouter/free"
-                        or fallback.upstream_model.endswith(":free")
-                    )
+                    not target.is_free_model(fallback.upstream_model)
                     or profile.limits.max_tool_calls
                     or "native_x_search" in fallback.capabilities
                 ):

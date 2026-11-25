@@ -12,6 +12,14 @@ those layers without moving provider I/O inside database transactions.
 
 ## Invocation lifecycle
 
+Provider and model alias definitions may be inline or loaded from explicit local
+files. OpenAI and OpenRouter definitions ship as package data. Endpoints,
+authentication requirements and approved free routes are configuration; protocol
+adapters implement wire behavior. Activation captures complete resolved definitions
+in the immutable snapshot. The client supplies only its authorized model alias.
+Egress destinations derive from the configured enabled providers; provider
+definitions are never fetched from request-supplied URLs. See [providers](PROVIDERS.md).
+
 Authenticate the project/principal; validate the public wire; resolve an immutable
 alias/config; authorize capabilities and context. Register a stable invocation
 identity and semantic fingerprint. Repeated identical IDs recover their existing

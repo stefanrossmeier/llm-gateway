@@ -1,0 +1,8 @@
+{
+  "adapter": "openrouter",
+  "base_url": "https://openrouter.ai/api/v1",
+  "authentication": {"type": "bearer"},
+  "operations": ["chat", "responses", "embeddings", "decisions", "x_search"],
+  "free_models": ["openrouter/free"],
+  "free_model_suffixes": [":free"]
+}

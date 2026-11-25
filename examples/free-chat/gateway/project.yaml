@@ -1,0 +1,20 @@
+schema_version: 1
+project_id: kilo-free-example
+mode: live
+providers:
+  kilo:
+    definition: providers/kilo.yaml
+aliases:
+  kilo-auto-free:
+    definition: models/kilo-auto-free.yaml
+access:
+  principals:
+    example:
+      token_file: /run/gateway/client.token
+      aliases: [kilo-auto-free]
+      operations: [chat]
+      permissions: [infer, receipts:own]
+      allow_client_run_ids: true
+evidence_policy:
+  retain_results: true
+  result_ttl_seconds: 3600

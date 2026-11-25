@@ -57,8 +57,10 @@ for root in [Path("/app/.venv/lib/python3.12/site-packages"),
                        "sha256": hashlib.sha256(data).hexdigest(),
                        "imported_cpp_symbols": sorted(imported)})
 package_root = Path(llm_gateway.__file__).resolve().parent
+authored_paths = sorted([*package_root.rglob("*.py"),
+                         *package_root.glob("config/providers/*.json")])
 authored = [[str(path.relative_to(package_root)), hashlib.sha256(path.read_bytes()).hexdigest()]
-            for path in sorted(package_root.rglob("*.py"))]
+            for path in authored_paths]
 status = dict(line.split(":", 1) for line in Path("/proc/self/status").read_text().splitlines()
               if ":" in line)
 root_mount = [line.split() for line in Path("/proc/mounts").read_text().splitlines()
@@ -178,7 +180,9 @@ def main():
         local_root = ROOT / "src" / "llm_gateway"
         authored = [
             [str(path.relative_to(local_root)), hashlib.sha256(path.read_bytes()).hexdigest()]
-            for path in sorted(local_root.rglob("*.py"))
+            for path in sorted(
+                [*local_root.rglob("*.py"), *local_root.glob("config/providers/*.json")]
+            )
         ]
         expected_source = hashlib.sha256(
             json.dumps(authored, separators=(",", ":"), ensure_ascii=True).encode()

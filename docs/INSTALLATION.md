@@ -4,7 +4,7 @@ Use an immutable release tag, verified wheel or image identity. Do not deploy
 from a moving branch or depend on another project's source checkout.
 
 ```sh
-git clone --branch v0.1.0a3 https://github.com/stefanrossmeier/llm-gateway.git
+git clone --branch v0.1.0a4 https://github.com/stefanrossmeier/llm-gateway.git
 cd llm-gateway
 uv sync --frozen --extra service --no-editable
 .venv/bin/llm-gateway --version

@@ -39,8 +39,8 @@ def proxy_destination(value):
 
 
 @contextmanager
-def owned_network(host, port=443):
-    token = _permit.set((host, port, set()))
+def owned_network(host, port=443, *, public=False):
+    token = _permit.set((host, port, set(), public))
     try:
         yield
     finally:
@@ -64,6 +64,8 @@ def install():
             raise PermissionError("unsolicited_provider_network_denied")
         check_search_configuration()
         result = lookup(host, port, *args, **kwargs)
+        if allowed[3] and any(not ipaddress.ip_address(item[4][0]).is_global for item in result):
+            raise PermissionError("provider_nonpublic_address_denied")
         allowed[2].update((item[4][0], item[4][1]) for item in result)
         return result
 

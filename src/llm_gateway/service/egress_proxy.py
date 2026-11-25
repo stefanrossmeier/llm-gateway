@@ -7,20 +7,26 @@ import socket
 import socketserver
 import threading
 import time
+from pathlib import Path
+from urllib.parse import urlsplit
 
+from llm_gateway.config.loader import load_project_config
+from llm_gateway.config.models import builtin_provider
 from llm_gateway.isolation.resolver import check_search_configuration
 
-ALLOWED_HOSTS = frozenset({"api.openai.com", "openrouter.ai"})
+ALLOWED_HOSTS = frozenset(
+    urlsplit(builtin_provider(name)["base_url"]).hostname for name in ("openai", "openrouter")
+)
 
 
-def destination(header):
+def destination(header, allowed_hosts=ALLOWED_HOSTS):
     try:
         lines = header.decode("ascii").split("\r\n")
         method, target, version = lines[0].split(" ")
         host, port = target.split(":")
         if (
             method != "CONNECT"
-            or host not in ALLOWED_HOSTS
+            or host not in allowed_hosts
             or port != "443"
             or version != "HTTP/1.1"
         ):
@@ -67,7 +73,7 @@ class Handler(socketserver.BaseRequestHandler):
                 header.extend(byte)
                 if len(header) > 8192:
                     raise ValueError()
-            host = destination(header)
+            host = destination(header, self.server.allowed_hosts)
             remote = None
             for family, socktype, proto, address in public_addresses(host):
                 candidate = socket.socket(family, socktype, proto)
@@ -108,8 +114,9 @@ class Proxy(socketserver.ThreadingTCPServer):
     daemon_threads = True
     request_queue_size = 32
 
-    def __init__(self, address):
+    def __init__(self, address, allowed_hosts=ALLOWED_HOSTS):
         self.capacity = threading.BoundedSemaphore(64)
+        self.allowed_hosts = frozenset(allowed_hosts)
         super().__init__(address, Handler)
 
     def handle_error(self, request, client_address):
@@ -120,8 +127,17 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--host", default="0.0.0.0")
     parser.add_argument("--port", type=int, default=3128)
+    parser.add_argument("--project-config", type=Path)
     args = parser.parse_args()
-    with Proxy((args.host, args.port)) as server:
+    hosts = ALLOWED_HOSTS
+    if args.project_config:
+        config = load_project_config(args.project_config, check_credentials=False).config
+        hosts = {
+            urlsplit(provider.base_url).hostname
+            for provider in config.providers.values()
+            if provider.enabled
+        }
+    with Proxy((args.host, args.port), hosts) as server:
         server.serve_forever()
 
 

@@ -90,7 +90,7 @@ def source_digest(root):
     package = root / "src/llm_gateway"
     rows = [
         [str(path.relative_to(package)), hashlib.sha256(path.read_bytes()).hexdigest()]
-        for path in sorted(package.rglob("*.py"))
+        for path in sorted([*package.rglob("*.py"), *package.glob("config/providers/*.json")])
     ]
     if not rows:
         raise ValueError("authored source absent")

@@ -929,16 +929,72 @@
       "title": "PrincipalConfig",
       "type": "object"
     },
+    "ProviderAuthentication": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "default": "bearer",
+          "enum": [
+            "bearer",
+            "none"
+          ],
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "title": "ProviderAuthentication",
+      "type": "object"
+    },
     "ProviderConfig": {
       "additionalProperties": false,
       "properties": {
         "kind": {
           "enum": [
             "openai",
-            "openrouter"
+            "openrouter",
+            "openai_chat"
           ],
           "title": "Kind",
           "type": "string"
+        },
+        "base_url": {
+          "maxLength": 2048,
+          "title": "Base Url",
+          "type": "string"
+        },
+        "authentication": {
+          "$ref": "#/$defs/ProviderAuthentication"
+        },
+        "operations": {
+          "items": {
+            "enum": [
+              "chat",
+              "responses",
+              "decisions",
+              "x_search",
+              "embeddings"
+            ],
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Operations",
+          "type": "array"
+        },
+        "free_models": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 256,
+          "title": "Free Models",
+          "type": "array"
+        },
+        "free_model_suffixes": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Free Model Suffixes",
+          "type": "array"
         },
         "credential": {
           "anyOf": [
@@ -971,7 +1027,8 @@
         }
       },
       "required": [
-        "kind"
+        "kind",
+        "base_url"
       ],
       "title": "ProviderConfig",
       "type": "object"

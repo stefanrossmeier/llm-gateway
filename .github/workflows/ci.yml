@@ -50,8 +50,8 @@ jobs:
       - run: uv sync --frozen --extra service --no-editable
       - name: Lint and inference-denied offline suite
         run: |
-          .venv/bin/ruff check src tests scripts
-          .venv/bin/ruff format --check src tests scripts
+          .venv/bin/ruff check src tests scripts examples
+          .venv/bin/ruff format --check src tests scripts examples
           .venv/bin/pytest -q --cov=llm_gateway --cov-branch --cov-report=json:coverage.json
           .venv/bin/python scripts/check_coverage.py coverage.json
       - name: Non-root container without external network

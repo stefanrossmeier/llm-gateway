@@ -75,7 +75,7 @@ def workspace(tmp_path, evidence, monkeypatch):
     data.update(
         source_commit=git("rev-parse", "HEAD"), authored_source_sha256=gate["source_digest"](source)
     )
-    manifest = current / "release/0.1.0a3.json"
+    manifest = current / "release/0.1.0a4.json"
     manifest.parent.mkdir()
     manifest.write_text(json.dumps(data))
     output = tmp_path / "outputs"
@@ -153,7 +153,7 @@ def test_current_gate_checks_both_archives_against_release_source_and_rejects_ne
         if failure_mode == "new_finding":
             scan["matches"][0]["vulnerability"]["id"] = "UNREVIEWED-NEW"
         scans[f"released-{arch}-advisories.json"] = scan
-    review = current / "docs/evidence/container-candidate-assessment-2026-11-22.json"
+    review = current / "docs/evidence/container-candidate-assessment-2026-11-25.json"
     review.parent.mkdir(parents=True)
     review.write_text(json.dumps(approval))
     monkeypatch.setenv("RELEASE_ASSETS", str(assets))
@@ -163,7 +163,7 @@ def test_current_gate_checks_both_archives_against_release_source_and_rejects_ne
     def check(path, **kwargs):
         assert kwargs["root"] == source.resolve()
         assert kwargs["assessment"] == Path(
-            "docs/evidence/container-candidate-assessment-2026-11-22.json"
+            "docs/evidence/container-candidate-assessment-2026-11-25.json"
         )
         checked.append(path.name)
         real(path, **kwargs, now=NOW)  # Synthetic time belongs only to this offline fixture.

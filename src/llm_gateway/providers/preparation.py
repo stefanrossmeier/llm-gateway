@@ -143,7 +143,11 @@ def prepare(
             raise PreparationError("input_size_limit")
     except UnicodeError:
         raise PreparationError("input_text_invalid_utf8") from None
-    if data.kind != alias.operation or not provider.enabled:
+    if (
+        data.kind != alias.operation
+        or not provider.enabled
+        or alias.operation not in provider.operations
+    ):
         raise PreparationError("operation_route_mismatch")
     limits = caller_limits or CallerLimits()
     if alias.operation == "decisions" and limits.max_output_tokens is not None:

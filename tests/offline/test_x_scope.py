@@ -240,22 +240,13 @@ def test_native_x_billing_boundary_splits_by_provider_wire(tmp_path):
         mutate(data)
         data["providers"]["router"]["kind"] = "openai"
 
-    engine, authority, _ = configured(tmp_path, mutate=openai_kind, provider=provider)
-    authority = type(authority)(
-        authority.project,
-        authority.principal,
-        authority.grants.model_copy(update={"operations": ["x_search"]}),
-    )
-    # The OpenAI wire is refused at preparation (native_search_policy_required)
-    # before any attempt, quota use or dispatch; the pricing layer additionally
-    # refuses OpenAI native X item billing (see test_pricing_boundaries).
-    with pytest.raises(EngineError, match="native_search_policy_required"):
-        engine.run(authority, search())
+    from llm_gateway.config import ConfigError
+
+    # Provider definitions now reject unsupported operations at configuration
+    # loading, before creating an engine or dispatching a provider request.
+    with pytest.raises(ConfigError, match="configuration_schema_invalid"):
+        configured(tmp_path, mutate=openai_kind, provider=provider)
     assert provider.calls == []
-    assert engine.ledger.attempts("project-a", "owner", "one") == []
-    assert engine.ledger.report("project-a")["protected_debit_usd"] == "0"
-    with engine.store.connection() as db:
-        assert db.execute("SELECT count(*) FROM quota_slots").fetchone()[0] == 0
 
     provider2 = XDouble(payload(search()))
     engine2, authority2, _2 = configured(tmp_path, mutate=mutate, provider=provider2)

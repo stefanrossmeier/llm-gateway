@@ -21,6 +21,8 @@ See [architecture](ARCHITECTURE.md), [API surface](API_SURFACE.md) and
 
 | Path | What to find there |
 | --- | --- |
+| [config/providers/](../../src/llm_gateway/config/providers/) | Versioned OpenAI and OpenRouter definitions shipped with 0.1.0a4; additional compatible providers load from explicit project files |
+| [examples/free-chat/](../../examples/free-chat/README.md) | Released Docker image, Kilo provider/model alias files, and a one-prompt Python client |
 | [pyproject.toml](https://github.com/stefanrossmeier/llm-gateway/blob/6d36e06bd378a0c7f2326bae904b4b30ac0613a8/pyproject.toml) and [uv.lock](https://github.com/stefanrossmeier/llm-gateway/blob/6d36e06bd378a0c7f2326bae904b4b30ac0613a8/uv.lock) | Package, service extra, Python limits, CLI, frozen dependency graph and test configuration |
 | [contracts/](https://github.com/stefanrossmeier/llm-gateway/blob/6d36e06bd378a0c7f2326bae904b4b30ac0613a8/src/llm_gateway/contracts/__init__.py) | Public request/result/receipt types and exact USD helpers |
 | [client/](https://github.com/stefanrossmeier/llm-gateway/blob/6d36e06bd378a0c7f2326bae904b4b30ac0613a8/src/llm_gateway/client/__init__.py) | Sync/async HTTP clients and restricted OpenAI-compatible transports |

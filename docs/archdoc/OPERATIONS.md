@@ -38,6 +38,12 @@ Commands and requirements are defined by [.github/workflows/ci.yml](https://gith
 
 ## Configuration and supported deployment shape
 
+Version 0.1.0a4 supports bundled or local provider definitions and local model
+alias files. The proxy loads the same project directory with `--project-config`
+without mounting credentials. Recreate it when destination configuration changes.
+See [provider configuration](../PROVIDERS.md) and the
+[released Kilo example](../../examples/free-chat/README.md).
+
 Project YAML owns providers, credential references, model aliases, limits, pricing,
 call/run/day/month budgets, access grants, operation policy and evidence retention.
 The loader rejects unsafe YAML, validates bounded schemas and snapshots non-secret

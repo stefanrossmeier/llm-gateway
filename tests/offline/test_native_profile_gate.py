@@ -24,7 +24,7 @@ def test_probe_rejects_changed_source_or_runtime_and_always_cleans_own_container
     root = ROOT / "src/llm_gateway"
     authored = [
         [str(path.relative_to(root)), hashlib.sha256(path.read_bytes()).hexdigest()]
-        for path in sorted(root.rglob("*.py"))
+        for path in sorted([*root.rglob("*.py"), *root.glob("config/providers/*.json")])
     ]
     digest = hashlib.sha256(
         json.dumps(authored, separators=(",", ":"), ensure_ascii=True).encode()

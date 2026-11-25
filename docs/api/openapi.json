@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "LLM Gateway",
-    "version": "0.1.0a3",
+    "version": "0.1.0a4",
     "description": "Gateway bearer authentication or verified private owner Unix IPC. Compatibility bodies outside explicit schemas use the restricted subset in docs/API.md. Inference/error receipts remain authoritative on non-200 statuses."
   },
   "paths": {
@@ -1667,16 +1667,72 @@
         "title": "PrincipalConfig",
         "type": "object"
       },
+      "ProviderAuthentication": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "default": "bearer",
+            "enum": [
+              "bearer",
+              "none"
+            ],
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "title": "ProviderAuthentication",
+        "type": "object"
+      },
       "ProviderConfig": {
         "additionalProperties": false,
         "properties": {
           "kind": {
             "enum": [
               "openai",
-              "openrouter"
+              "openrouter",
+              "openai_chat"
             ],
             "title": "Kind",
             "type": "string"
+          },
+          "base_url": {
+            "maxLength": 2048,
+            "title": "Base Url",
+            "type": "string"
+          },
+          "authentication": {
+            "$ref": "#/components/schemas/ProviderAuthentication"
+          },
+          "operations": {
+            "items": {
+              "enum": [
+                "chat",
+                "responses",
+                "decisions",
+                "x_search",
+                "embeddings"
+              ],
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Operations",
+            "type": "array"
+          },
+          "free_models": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 256,
+            "title": "Free Models",
+            "type": "array"
+          },
+          "free_model_suffixes": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 16,
+            "title": "Free Model Suffixes",
+            "type": "array"
           },
           "credential": {
             "anyOf": [
@@ -1709,7 +1765,8 @@
           }
         },
         "required": [
-          "kind"
+          "kind",
+          "base_url"
         ],
         "title": "ProviderConfig",
         "type": "object"
@@ -3764,7 +3821,8 @@
           "provider_kind": {
             "enum": [
               "openai",
-              "openrouter"
+              "openrouter",
+              "openai_chat"
             ],
             "title": "Provider Kind",
             "type": "string"

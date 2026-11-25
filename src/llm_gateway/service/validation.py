@@ -77,7 +77,7 @@ class ValidationProcess:
                 {
                     "action": "prepare",
                     "alias": alias.model_dump(mode="json"),
-                    "provider": {"kind": provider.kind, "enabled": provider.enabled},
+                    "provider": provider.model_dump(mode="json", exclude={"credential"}),
                     "input": data.model_dump(mode="json"),
                     "policy": operation_policy.model_dump(mode="json")
                     if operation_policy

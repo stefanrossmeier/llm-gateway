@@ -26,7 +26,9 @@ services:
   egress:
     image: ${LLM_GATEWAY_IMAGE:?Set an immutable reviewed image reference}
     entrypoint: [python, -I, -m, llm_gateway.service.egress_proxy]
-    command: [--host, "0.0.0.0", --port, "3128"]
+    command: [--host, "0.0.0.0", --port, "3128", --project-config, /config/project.yaml]
+    volumes:
+      - ${PROJECT_CONFIG_DIR:?Set your project's config directory}:/config:ro
     read_only: true
     user: "10001:10001"
     cap_drop: [ALL]

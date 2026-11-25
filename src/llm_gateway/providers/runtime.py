@@ -12,6 +12,7 @@ import os
 import threading
 from dataclasses import dataclass, field
 from decimal import Decimal
+from urllib.parse import urlsplit
 
 import httpx
 
@@ -125,6 +126,8 @@ def checked_wire_parameters(prepared, actual, expected):
 
 
 def _redact(value, key):
+    if not key:
+        return value
     if isinstance(value, str):
         return value.replace(key, "[REDACTED]")
     if isinstance(value, dict):
@@ -220,22 +223,29 @@ class ProviderRuntime:
         if (
             provider.kind != prepared.provider_kind
             or not provider.enabled
-            or not provider.credential
+            or (provider.authentication.type == "bearer" and not provider.credential)
         ):
             raise ProviderFailure("provider_unavailable", dispatched=False)
-        key = resolve_credential(provider.credential, self._environment)
-        initialize()
-        import litellm
-        from litellm.llms.custom_httpx.http_handler import HTTPHandler
+        key = (
+            resolve_credential(provider.credential, self._environment)
+            if provider.credential
+            else ""
+        )
+        if provider.kind != "openai_chat":
+            initialize()
+            import litellm
+            from litellm.llms.custom_httpx.http_handler import HTTPHandler
 
-        host = "api.openai.com" if provider.kind == "openai" else "openrouter.ai"
-        prefix = "/v1" if provider.kind == "openai" else "/api/v1"
+        url = urlsplit(provider.base_url)
+        host, prefix = url.hostname, url.path
         endpoint = {
             "chat": prefix + "/chat/completions",
             "responses": prefix + "/responses",
             "x_search": prefix + "/responses",
             "embeddings": prefix + "/embeddings",
-            "decisions": "/v1/decisions" if provider.kind == "openai" else "/api/alpha/decisions",
+            "decisions": prefix + "/decisions"
+            if provider.kind == "openai"
+            else prefix.removesuffix("/v1") + "/alpha/decisions",
         }[prepared.operation]
         dispatched, captured, response_status = False, None, None
         routing_failure = None
@@ -265,7 +275,7 @@ class ProviderRuntime:
             if (
                 str(request.url) != f"https://{host}{endpoint}"
                 or request.method != "POST"
-                or request.headers.get("authorization") != f"Bearer {key}"
+                or request.headers.get("authorization") != (f"Bearer {key}" if key else None)
             ):
                 raise ProviderFailure("provider_destination_denied", dispatched=False)
             try:
@@ -335,7 +345,9 @@ class ProviderRuntime:
 
         class OwnedTransport(httpx.BaseTransport):
             def handle_request(self, request):
-                with owned_network(*(self_destination or (host, 443))):
+                with owned_network(
+                    *(self_destination or (host, 443)), public=self_destination is None
+                ):
                     return transport.handle_request(request)
 
             def close(self):
@@ -351,9 +363,17 @@ class ProviderRuntime:
                 headers={"Accept-Encoding": "identity"},
                 event_hooks={"request": [guard], "response": [capture]},
             ) as http_client:
-                handler = HTTPHandler(client=http_client, follow_redirects=False)
+                handler = (
+                    HTTPHandler(client=http_client, follow_redirects=False)
+                    if provider.kind != "openai_chat"
+                    else None
+                )
                 body = prepared.body
-                body["model"] = prepared.sdk_model
+                body["model"] = (
+                    prepared.upstream_model
+                    if provider.kind == "openai_chat"
+                    else prepared.sdk_model
+                )
                 kwargs = dict(
                     api_key=key,
                     api_base=f"https://{host}{prefix}",
@@ -362,8 +382,15 @@ class ProviderRuntime:
                     num_retries=0,
                     fallbacks=[],
                 )
-                if prepared.operation == "decisions":
-                    decision = self._decisions(body, key, prepared, handler, approve_decision_wire)
+                if provider.kind == "openai_chat":
+                    headers = {"Authorization": f"Bearer {key}"} if key else {}
+                    http_client.post(
+                        f"https://{host}{endpoint}", json=body, headers=headers
+                    ).raise_for_status()
+                elif prepared.operation == "decisions":
+                    decision = self._decisions(
+                        body, key, prepared, handler, approve_decision_wire, provider
+                    )
                     if captured is not None:
                         captured.payload["answers"] = _redact(
                             decision.model_dump(mode="json")["answers"], key
@@ -406,7 +433,7 @@ class ProviderRuntime:
             raise ProviderFailure(code, dispatched=dispatched, evidence=captured) from None
 
     @staticmethod
-    def _decisions(body, key, prepared, handler, approve_wire):
+    def _decisions(body, key, prepared, handler, approve_wire, provider):
         from litellm.decisions.call import _format_response, _request_body
         from litellm.llms.custom_httpx.llm_http_handler import BaseLLMHTTPHandler
         from litellm.systemone.main import _prepare_systemone_call
@@ -422,9 +449,9 @@ class ProviderRuntime:
             videos=None,
             api_key=key,
             api_base=(
-                "https://openrouter.ai/api"
+                provider.base_url.removesuffix("/v1")
                 if prepared.provider_kind == "openrouter"
-                else "https://api.openai.com/v1"
+                else provider.base_url
             ),
             timeout=prepared.timeout_seconds,
             custom_llm_provider=prepared.provider_kind,

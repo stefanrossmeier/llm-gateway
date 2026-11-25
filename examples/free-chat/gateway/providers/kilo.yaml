@@ -1,0 +1,7 @@
+# This provider is added by the example, without a gateway code change.
+adapter: openai_chat
+base_url: https://ai-gateway.kilo.ai/api/v1
+authentication:
+  type: none
+operations: [chat]
+free_models: [kilo-auto/free]

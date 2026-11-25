@@ -31,7 +31,8 @@
         "provider_kind": {
           "enum": [
             "openai",
-            "openrouter"
+            "openrouter",
+            "openai_chat"
           ],
           "title": "Provider Kind",
           "type": "string"

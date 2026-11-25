@@ -146,6 +146,7 @@ def test_actual_sdk_pipeline_admits_input_only_decisions_with_estimated_receipt(
         "litellm-1.109.0/gateway-v2",
         "litellm-1.109.0/gateway-v3",
         "litellm-1.109.0/gateway-v4",
+        "litellm-1.109.0/gateway-v5",
     ],
 )
 def test_prior_capability_snapshots_remain_readable_but_require_reload_for_new_calls(
@@ -161,6 +162,15 @@ def test_prior_capability_snapshots_remain_readable_but_require_reload_for_new_c
 
     engine, authority, snapshot = configured(tmp_path, live=False)
     data = json.loads(snapshot.payload)
+    for provider in data["providers"].values():
+        for field in (
+            "base_url",
+            "authentication",
+            "operations",
+            "free_models",
+            "free_model_suffixes",
+        ):
+            provider.pop(field, None)
     data["aliases"]["summary"].update(operation="decisions", capabilities=[])
     digest = hashlib.sha256(
         canonical_json(
