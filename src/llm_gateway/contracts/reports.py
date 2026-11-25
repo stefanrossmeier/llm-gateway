@@ -44,7 +44,7 @@ class AliasInspection(Contract):
     alias: Alias
     operation: Operation
     provider_ref: Alias
-    provider_kind: Literal["openai", "openrouter"]
+    provider_kind: Literal["openai", "openrouter", "openai_chat"]
     upstream_model: str
     capabilities: list[str]
     limits: JsonObject

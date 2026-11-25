@@ -95,9 +95,14 @@ These interactions are verified in [src/llm_gateway/service/engine.py](https://g
 accepted ADR set establishing historical human rationale for every mechanism.
 Do not treat this generated description as an approval of new design decisions.
 
-Known limits: external prices/capabilities can change; new provider kinds require
-adapter and security review, while already-supported provider/model selections are
-configuration. SQLite/exclusive ownership is not a distributed multi-writer service.
+Since 0.1.0a4, [provider and model alias definitions](../PROVIDERS.md) can be loaded
+from files. Endpoints, authentication and approved free routes are configuration;
+the generic `openai_chat` adapter supports compatible services without code changes.
+Snapshots capture resolved definitions and the proxy derives its destinations
+from project configuration. Bundled provider data participates in source identity.
+
+Known limits: external prices/capabilities can change; new protocols require
+adapter and security review. SQLite/exclusive ownership is not a distributed multi-writer service.
 Advisory dispositions apply to exact restricted artifacts and expire. **Missing:**
 representative load/latency SLO evidence and a universal paid-provider acceptance
 matrix. These do not follow from offline tests ([docs/TESTING.md](https://github.com/stefanrossmeier/llm-gateway/blob/6d36e06bd378a0c7f2326bae904b4b30ac0613a8/docs/TESTING.md),

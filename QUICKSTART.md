@@ -6,7 +6,7 @@ Python 3.12 for the service.
 ```sh
 git clone https://github.com/stefanrossmeier/llm-gateway.git
 cd llm-gateway
-git checkout v0.1.0a3
+git checkout v0.1.0a4
 uv sync --frozen --extra service --no-editable
 demo=$(mktemp -d /tmp/gateway-demo.XXXXXX)
 .venv/bin/python scripts/create_fake_project.py --directory "$demo"
@@ -39,3 +39,6 @@ project-owned live configuration. Persist the logical run/request IDs before
 calling inference; retain results if automatic lost-response recovery needs
 content. Read [configuration](docs/CONFIGURATION.md), [tokens](docs/TOKENS.md),
 [accounting](docs/ACCOUNTING.md) and [X support](docs/X_SEARCH.md) first.
+
+For real inference using the released Docker image and anonymous free Kilo
+access, see [examples/free-chat](examples/free-chat/README.md).

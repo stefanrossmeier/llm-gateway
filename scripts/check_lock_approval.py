@@ -8,7 +8,7 @@ from pathlib import Path
 
 def check(root):
     raw = (root / "uv.lock").read_bytes()
-    report = json.loads((root / "docs/evidence/dependency-review-2026-11-22.json").read_text())
+    report = json.loads((root / "docs/evidence/dependency-review-2026-11-25.json").read_text())
     expected = {
         (p["name"], p["version"])
         for p in tomllib.loads(raw.decode())["package"]

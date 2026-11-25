@@ -49,6 +49,25 @@ def test_unsolicited_dns_and_sockets_denied_and_permit_expires(guarded, monkeypa
     assert connects == [("192.0.2.1", 443)]
 
 
+@pytest.mark.parametrize("addresses", [["8.8.8.8"], ["8.8.8.8", "127.0.0.1"]])
+def test_configured_direct_provider_rejects_mixed_or_private_dns(guarded, monkeypatch, addresses):
+    monkeypatch.setattr(guarded, "check_search_configuration", lambda: None)
+    monkeypatch.setattr(
+        socket,
+        "getaddrinfo",
+        lambda *a, **k: [
+            (socket.AF_INET, socket.SOCK_STREAM, 6, "", (address, 443)) for address in addresses
+        ],
+    )
+    guarded.install()
+    with network.owned_network("inference.example", public=True):
+        if len(addresses) > 1:
+            with pytest.raises(PermissionError, match="nonpublic"):
+                socket.getaddrinfo("inference.example", 443)
+        else:
+            assert socket.getaddrinfo("inference.example", 443)[0][4][0] == "8.8.8.8"
+
+
 @pytest.mark.parametrize("kind", ["openai", "openrouter"])
 @pytest.mark.parametrize("operation", ["chat", "responses", "decisions", "embeddings"])
 def test_pinned_sdk_works_under_child_network_guard(guarded, kind, operation):

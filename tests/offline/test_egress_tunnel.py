@@ -60,7 +60,11 @@ class Capacity:
 
 def run(request, *, capacity=None):
     capacity = capacity or Capacity()
-    proxy.Handler(request, ("127.0.0.1", 1), SimpleNamespace(capacity=capacity))
+    proxy.Handler(
+        request,
+        ("127.0.0.1", 1),
+        SimpleNamespace(capacity=capacity, allowed_hosts=proxy.ALLOWED_HOSTS),
+    )
     return capacity
 
 
@@ -181,7 +185,8 @@ def test_proxy_cli_and_error_handler_do_not_log_caller_data(monkeypatch, capsys)
     calls = []
 
     class Server:
-        def __init__(self, address):
+        def __init__(self, address, allowed_hosts):
+            assert allowed_hosts == proxy.ALLOWED_HOSTS
             calls.append(address)
 
         def __enter__(self):

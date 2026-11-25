@@ -6,6 +6,8 @@ Start with the [quickstart](../QUICKSTART.md).
 | --- | --- |
 | Install pinned artifacts | [Installation](INSTALLATION.md) |
 | Configure aliases, providers and policy | [Configuration](CONFIGURATION.md) |
+| Define providers and model aliases in files | [Providers](PROVIDERS.md) |
+| Try real inference without a provider key | [Kilo example](../examples/free-chat/README.md) |
 | Make and recover requests | [Client](CLIENT.md), [HTTP API](API.md) |
 | Inspect consumed cost and exposure | [Accounting](ACCOUNTING.md) |
 | Use native X search | [X support](X_SEARCH.md) |

@@ -12,7 +12,7 @@ import yaml
 from pydantic import ValidationError
 from yaml.tokens import AliasToken, AnchorToken
 
-from .models import CAPABILITY_REVISION, ProjectConfig
+from .models import CAPABILITY_REVISION, ProjectConfig, builtin_provider
 from .secrets import SecretUnavailable, read_private_secret, resolve_credential
 
 
@@ -127,6 +127,7 @@ class ConfigSnapshot:
             "litellm-1.109.0/gateway-v2",
             "litellm-1.109.0/gateway-v3",
             "litellm-1.109.0/gateway-v4",
+            "litellm-1.109.0/gateway-v5",
         }:
             raise ConfigError("snapshot_capability_unavailable")
         return ProjectConfig.model_validate_json(
@@ -208,6 +209,80 @@ def capture_fixtures(config: ProjectConfig) -> dict:
     return captures
 
 
+def resolve_definitions(raw: dict, root: Path) -> dict:
+    """Capture explicit one-level definitions; never discover or fetch configuration."""
+    total = 0
+    for section in ("providers", "aliases"):
+        entries = raw.get(section)
+        if not isinstance(entries, dict):
+            continue
+        if len(entries) > (64 if section == "providers" else 256):
+            raise ConfigError("configuration_definition_limit")
+        for name, entry in entries.items():
+            if not isinstance(entry, dict) or "definition" not in entry:
+                continue
+            allowed = (
+                {"definition", "credential", "enabled", "application_name"}
+                if section == "providers"
+                else {"definition"}
+            )
+            reference = entry["definition"]
+            if set(entry) - allowed or not isinstance(reference, str):
+                raise ConfigError("configuration_definition_invalid")
+            if section == "providers" and reference.startswith("builtin:"):
+                try:
+                    definition = builtin_provider(reference.removeprefix("builtin:"))
+                except ValueError:
+                    raise ConfigError("configuration_definition_unknown") from None
+            else:
+                path = PurePosixPath(reference)
+                if (
+                    not path.parts
+                    or path.is_absolute()
+                    or ".." in path.parts
+                    or ":" in reference
+                    or "\\" in reference
+                ):
+                    raise ConfigError("configuration_definition_path_invalid")
+                # Open each component relative to the root, without following links.
+                descriptors = []
+                try:
+                    directory = os.open(root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+                    descriptors.append(directory)
+                    for part in path.parts[:-1]:
+                        directory = os.open(
+                            part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=directory
+                        )
+                        descriptors.append(directory)
+                    leaf = os.open(
+                        path.parts[-1],
+                        os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
+                        dir_fd=directory,
+                    )
+                    descriptors.append(leaf)
+                    info = os.fstat(leaf)
+                    if not stat.S_ISREG(info.st_mode) or info.st_size > 1048576:
+                        raise ConfigError("configuration_definition_file_invalid")
+                    with os.fdopen(leaf, "rb", closefd=False) as stream:
+                        content = stream.read(1048577)
+                    total += len(content)
+                    if len(content) > 1048576 or total > 16777216:
+                        raise ConfigError("configuration_definition_limit")
+                    definition = parse_yaml(content)
+                except OSError:
+                    raise ConfigError("configuration_definition_unavailable") from None
+                finally:
+                    for descriptor in reversed(descriptors):
+                        os.close(descriptor)
+            if "definition" in definition:
+                raise ConfigError("configuration_definition_recursive")
+            entries[name] = {
+                **definition,
+                **{key: value for key, value in entry.items() if key != "definition"},
+            }
+    return raw
+
+
 def load_project_config(
     path: Path,
     *,
@@ -216,7 +291,7 @@ def load_project_config(
     check_credentials: bool = True,
 ) -> ConfigSnapshot:
     env = os.environ if environment is None else environment
-    raw = parse_yaml(read_bounded_file(path))
+    raw = resolve_definitions(parse_yaml(read_bounded_file(path)), path.resolve().parent)
     overrides = raw.get("overrides", {})
     if isinstance(overrides, dict):
         for alias, variable in overrides.items():

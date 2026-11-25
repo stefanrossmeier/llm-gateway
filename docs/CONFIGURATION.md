@@ -1,8 +1,12 @@
 # Project configuration
 
-Configuration belongs to the consuming project. The runtime ships no production
-model catalog, credentials or deployment inventory. Schema:
+Configuration belongs to the consuming project. The release ships reusable OpenAI
+and OpenRouter provider definitions. Model aliases, credentials and deployment
+inventory remain project-owned. Resolved schema:
 [ProjectConfig](api/ProjectConfig.schema.json).
+
+For bundled provider definitions, local provider/model alias files and configurable
+endpoints/authentication, see [provider definitions](PROVIDERS.md).
 
 Generate an executable fake example using `scripts/create_fake_project.py` as
 shown in the [quickstart](../QUICKSTART.md). Pass each config explicitly:
@@ -14,8 +18,9 @@ llm-gateway serve --project-config /absolute/private/project.yaml   --state-dir 
 
 A project defines `schema_version`, `project_id`, `mode`, `timezone`, `providers`,
 `aliases`, `access`, optional budgets/operation policies and evidence retention.
-Providers support `kind: openrouter` and `kind: openai` concurrently. Each has an
-explicit credential reference; requests cannot override hosts or credentials.
+Providers select the `openrouter`, `openai` or `openai_chat` protocol adapter.
+Bearer providers have an explicit credential reference; the generic chat adapter
+also supports anonymous authentication. Requests cannot override hosts or credentials.
 An alias selects provider, upstream model, operation, capabilities, limits and
 reviewed pricing. Model changes require capability and price validation.
 

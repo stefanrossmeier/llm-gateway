@@ -12,7 +12,7 @@ def test_lock_review_binds_exact_bytes_and_rejects_new_findings(tmp_path):
     check = runpy.run_path(str(ROOT / "scripts/check_lock_approval.py"))["check"]
     evidence = tmp_path / "docs/evidence"
     evidence.mkdir(parents=True)
-    review_name = "dependency-review-2026-11-22.json"
+    review_name = "dependency-review-2026-11-25.json"
     (tmp_path / "uv.lock").write_bytes((ROOT / "uv.lock").read_bytes())
     original = json.loads((ROOT / "docs/evidence" / review_name).read_text())
     (evidence / review_name).write_text(json.dumps(original))

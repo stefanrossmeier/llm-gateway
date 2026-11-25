@@ -1,0 +1,74 @@
+services:
+  init:
+    image: ${LLM_GATEWAY_IMAGE:?Run python3 prepare.py first}
+    pull_policy: never
+    network_mode: none
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    entrypoint: [python, -I, -c]
+    command:
+      - |
+        from pathlib import Path
+        from llm_gateway.credentials import provision_gateway_token, read_private_secret
+        path = Path('/run/gateway/client.token')
+        if path.exists():
+            read_private_secret(str(path))
+        else:
+            provision_gateway_token(path)
+    volumes: [tokens:/run/gateway]
+  gateway:
+    image: ${LLM_GATEWAY_IMAGE:?Run python3 prepare.py first}
+    pull_policy: never
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    command: [serve, --project-config, /config/project.yaml, --state-dir, /state,
+              --host, "0.0.0.0", --port, "8080", --egress-proxy, "http://egress:3128"]
+    volumes: [./gateway:/config:ro, tokens:/run/gateway:ro, state:/state]
+    networks: [client]
+    dns_search: ["."]
+    depends_on:
+      init: {condition: service_completed_successfully}
+      egress: {condition: service_started}
+    pids_limit: 256
+    mem_limit: 1g
+    cpus: 2
+    healthcheck:
+      test: [CMD, python, -I, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=3)"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+    stop_grace_period: 15s
+  egress:
+    image: ${LLM_GATEWAY_IMAGE:?Run python3 prepare.py first}
+    pull_policy: never
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    entrypoint: [python, -I, -m, llm_gateway.service.egress_proxy]
+    command: [--project-config, /config/project.yaml]
+    volumes: [./gateway:/config:ro]
+    networks: [client, outbound]
+    dns_search: ["."]
+    pids_limit: 80
+    mem_limit: 128m
+  client:
+    image: ${LLM_GATEWAY_IMAGE:?Run python3 prepare.py first}
+    pull_policy: never
+    profiles: [cli]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    entrypoint: [python, -I, /example/demo.py]
+    volumes: [./demo.py:/example/demo.py:ro, tokens:/run/gateway:ro]
+    networks: [client]
+    depends_on:
+      gateway: {condition: service_healthy}
+    stdin_open: true
+networks:
+  client: {internal: true}
+  outbound: {}
+volumes:
+  tokens: {}
+  state: {}

@@ -13,6 +13,13 @@ Claims below are **verified** by the cited source unless marked otherwise.
 
 ## Contracts and ownership
 
+Version 0.1.0a4 adds explicit local provider and model alias definition files and
+bundled `builtin:openai` / `builtin:openrouter` definitions. The public callsite
+still sends a model alias. `adapter`, HTTPS `base_url`, authentication and free
+route declarations are gateway configuration. See [providers](../PROVIDERS.md)
+for the loader input contract and resolved snapshot schema. Alias inspection also
+reports the generic `openai_chat` protocol adapter.
+
 The canonical machine-readable contracts are [OpenAPI](https://github.com/stefanrossmeier/llm-gateway/blob/6d36e06bd378a0c7f2326bae904b4b30ac0613a8/docs/api/openapi.json)
 and [InferenceRequest JSON Schema](https://github.com/stefanrossmeier/llm-gateway/blob/6d36e06bd378a0c7f2326bae904b4b30ac0613a8/docs/api/InferenceRequest.schema.json).
 The service HTTP owner is [create_app](https://github.com/stefanrossmeier/llm-gateway/blob/6d36e06bd378a0c7f2326bae904b4b30ac0613a8/src/llm_gateway/service/api.py);

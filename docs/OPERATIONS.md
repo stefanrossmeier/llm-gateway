@@ -21,6 +21,11 @@ secrets and tokens must be readable by UID 10001; writable state must be owned
 by UID 10001 and mode 700. The inference container has no outbound network; its
 allowlisted CONNECT proxy is the sole outbound path.
 
+The proxy loads provider destinations from the same project configuration via
+`--project-config`, without provider credentials. Mount the configuration directory
+in both services; recreate the proxy when destinations change. Model alias and
+provider files are captured in immutable gateway snapshots. See [providers](PROVIDERS.md).
+
 Run as UID/GID 10001, with a read-only root, all capabilities dropped,
 `no-new-privileges`, bounded resources and private writable state. Mount config,
 tokens and provider credentials read-only. Use the egress proxy and an internal

@@ -1,0 +1,17 @@
+provider_ref: kilo
+upstream_model: kilo-auto/free
+operation: chat
+capabilities: [plain_text]
+limits:
+  max_input_bytes: 4096
+  max_input_tokens: 8192
+  max_output_tokens: 1024
+  attempt_timeout_seconds: 120
+  request_timeout_seconds: 150
+  max_concurrency: 1
+attempt_policy:
+  max_attempts: 1
+pricing:
+  revision: kilo-free-2026-11-25
+  bound_source: https://kilo.ai/docs/gateway/models-and-providers
+  free_only: true

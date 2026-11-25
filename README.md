@@ -9,17 +9,23 @@
                    Shared inference, project-owned policy, accountable spending.
 ```
 
-LLM Gateway is a Python service and lean client for authenticated OpenAI and
-OpenRouter access. Each project owns its aliases, models, credentials and budgets.
+LLM Gateway is a Python service and lean client for configurable model providers.
+Each project owns its model aliases, provider definitions, credentials and budgets.
 The gateway owns transport, validation, durable accounting and request recovery.
 
-**Version 0.1.0a3 — alpha.** The client supports Python 3.11–3.12; the service
+**Version 0.1.0a4 — alpha.** The client supports Python 3.11–3.12; the service
 requires Python 3.12 on POSIX. This release includes chat, strict JSON, stateless
 Responses and function calls, embeddings, Decisions, and scoped native X search
 through OpenRouter. Provider/model capabilities still require validation.
 
 Start with [QUICKSTART.md](QUICKSTART.md), which needs no keys or inference.
 See the [documentation index](docs/README.md) for installation and operations.
+
+For real inference without a provider account or API key, run the
+[Kilo free-chat example](examples/free-chat/README.md). It uses the released
+Docker image, a file-defined provider and model alias, and a tiny Python client.
+OpenAI and OpenRouter provider definitions ship with the release; additional
+OpenAI-compatible chat providers require configuration files, not gateway changes.
 
 ## Accounting you can inspect
 
