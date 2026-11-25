@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "repository": "stefanrossmeier/llm-gateway",
+  "tag": "v0.1.0a4",
+  "source_commit": "077eb26d447bbf48e0663778e5c2df26b59a0098",
+  "authored_source_sha256": "37573944bc67bbef09f835d0012674d959de654564da226cb5bfdc416024ec30",
+  "platforms": {
+    "arm64": {
+      "image": "image-arm64.tar",
+      "profile": "native-profile-arm64.json",
+      "sbom": "sbom-arm64.cdx.json",
+      "original_scan": "advisories-arm64.json"
+    },
+    "amd64": {
+      "image": "image-amd64.tar",
+      "profile": "native-profile-amd64.json",
+      "sbom": "sbom-amd64.cdx.json",
+      "original_scan": "advisories-amd64.json"
+    }
+  },
+  "assets": {
+    "LICENSE.txt": {
+      "sha256": "56abc925eb23fef5d290185b5692f4431210a25df02e0eed68e141d86bac11f1",
+      "size": 1073
+    },
+    "PROVIDER_CONFIG_REVIEW_2026-11-25.md": {
+      "sha256": "9c8377e509db9282c7b56c8826cabb01df16fd342784972933dce47f55ef3731",
+      "size": 3995
+    },
+    "advisories-amd64.json": {
+      "sha256": "120c61c8caea91b5c78cd6d0f649354a4930c9d64f96825410c2e8c773283fc4",
+      "size": 1261182
+    },
+    "advisories-arm64.json": {
+      "sha256": "7514950f029e4155e736d27fa7a926cf2291bdd12fd85089da513e3ac78550ef",
+      "size": 1261195
+    },
+    "container-candidate-assessment-2026-11-25.json": {
+      "sha256": "a45fd33459131822b866aedcf1a7eccb821164d06c4a9a770ec345f74ade9c4c",
+      "size": 83602
+    },
+    "coverage-summary.json": {
+      "sha256": "9693653fb3d8a3dcec63c68529e0e5d8c6c704b60d7def0bd4ed390e18dd12ec",
+      "size": 28002
+    },
+    "dependency-review-2026-11-25.json": {
+      "sha256": "bacc7ead89ceafe0c336f60cabc43acdb8f912e905cc0e9ddf01800f11bb991f",
+      "size": 84176
+    },
+    "image-amd64.tar": {
+      "sha256": "d97a34b6d93128e61f5786bb94690664b626765253c2c5bf7394184bacdc31dd",
+      "size": 120924160
+    },
+    "image-arm64.tar": {
+      "sha256": "4904b1c08f62de22ad366e29b9e969a4c3356171417f758b73f7fbedcbeb1dfb",
+      "size": 120344064
+    },
+    "llm_gateway-0.1.0a4-py3-none-any.whl": {
+      "sha256": "579d7776ac605de855d9cf3b299bda606f0b14c2fb2c48882ccedbcc22383c5d",
+      "size": 113886
+    },
+    "native-profile-amd64.json": {
+      "sha256": "b0329f86695148a08e002347bb34e2658d1a22e58e35b5053b2499cc169206ed",
+      "size": 2315
+    },
+    "native-profile-arm64.json": {
+      "sha256": "9648fe28280fc556bed9f0d6a371ae8e3533acc5a49ed7f3f0122a59e5f8d417",
+      "size": 2318
+    },
+    "provenance.json": {
+      "sha256": "106fb426e142cd0a795bc6a738eb2e989d9f90a678923513239687a7d4550260",
+      "size": 1628
+    },
+    "requirements-client.txt": {
+      "sha256": "2128841029cb7212d9bce097ae052bcc1d76c7769249c6de9646e9848260ee9d",
+      "size": 6432
+    },
+    "requirements-service.txt": {
+      "sha256": "45fbac6e31cfb77a9bf6237546e32b73361fedd8156a30c7f7740ac7a6a7ae86",
+      "size": 56851
+    },
+    "sbom-amd64.cdx.json": {
+      "sha256": "0080f620b05c5d01b8df4549ff8497649be76d4715a5cfa7ddd5f11691ffa53c",
+      "size": 1214749
+    },
+    "sbom-arm64.cdx.json": {
+      "sha256": "fc19c4bffe48de0bd2f784a21171ea49e6a99aa62742e3e890dc03bd5ae4a36b",
+      "size": 1215790
+    },
+    "uv.lock": {
+      "sha256": "a01bc4eddf89c9022e01fc6238054de6e9eb4a096857d59bccded51e67a231a6",
+      "size": 237044
+    }
+  }
+}
